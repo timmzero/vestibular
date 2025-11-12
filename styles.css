@@ -7,6 +7,7 @@
   --body-text-color: #E0E0E0;               /* light gray */
   --font-base: 'IBM Plex Sans', sans-serif;
   --font-heading: 'Source Sans Pro', sans-serif;
+  --brand-padding: 16px;
 }
 
 body {
@@ -35,6 +36,13 @@ header.hero p {
   font-size: 1.2rem;
   max-width: 700px;
   margin: 0 auto 30px;
+  background: var(--background-color, #000);
+  color: var(--hero-text-color, #fff);
+  padding: calc(var(--brand-padding) + 8px) 16px 48px;
+  text-align: center;
+  position: relative;
+  box-sizing: border-box;
+
 }
 
 .cta-buttons {
@@ -80,4 +88,25 @@ footer {
   color: var(--hero-text-color);
   text-align: center;
   padding: 20px;
+}
+.brand {
+  position: absolute;
+  top: var(--brand-padding);
+  left: var(--brand-padding);
+  display: inline-block;
+  line-height: 0;
+}
+
+.brand-logo {
+  width: 120px;
+  height: auto;
+  display: block;
+}
+
+@media (min-width: 600px) {
+  .brand-logo { width: 160px; }
+}
+
+@media (min-width: 1000px) {
+  .brand-logo { width: 220px; }
 }
