@@ -101,6 +101,8 @@ footer {
   width: 120px;
   height: auto;
   display: block;
+  filter: drop-shadow(0 0 4px rgba(0,255,255,0.2));
+
 }
 
 @media (min-width: 600px) {
