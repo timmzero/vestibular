@@ -1,3 +1,13 @@
+:root {
+  --primary-color: hsla(79, 65%, 48%, 1);   /* earthy green */
+  --secondary-color: hsla(88, 82%, 9%, 1);  /* deep dark green */
+  --accent-color: hsla(180, 60%, 40%, 1);   /* teal */
+  --background-color: #000000;              /* black */
+  --hero-text-color: #FFFFFF;               /* white */
+  --body-text-color: #E0E0E0;               /* light gray */
+  --font-base: 'IBM Plex Sans', sans-serif;
+  --font-heading: 'Source Sans Pro', sans-serif;
+}
 body {
   font-family: 'Segoe UI', sans-serif;
   margin: 0;
