@@ -8,18 +8,19 @@
   --font-base: 'IBM Plex Sans', sans-serif;
   --font-heading: 'Source Sans Pro', sans-serif;
 }
+
 body {
-  font-family: 'Segoe UI', sans-serif;
+  font-family: var(--font-base);
   margin: 0;
   padding: 0;
   line-height: 1.6;
-  background: #f9f9f9;
-  color: #333;
+  background: var(--background-color);
+  color: var(--body-text-color);
 }
 
 header.hero {
-  background: #0e1e2e;
-  color: #fff;
+  background: var(--primary-color);
+  color: var(--hero-text-color);
   padding: 60px 20px;
   text-align: center;
 }
@@ -27,6 +28,7 @@ header.hero {
 header.hero h1 {
   font-size: 2.5rem;
   margin-bottom: 20px;
+  font-family: var(--font-heading);
 }
 
 header.hero p {
@@ -42,8 +44,8 @@ header.hero p {
 }
 
 .btn {
-  background: #0078d4;
-  color: #fff;
+  background: var(--accent-color);
+  color: var(--hero-text-color);
   padding: 12px 24px;
   text-decoration: none;
   border-radius: 6px;
@@ -51,9 +53,9 @@ header.hero p {
 }
 
 .btn.secondary {
-  background: #fff;
-  color: #0078d4;
-  border: 2px solid #0078d4;
+  background: var(--hero-text-color);
+  color: var(--accent-color);
+  border: 2px solid var(--accent-color);
 }
 
 section {
@@ -65,6 +67,7 @@ section {
 section h2 {
   font-size: 1.8rem;
   margin-bottom: 20px;
+  font-family: var(--font-heading);
 }
 
 section ul {
@@ -73,8 +76,8 @@ section ul {
 }
 
 footer {
-  background: #0e1e2e;
-  color: #fff;
+  background: var(--secondary-color);
+  color: var(--hero-text-color);
   text-align: center;
   padding: 20px;
 }
