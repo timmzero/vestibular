@@ -10,7 +10,7 @@
   --brand-padding: 16px;
   --focus-color: rgba(0, 200, 180, 0.9);
   --max-content-width: 900px;
-  --topbar-height: 96px;
+  --topbar-height: 74px;
   --topbar-bg: #000;
 
 }
@@ -185,12 +185,12 @@ footer {
 
 /* Responsive scaling */
 @media (min-width: 600px) {
-  :root { --topbar-height: 80px; }
+  :root { --topbar-height: 92px; }
   .brand-logo { width: 140px; }
   .hero { padding-top: calc(var(--topbar-height) + 12px); }
 }
 @media (min-width: 1000px) {
-  :root { --topbar-height: 96px; }
+  :root { --topbar-height: 110px; }
   .brand-logo { width: 200px; }
   .hero { padding-top: calc(var(--topbar-height) + 16px); }
 }
