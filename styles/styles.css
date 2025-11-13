@@ -10,6 +10,9 @@
   --brand-padding: 16px;
   --focus-color: rgba(0, 200, 180, 0.9);
   --max-content-width: 900px;
+  --topbar-height: 64px;
+  --topbar-bg: #000;
+
 }
 
 /* Global reset / box model */
@@ -48,10 +51,13 @@ header.hero {
   display: inline-block;
   line-height: 0;
   z-index: 5;
+  /* Accessibility */
+.brand:focus { outline: 3px solid rgba(0,200,180,0.9); outline-offset: 4px; border-radius: 6px; }
+
 }
 
 .brand-logo {
-  width: 120px;
+  width: 96px;
   height: auto;
   display: block;
   filter: drop-shadow(0 6px 10px rgba(0, 80, 70, 0.15));
@@ -64,6 +70,33 @@ header.hero {
 @media (prefers-reduced-motion: reduce) {
   .brand-logo, .btn { transition: none; transform: none; }
 }
+
+/* Reserve space so hero content is not hidden under fixed topbar */
+/* Hero content area (your existing hero styling can live here) */
+.hero .hero-content {
+  background: var(--primary-color, #254a2a);
+  color: var(--hero-text-color, #fff);
+  text-align: center;
+  padding: 28px 16px 48px;
+  padding-top: calc(var(--topbar-height) + 12px);
+}
+
+/* Topbar: fixed at top, centered logo */
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--topbar-height);
+  background: var(--topbar-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  z-index: 999;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.25);
+}
+
 
 /* Headline and hero copy */
 header.hero h1 {
@@ -150,17 +183,16 @@ footer {
   padding: 20px;
 }
 
-/* Responsive typography and logo scaling */
+/* Responsive scaling */
 @media (min-width: 600px) {
-  header.hero h1 { font-size: 1.75rem; margin-top: 56px; }
-  header.hero p  { font-size: 1.1rem; }
-  .brand-logo    { width: 160px; }
+  :root { --topbar-height: 80px; }
+  .brand-logo { width: 140px; }
+  .hero { padding-top: calc(var(--topbar-height) + 12px); }
 }
-
 @media (min-width: 1000px) {
-  header.hero { padding-top: 32px; }
-  header.hero h1 { font-size: 2.5rem; margin-top: 72px; }
-  .brand-logo { width: 220px; }
+  :root { --topbar-height: 96px; }
+  .brand-logo { width: 200px; }
+  .hero { padding-top: calc(var(--topbar-height) + 16px); }
 }
 
 /* Minor utility */
