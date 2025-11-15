@@ -9,103 +9,54 @@
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
   <link rel="manifest" href="assets/site.webmanifest">
-  <title>Contact – Vestibular Nexus</title>
+  <title>Contact – Vestibular</title>
   <link rel="stylesheet" href="styles/styles.css" />
-  <title>Contact Form</title>
-  <style>
-    .error {
-      color: red;
-      font-size: 0.9em;
-    }
-    .success {
-      color: green;
-      font-size: 1em;
-      margin-top: 1em;
-    }
-  </style>
 </head>
 <body>
   <form id="contactForm" novalidate>
     <label for="name">Name:</label><br />
-<<<<<<< Updated upstream
-    <input type="text" id="name" name="name" required minlength="2" />
-    <div id="nameError" class="error" aria-live="polite"></div>
-=======
+
     <input type="text" id="name" name="name" required minlength="2" aria-describedby="nameError" />
     <div id="nameError" class="vn-form__error" aria-live="polite"></div>
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+
+
 
     <label for="email">Email:</label><br />
-    <input type="email" id="email" name="email" required />
-    <div id="emailError" class="error" aria-live="polite"></div>
+    <input type="email" id="email" name="email" required aria-describedby="emailError" />
+    <div id="emailError" class="vn-form__error" aria-live="polite"></div>
 
     <label for="message">Message:</label><br />
-<<<<<<< Updated upstream
-    <textarea id="message" name="message" required minlength="5"></textarea>
-    <div id="messageError" class="error" aria-live="polite"></div>
-=======
+
     <textarea id="message" name="message" required minlength="5" aria-describedby="messageError"></textarea>
     <div id="messageError" class="vn-form__error" aria-live="polite"></div>
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+
+
 
     <button type="submit">Send</button>
   </form>
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-  <div id="formStatus" role="status" aria-live="polite"></div>
 
-  <script>
-    const form = document.getElementById('contactForm');
-    const nameInput = document.getElementById('name');
-    const emailInput = document.getElementById('email');
-    const messageInput = document.getElementById('message');
-=======
-=======
->>>>>>> Stashed changes
   <div id="formStatus" class="vn-form__status" role="status" aria-live="polite"></div>
 
   <script>
+
+    <div id="formStatus" class="vn-form__status" role="status" aria-live="polite"></div>
+
+  <script>
+
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.querySelector('#contactForm');
   const nameInput = form.querySelector('#name');
   const emailInput = form.querySelector('#email');
   const messageInput = form.querySelector('#message');
-  const submitBtn = form.querySelector('button[type="submit"]');
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+
 
     const nameError = document.getElementById('nameError');
     const emailError = document.getElementById('emailError');
     const messageError = document.getElementById('messageError');
     const formStatus = document.getElementById('formStatus');
 
-<<<<<<< Updated upstream
-    function validateEmail(email) {
-      // Simple email regex
-      return /^\S+@\S+\.\S+$/.test(email);
-=======
-  const setError = (el, text) => {
-    el.textContent = text;
-    el.classList.add('vn-form__error');
-  };
 
-<<<<<<< Updated upstream
-=======
-  const setError = (el, text) => {
-    el.textContent = text;
-    el.classList.add('vn-form__error');
-  };
-
->>>>>>> Stashed changes
   const clearErrors = () => {
     [nameError, emailError, messageError].forEach(e => { e.textContent = ''; e.classList.remove('vn-form__error'); });
     statusEl.textContent = '';
@@ -114,6 +65,22 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   function validateEmail(email) {
+
+
+  const nameError = document.getElementById('nameError');
+  const emailError = document.getElementById('emailError');
+  const messageError = document.getElementById('messageError');
+  const statusEl = document.getElementById('formStatus');
+
+  const setError = (el, text) => { el.textContent = text; el.classList.add('vn-form__error'); };
+  const clearErrors = () => {
+    [nameError, emailError, messageError].forEach(e => { e.textContent = ''; e.classList.remove('vn-form__error'); });
+    statusEl.textContent = ''; statusEl.className = 'vn-form__status';
+  };
+
+  function validateEmail(email) {
+    // Robust but not perfect regex — OK for client-side validation only
+
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(email);
   }
@@ -134,78 +101,67 @@ document.addEventListener('DOMContentLoaded', () => {
       nameInput.setAttribute('aria-invalid', 'true');
     } else {
       nameInput.removeAttribute('aria-invalid');
->>>>>>> Stashed changes
+
+
     }
 
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault();
+    if (!validateEmail(email)) {
+      setError(emailError, 'Please enter a valid email address.');
+      valid = false;
+      emailInput.setAttribute('aria-invalid', 'true');
+    } else {
+      emailInput.removeAttribute('aria-invalid');
+    }
 
-      // Clear previous errors
-      nameError.textContent = '';
-      emailError.textContent = '';
-      messageError.textContent = '';
-      formStatus.textContent = '';
+    if (message.length < 5) {
+      setError(messageError, 'Message must be at least 5 characters long.');
+      valid = false;
+      messageInput.setAttribute('aria-invalid', 'true');
+    } else {
+      messageInput.removeAttribute('aria-invalid');
+    }
 
-      let valid = true;
+    if (!valid) {
+      const firstError = form.querySelector('[aria-invalid="true"]');
+      if (firstError) firstError.focus();
+      return;
+    }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-      // Validate name
-      if (!nameInput.value.trim() || nameInput.value.trim().length < 2) {
-        nameError.textContent = 'Name must be at least 2 characters long.';
-        valid = false;
-      }
 
-      // Validate email
-      if (!emailInput.value.trim() || !validateEmail(emailInput.value.trim())) {
-        emailError.textContent = 'Please enter a valid email address.';
-        valid = false;
-      }
 
-      // Validate message
-      if (!messageInput.value.trim() || messageInput.value.trim().length < 5) {
-        messageError.textContent = 'Message must be at least 5 characters long.';
-        valid = false;
-      }
+    try {
+      // Show an immediate UI cue while sending
+      statusEl.textContent = 'Sending…';
+      statusEl.className = 'vn-form__status';
 
-      if (!valid) {
-        return;
-      }
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
 
-      // Prepare data
-      const formData = {
-        name: nameInput.value.trim(),
-        email: emailInput.value.trim(),
-        message: messageInput.value.trim()
-      };
-
+      let result;
       try {
-        const response = await fetch('/api/contact', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(formData)
-        });
-
-        const result = await response.json();
-
-        if (result.success) {
-          formStatus.textContent = 'Thank you! Your message has been sent.';
-          formStatus.className = 'success';
-          form.reset();
-        } else {
-          formStatus.textContent = 'Error: ' + (result.errors ? result.errors.join('; ') : result.error || 'Unknown error');
-          formStatus.className = 'error';
-        }
-      } catch (error) {
-        formStatus.textContent = 'Network error. Please try again later.';
-        formStatus.className = 'error';
+        result = await response.json();
+      } catch (e) {
+        result = null;
       }
-    });
-=======
-=======
->>>>>>> Stashed changes
+
+      if (response.ok && result && result.success) {
+        statusEl.textContent = 'Thank you! Your message has been sent.';
+        statusEl.className = 'vn-form__status success';
+        form.reset();
+        nameInput.focus();
+      } else {
+        // Prefer structured errors from API when available
+        const messageText = result && result.errors
+          ? result.errors.join('; ')
+          : (result && result.error) ? result.error : 'An error occurred while sending your message.';
+        statusEl.textContent = messageText;
+        statusEl.className = 'vn-form__status error';
+        statusEl.setAttribute('role', 'alert');
+      }
+
     const payload = { name, email, message };
 
     // Disable submit button to prevent double submits and provide UX feedback
@@ -252,10 +208,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-  </script>
+
+
+    } catch (err) {
+      statusEl.textContent = 'Network error. Please try again later.';
+      statusEl.className = 'vn-form__status error';
+      statusEl.setAttribute('role', 'alert');
+    }
+  });
+});
+</script>
 </body>
 </html>

@@ -15,21 +15,21 @@
 <body>
   <form id="contactForm" novalidate>
     <label for="name">Name:</label><br />
-    <input type="text" id="name" name="name" required minlength="2" />
-    <div id="nameError" class="error" aria-live="polite"></div>
+    <input type="text" id="name" name="name" required minlength="2" aria-describedby="nameError" />
+    <div id="nameError" class="vn-form__error" aria-live="polite"></div>
 
     <label for="email">Email:</label><br />
-    <input type="email" id="email" name="email" required />
-    <div id="emailError" class="error" aria-live="polite"></div>
+    <input type="email" id="email" name="email" required aria-describedby="emailError" />
+    <div id="emailError" class="vn-form__error" aria-live="polite"></div>
 
     <label for="message">Message:</label><br />
-    <textarea id="message" name="message" required minlength="5"></textarea>
-    <div id="messageError" class="error" aria-live="polite"></div>
+    <textarea id="message" name="message" required minlength="5" aria-describedby="messageError"></textarea>
+    <div id="messageError" class="vn-form__error" aria-live="polite"></div>
 
     <button type="submit">Send</button>
   </form>
 
-  <div id="formStatus" role="status" aria-live="polite"></div>
+  <div id="formStatus" class="vn-form__status" role="status" aria-live="polite"></div>
 
   <script>
 document.addEventListener('DOMContentLoaded', () => {
@@ -37,20 +37,26 @@ document.addEventListener('DOMContentLoaded', () => {
   const nameInput = form.querySelector('#name');
   const emailInput = form.querySelector('#email');
   const messageInput = form.querySelector('#message');
+  const submitBtn = form.querySelector('button[type="submit"]');
 
   const nameError = document.getElementById('nameError');
   const emailError = document.getElementById('emailError');
   const messageError = document.getElementById('messageError');
   const statusEl = document.getElementById('formStatus');
 
-  const setError = (el, text) => { el.textContent = text; el.classList.add('vn-form__error'); };
+  const setError = (el, text) => {
+    el.textContent = text;
+    el.classList.add('vn-form__error');
+  };
+
   const clearErrors = () => {
     [nameError, emailError, messageError].forEach(e => { e.textContent = ''; e.classList.remove('vn-form__error'); });
-    statusEl.textContent = ''; statusEl.className = 'vn-form__status';
+    statusEl.textContent = '';
+    statusEl.className = 'vn-form__status';
+    statusEl.removeAttribute('role');
   };
 
   function validateEmail(email) {
-    // Robust but not perfect regex — OK for client-side validation only
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(email);
   }
@@ -95,48 +101,52 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // Prepare payload
     const payload = { name, email, message };
 
-    try {
-      // Show an immediate UI cue while sending
-      statusEl.textContent = 'Sending…';
-      statusEl.className = 'vn-form__status';
+    // Disable submit button to prevent double submits and provide UX feedback
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.setAttribute('aria-busy', 'true');
+    }
 
+    statusEl.textContent = 'Sending…';
+    statusEl.className = 'vn-form__status';
+
+    try {
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
 
-      let result;
-      try {
-        result = await response.json();
-      } catch (e) {
-        result = null;
-      }
+      let result = null;
+      try { result = await response.json(); } catch (e) { result = null; }
 
       if (response.ok && result && result.success) {
         statusEl.textContent = 'Thank you! Your message has been sent.';
-        statusEl.className = 'vn-form__status success';
+        statusEl.classList.add('success');
         form.reset();
         nameInput.focus();
       } else {
-        // Prefer structured errors from API when available
         const messageText = result && result.errors
           ? result.errors.join('; ')
           : (result && result.error) ? result.error : 'An error occurred while sending your message.';
         statusEl.textContent = messageText;
-        statusEl.className = 'vn-form__status error';
+        statusEl.classList.add('error');
         statusEl.setAttribute('role', 'alert');
       }
     } catch (err) {
       statusEl.textContent = 'Network error. Please try again later.';
-      statusEl.className = 'vn-form__status error';
+      statusEl.classList.add('error');
       statusEl.setAttribute('role', 'alert');
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.removeAttribute('aria-busy');
+      }
     }
   });
 });
-</script>
+  </script>
 </body>
 </html>
