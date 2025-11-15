@@ -204,6 +204,19 @@ footer {
 }
 
 /* Contact Form Styles */
+.vn-form__error {
+  color: var(--color-error, #c32); font-size: 0.95em; margin-top: 0.25rem; 
+}
+.vn-form__status {
+  margin-top: 1rem; font-size: 1rem; 
+}
+.vn-form__status.success {
+  color: var(--color-success, #080); 
+}
+.vn-form__status.error {
+  color: var(--color-error, #c32); 
+}
+
 .contact {
   max-width: 600px;
   margin: 2rem auto;
@@ -257,4 +270,3 @@ button:focus {
 .hidden {
   display: none;
 }
-

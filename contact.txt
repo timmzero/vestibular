@@ -27,20 +27,31 @@
 <body>
   <form id="contactForm" novalidate>
     <label for="name">Name:</label><br />
+<<<<<<< Updated upstream
     <input type="text" id="name" name="name" required minlength="2" />
     <div id="nameError" class="error" aria-live="polite"></div>
+=======
+    <input type="text" id="name" name="name" required minlength="2" aria-describedby="nameError" />
+    <div id="nameError" class="vn-form__error" aria-live="polite"></div>
+>>>>>>> Stashed changes
 
     <label for="email">Email:</label><br />
     <input type="email" id="email" name="email" required />
     <div id="emailError" class="error" aria-live="polite"></div>
 
     <label for="message">Message:</label><br />
+<<<<<<< Updated upstream
     <textarea id="message" name="message" required minlength="5"></textarea>
     <div id="messageError" class="error" aria-live="polite"></div>
+=======
+    <textarea id="message" name="message" required minlength="5" aria-describedby="messageError"></textarea>
+    <div id="messageError" class="vn-form__error" aria-live="polite"></div>
+>>>>>>> Stashed changes
 
     <button type="submit">Send</button>
   </form>
 
+<<<<<<< Updated upstream
   <div id="formStatus" role="status" aria-live="polite"></div>
 
   <script>
@@ -48,15 +59,62 @@
     const nameInput = document.getElementById('name');
     const emailInput = document.getElementById('email');
     const messageInput = document.getElementById('message');
+=======
+  <div id="formStatus" class="vn-form__status" role="status" aria-live="polite"></div>
+
+  <script>
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.querySelector('#contactForm');
+  const nameInput = form.querySelector('#name');
+  const emailInput = form.querySelector('#email');
+  const messageInput = form.querySelector('#message');
+  const submitBtn = form.querySelector('button[type="submit"]');
+>>>>>>> Stashed changes
 
     const nameError = document.getElementById('nameError');
     const emailError = document.getElementById('emailError');
     const messageError = document.getElementById('messageError');
     const formStatus = document.getElementById('formStatus');
 
+<<<<<<< Updated upstream
     function validateEmail(email) {
       // Simple email regex
       return /^\S+@\S+\.\S+$/.test(email);
+=======
+  const setError = (el, text) => {
+    el.textContent = text;
+    el.classList.add('vn-form__error');
+  };
+
+  const clearErrors = () => {
+    [nameError, emailError, messageError].forEach(e => { e.textContent = ''; e.classList.remove('vn-form__error'); });
+    statusEl.textContent = '';
+    statusEl.className = 'vn-form__status';
+    statusEl.removeAttribute('role');
+  };
+
+  function validateEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  }
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    clearErrors();
+
+    const name = nameInput.value.trim();
+    const email = emailInput.value.trim();
+    const message = messageInput.value.trim();
+
+    let valid = true;
+
+    if (name.length < 2) {
+      setError(nameError, 'Name must be at least 2 characters long.');
+      valid = false;
+      nameInput.setAttribute('aria-invalid', 'true');
+    } else {
+      nameInput.removeAttribute('aria-invalid');
+>>>>>>> Stashed changes
     }
 
     form.addEventListener('submit', async (event) => {
@@ -70,6 +128,7 @@
 
       let valid = true;
 
+<<<<<<< Updated upstream
       // Validate name
       if (!nameInput.value.trim() || nameInput.value.trim().length < 2) {
         nameError.textContent = 'Name must be at least 2 characters long.';
@@ -123,6 +182,54 @@
         formStatus.className = 'error';
       }
     });
+=======
+    const payload = { name, email, message };
+
+    // Disable submit button to prevent double submits and provide UX feedback
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.setAttribute('aria-busy', 'true');
+    }
+
+    statusEl.textContent = 'Sending…';
+    statusEl.className = 'vn-form__status';
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      let result = null;
+      try { result = await response.json(); } catch (e) { result = null; }
+
+      if (response.ok && result && result.success) {
+        statusEl.textContent = 'Thank you! Your message has been sent.';
+        statusEl.classList.add('success');
+        form.reset();
+        nameInput.focus();
+      } else {
+        const messageText = result && result.errors
+          ? result.errors.join('; ')
+          : (result && result.error) ? result.error : 'An error occurred while sending your message.';
+        statusEl.textContent = messageText;
+        statusEl.classList.add('error');
+        statusEl.setAttribute('role', 'alert');
+      }
+    } catch (err) {
+      statusEl.textContent = 'Network error. Please try again later.';
+      statusEl.classList.add('error');
+      statusEl.setAttribute('role', 'alert');
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.removeAttribute('aria-busy');
+      }
+    }
+  });
+});
+>>>>>>> Stashed changes
   </script>
 </body>
 </html>
