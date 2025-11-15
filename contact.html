@@ -1,120 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contact Form</title>
-  <style>
-    .error {
-      color: red;
-      font-size: 0.9em;
-    }
-    .success {
-      color: green;
-      font-size: 1em;
-      margin-top: 1em;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <title>Contact – Vestibular</title>
+  <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
-  <form id="contactForm" novalidate>
-    <label for="name">Name:</label><br />
-    <input type="text" id="name" name="name" required minlength="2" />
-    <div id="nameError" class="error" aria-live="polite"></div>
+  <!-- Reuse header from index.html -->
+  <header>
+    <div class="logo">
+      <img src="assets/logo.svg" alt="Vestibular Logo">
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="contact.html" class="active">Contact</a></li>
+        <!-- add other nav links here -->
+      </ul>
+    </nav>
+  </header>
 
-    <label for="email">Email:</label><br />
-    <input type="email" id="email" name="email" required />
-    <div id="emailError" class="error" aria-live="polite"></div>
+  <!-- Contact form section -->
+  <main>
+    <section class="contact">
+      <h2>Contact Us</h2>
+      <form id="contact-form" method="POST" action="/contact">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" required>
+        </div>
 
-    <label for="message">Message:</label><br />
-    <textarea id="message" name="message" required minlength="5"></textarea>
-    <div id="messageError" class="error" aria-live="polite"></div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required>
+        </div>
 
-    <button type="submit">Send</button>
-  </form>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="6" required></textarea>
+        </div>
 
-  <div id="formStatus" role="status" aria-live="polite"></div>
+        <!-- Honeypot -->
+        <div class="hidden">
+          <label for="website">Website</label>
+          <input type="text" id="website" name="website">
+        </div>
 
-  <script>
-    const form = document.getElementById('contactForm');
-    const nameInput = document.getElementById('name');
-    const emailInput = document.getElementById('email');
-    const messageInput = document.getElementById('message');
+        <button type="submit">Send</button>
+      </form>
+    </section>
+  </main>
 
-    const nameError = document.getElementById('nameError');
-    const emailError = document.getElementById('emailError');
-    const messageError = document.getElementById('messageError');
-    const formStatus = document.getElementById('formStatus');
-
-    function validateEmail(email) {
-      // Simple email regex
-      return /^\S+@\S+\.\S+$/.test(email);
-    }
-
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault();
-
-      // Clear previous errors
-      nameError.textContent = '';
-      emailError.textContent = '';
-      messageError.textContent = '';
-      formStatus.textContent = '';
-
-      let valid = true;
-
-      // Validate name
-      if (!nameInput.value.trim() || nameInput.value.trim().length < 2) {
-        nameError.textContent = 'Name must be at least 2 characters long.';
-        valid = false;
-      }
-
-      // Validate email
-      if (!emailInput.value.trim() || !validateEmail(emailInput.value.trim())) {
-        emailError.textContent = 'Please enter a valid email address.';
-        valid = false;
-      }
-
-      // Validate message
-      if (!messageInput.value.trim() || messageInput.value.trim().length < 5) {
-        messageError.textContent = 'Message must be at least 5 characters long.';
-        valid = false;
-      }
-
-      if (!valid) {
-        return;
-      }
-
-      // Prepare data
-      const formData = {
-        name: nameInput.value.trim(),
-        email: emailInput.value.trim(),
-        message: messageInput.value.trim()
-      };
-
-      try {
-        const response = await fetch('/api/contact', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(formData)
-        });
-
-        const result = await response.json();
-
-        if (result.success) {
-          formStatus.textContent = 'Thank you! Your message has been sent.';
-          formStatus.className = 'success';
-          form.reset();
-        } else {
-          formStatus.textContent = 'Error: ' + (result.errors ? result.errors.join('; ') : result.error || 'Unknown error');
-          formStatus.className = 'error';
-        }
-      } catch (error) {
-        formStatus.textContent = 'Network error. Please try again later.';
-        formStatus.className = 'error';
-      }
-    });
-  </script>
+  <!-- Optional footer -->
+  <footer>
+    <p>&copy; 2025 Vestibular</p>
+  </footer>
 </body>
 </html>
