@@ -1,145 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="Contact Vestibular Nexus — book a consult or ask about our Agile Tools Sanitation playbook." />
-  <meta name="theme-color" content="#000000" />
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
-  <link rel="manifest" href="assets/site.webmanifest">
-  <title>Contact – Vestibular Nexus</title>
-  <link rel="stylesheet" href="styles/styles.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Form</title>
+  <style>
+    .error {
+      color: red;
+      font-size: 0.9em;
+    }
+    .success {
+      color: green;
+      font-size: 1em;
+      margin-top: 1em;
+    }
+  </style>
 </head>
 <body>
-  <!-- Reused site header / branding -->
-  <header class="hero" role="banner">
-    <div class="topbar" aria-hidden="false">
-      <a href="/" class="brand" aria-label="Vestibular home">
-        <img src="assets/vestibular_logo.svg" alt="Vestibular logo" class="brand-logo" />
-      </a>
-    </div>
+  <form id="contactForm" novalidate>
+    <label for="name">Name:</label><br />
+    <input type="text" id="name" name="name" required minlength="2" />
+    <div id="nameError" class="error" aria-live="polite"></div>
 
-    <div class="hero-content" aria-hidden="true">
-      <h1>
-        <span>Fix your tools.</span><br />
-        <span>Free your team.</span><br />
-        <span>Operationalize morale.</span>
-      </h1>
+    <label for="email">Email:</label><br />
+    <input type="email" id="email" name="email" required />
+    <div id="emailError" class="error" aria-live="polite"></div>
 
-      <p class="sr-only">Contact page — send us a message below and we'll get back to you about consults and playbook access.</p>
-    </div>
-  </header>
+    <label for="message">Message:</label><br />
+    <textarea id="message" name="message" required minlength="5"></textarea>
+    <div id="messageError" class="error" aria-live="polite"></div>
 
-  <main>
-    <section class="contact" aria-labelledby="contact-heading">
-      <h2 id="contact-heading">Get in touch</h2>
+    <button type="submit">Send</button>
+  </form>
 
-      <p style="text-align:center; color:var(--body-text-color); max-width:700px; margin:0 auto 1rem;">
-        Tell us about your team’s tooling challenge or request a free consult. Fields marked required are necessary for us to respond.
-      </p>
-
-      <form id="contact-form" method="POST" action="/contact" novalidate>
-        <div class="form-group">
-          <label for="name">Name <span aria-hidden="true">*</span></label>
-          <input type="text" id="name" name="name" required aria-required="true" autocomplete="name" />
-        </div>
-
-        <div class="form-group">
-          <label for="email">Email <span aria-hidden="true">*</span></label>
-          <input type="email" id="email" name="email" required aria-required="true" autocomplete="email" />
-        </div>
-
-        <div class="form-group">
-          <label for="subject">Subject</label>
-          <input type="text" id="subject" name="subject" placeholder="Optional" />
-        </div>
-
-        <div class="form-group">
-          <label for="message">Message <span aria-hidden="true">*</span></label>
-          <textarea id="message" name="message" rows="6" required aria-required="true"></textarea>
-        </div>
-
-        <!-- Honeypot (visible to bots, hidden visually) -->
-        <div class="hidden-visually" aria-hidden="true">
-          <label for="website">Website</label>
-          <input type="text" id="website" name="website" autocomplete="off" tabindex="-1" />
-        </div>
-
-        <div style="text-align:center; margin-top:1rem;">
-          <button type="submit" class="btn" aria-label="Send message">Send message</button>
-        </div>
-
-        <div id="form-status" role="status" aria-live="polite" style="text-align:center; margin-top:12px;"></div>
-      </form>
-    </section>
-  </main>
-
-  <footer>
-    <p>&copy; 2025 Vestibular. Built for clarity, scale, and morale.</p>
-  </footer>
+  <div id="formStatus" role="status" aria-live="polite"></div>
 
   <script>
-    // Minimal client-side validation + fetch to /contact (graceful fallback to standard form POST)
-    (function () {
-      const form = document.getElementById('contact-form');
-      const status = document.getElementById('form-status');
+    const form = document.getElementById('contactForm');
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const messageInput = document.getElementById('message');
 
-      function show(msg, ok = true) {
-        status.textContent = msg;
-        status.style.color = ok ? 'var(--accent-color)' : '#ff6b6b';
+    const nameError = document.getElementById('nameError');
+    const emailError = document.getElementById('emailError');
+    const messageError = document.getElementById('messageError');
+    const formStatus = document.getElementById('formStatus');
+
+    function validateEmail(email) {
+      // Simple email regex
+      return /^\S+@\S+\.\S+$/.test(email);
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      // Clear previous errors
+      nameError.textContent = '';
+      emailError.textContent = '';
+      messageError.textContent = '';
+      formStatus.textContent = '';
+
+      let valid = true;
+
+      // Validate name
+      if (!nameInput.value.trim() || nameInput.value.trim().length < 2) {
+        nameError.textContent = 'Name must be at least 2 characters long.';
+        valid = false;
       }
 
-      form.addEventListener('submit', async (e) => {
-        // let default submit happen if fetch unsupported
-        if (!window.fetch) return;
+      // Validate email
+      if (!emailInput.value.trim() || !validateEmail(emailInput.value.trim())) {
+        emailError.textContent = 'Please enter a valid email address.';
+        valid = false;
+      }
 
-        e.preventDefault();
-        status.textContent = '';
+      // Validate message
+      if (!messageInput.value.trim() || messageInput.value.trim().length < 5) {
+        messageError.textContent = 'Message must be at least 5 characters long.';
+        valid = false;
+      }
 
-        const data = {
-          name: form.name.value.trim(),
-          email: form.email.value.trim(),
-          subject: form.subject.value.trim(),
-          message: form.message.value.trim(),
-          website: form.website.value.trim()
-        };
+      if (!valid) {
+        return;
+      }
 
-        // Client-side sanity checks
-        if (!data.name || !data.email || !data.message) {
-          show('Please complete required fields.', false);
-          return;
+      // Prepare data
+      const formData = {
+        name: nameInput.value.trim(),
+        email: emailInput.value.trim(),
+        message: messageInput.value.trim()
+      };
+
+      try {
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          formStatus.textContent = 'Thank you! Your message has been sent.';
+          formStatus.className = 'success';
+          form.reset();
+        } else {
+          formStatus.textContent = 'Error: ' + (result.errors ? result.errors.join('; ') : result.error || 'Unknown error');
+          formStatus.className = 'error';
         }
-
-        // Basic email pattern
-        const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRe.test(data.email)) {
-          show('Please enter a valid email address.', false);
-          return;
-        }
-
-        try {
-          const resp = await fetch(form.action, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify(data),
-            credentials: 'same-origin'
-          });
-
-          if (resp.ok) {
-            form.reset();
-            show('Message sent. We will reply within one business day.');
-          } else {
-            const text = await resp.text().catch(() => null);
-            show(text || 'There was an error sending your message.', false);
-          }
-        } catch (err) {
-          show('Network error — please try again later.', false);
-          console.error(err);
-        }
-      });
-    })();
+      } catch (error) {
+        formStatus.textContent = 'Network error. Please try again later.';
+        formStatus.className = 'error';
+      }
+    });
   </script>
 </body>
 </html>
