@@ -33,6 +33,9 @@
 =======
     <input type="text" id="name" name="name" required minlength="2" aria-describedby="nameError" />
     <div id="nameError" class="vn-form__error" aria-live="polite"></div>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
     <label for="email">Email:</label><br />
@@ -46,11 +49,15 @@
 =======
     <textarea id="message" name="message" required minlength="5" aria-describedby="messageError"></textarea>
     <div id="messageError" class="vn-form__error" aria-live="polite"></div>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
     <button type="submit">Send</button>
   </form>
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
   <div id="formStatus" role="status" aria-live="polite"></div>
 
@@ -60,6 +67,8 @@
     const emailInput = document.getElementById('email');
     const messageInput = document.getElementById('message');
 =======
+=======
+>>>>>>> Stashed changes
   <div id="formStatus" class="vn-form__status" role="status" aria-live="polite"></div>
 
   <script>
@@ -69,6 +78,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const emailInput = form.querySelector('#email');
   const messageInput = form.querySelector('#message');
   const submitBtn = form.querySelector('button[type="submit"]');
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
     const nameError = document.getElementById('nameError');
@@ -86,6 +98,14 @@ document.addEventListener('DOMContentLoaded', () => {
     el.classList.add('vn-form__error');
   };
 
+<<<<<<< Updated upstream
+=======
+  const setError = (el, text) => {
+    el.textContent = text;
+    el.classList.add('vn-form__error');
+  };
+
+>>>>>>> Stashed changes
   const clearErrors = () => {
     [nameError, emailError, messageError].forEach(e => { e.textContent = ''; e.classList.remove('vn-form__error'); });
     statusEl.textContent = '';
@@ -128,6 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       let valid = true;
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
       // Validate name
       if (!nameInput.value.trim() || nameInput.value.trim().length < 2) {
@@ -183,6 +204,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 =======
+=======
+>>>>>>> Stashed changes
     const payload = { name, email, message };
 
     // Disable submit button to prevent double submits and provide UX feedback
@@ -229,6 +252,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   </script>
 </body>
