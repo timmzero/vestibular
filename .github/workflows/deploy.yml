@@ -1,0 +1,21 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Use Postmark token
+        env:
+          POSTMARK_TOKEN: ${{ secrets.POSTMARK_TOKEN }}
+        run: |
+          echo "Postmark token is set"
+          # Replace the following with your actual commands that use the token
+          # For example, run tests or deploy scripts
