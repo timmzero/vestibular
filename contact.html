@@ -13,27 +13,54 @@
   <link rel="stylesheet" href="styles/styles.css" />
 </head>
 <body>
-<form id="contactForm" class="contact" novalidate>
-  <input type="text" name="website" id="website" autocomplete="off" tabindex="-1" aria-hidden="true" class="sr-hidden" />
+  <header class="hero">
+    <div class="topbar" role="banner">
+      <a href="/" class="brand" aria-label="Vestibular home">
+        <img src="assets/vestibular_logo.svg" alt="Vestibular logo" class="brand-logo" />
+      </a>
+    </div>
 
-  <label for="name">Name:</label><br />
-  <input type="text" id="name" name="name" required minlength="2" aria-describedby="nameError" />
-  <div id="nameError" class="vn-form__error" aria-live="polite"></div>
+    <div class="hero-content">
+      <h1>Contact Vestibular Nexus</h1>
+      <p>Book a consult or ask about our Agile Tools Sanitation playbook.</p>
+    </div>
+  </header>
 
-  <label for="email">Email:</label><br />
-  <input type="email" id="email" name="email" required aria-describedby="emailError" />
-  <div id="emailError" class="vn-form__error" aria-live="polite"></div>
+  <main>
+<section>
+  <h2>Get in touch</h2>
+    <form id="contactForm" class="contact" method="post" action="/api/contact" novalidate>
+      <!-- Honeypot field -->
+      <input type="text" name="website" id="website" autocomplete="off" tabindex="-1" aria-hidden="true" class="sr-hidden" />
 
-  <label for="message">Message:</label><br />
-  <textarea id="message" name="message" required minlength="5" aria-describedby="messageError"></textarea>
-  <div id="messageError" class="vn-form__error" aria-live="polite"></div>
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required minlength="2" aria-describedby="nameError" />
+        <div id="nameError" class="vn-form__error" aria-live="polite"></div>
+      </div>
 
-  <button type="submit">Send</button>
-</form>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required aria-describedby="emailError" />
+        <div id="emailError" class="vn-form__error" aria-live="polite"></div>
+      </div>
 
+      <div class="form-group">
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" required minlength="5" aria-describedby="messageError"></textarea>
+        <div id="messageError" class="vn-form__error" aria-live="polite"></div>
+      </div>
 
-  <div id="formStatus" class="vn-form__status" role="status" aria-live="polite"></div>
+      <button type="submit">Send</button>
+    </form>
+</section>
 
+    <div id="formStatus" class="vn-form__status" role="status" aria-live="polite"></div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Vestibular. Built for clarity, scale, and morale.</p>
+  </footer>
   <script>
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.querySelector('#contactForm');
