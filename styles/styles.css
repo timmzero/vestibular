@@ -51,9 +51,12 @@ header.hero {
   display: inline-block;
   line-height: 0;
   z-index: 5;
-  /* Accessibility */
-.brand:focus { outline: 3px solid rgba(0,200,180,0.9); outline-offset: 4px; border-radius: 6px; }
+}
 
+.brand:focus {
+  outline: 3px solid rgba(0,200,180,0.9);
+  outline-offset: 4px;
+  border-radius: 6px;
 }
 
 .brand-logo {

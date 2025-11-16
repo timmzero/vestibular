@@ -13,23 +13,24 @@
   <link rel="stylesheet" href="styles/styles.css" />
 </head>
 <body>
+<form id="contactForm" class="contact" novalidate>
   <input type="text" name="website" id="website" autocomplete="off" tabindex="-1" aria-hidden="true" class="sr-hidden" />
 
+  <label for="name">Name:</label><br />
+  <input type="text" id="name" name="name" required minlength="2" aria-describedby="nameError" />
+  <div id="nameError" class="vn-form__error" aria-live="polite"></div>
 
-    <label for="name">Name:</label><br />
-    <input type="text" id="name" name="name" required minlength="2" aria-describedby="nameError" />
-    <div id="nameError" class="vn-form__error" aria-live="polite"></div>
+  <label for="email">Email:</label><br />
+  <input type="email" id="email" name="email" required aria-describedby="emailError" />
+  <div id="emailError" class="vn-form__error" aria-live="polite"></div>
 
-    <label for="email">Email:</label><br />
-    <input type="email" id="email" name="email" required aria-describedby="emailError" />
-    <div id="emailError" class="vn-form__error" aria-live="polite"></div>
+  <label for="message">Message:</label><br />
+  <textarea id="message" name="message" required minlength="5" aria-describedby="messageError"></textarea>
+  <div id="messageError" class="vn-form__error" aria-live="polite"></div>
 
-    <label for="message">Message:</label><br />
-    <textarea id="message" name="message" required minlength="5" aria-describedby="messageError"></textarea>
-    <div id="messageError" class="vn-form__error" aria-live="polite"></div>
+  <button type="submit">Send</button>
+</form>
 
-    <button type="submit">Send</button>
-  </form>
 
   <div id="formStatus" class="vn-form__status" role="status" aria-live="polite"></div>
 
