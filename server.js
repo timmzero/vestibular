@@ -73,9 +73,10 @@ app.post('/api/contact', async (req, res) => {
       });
 
       const pmText = await pmResponse.text();
+      console.log('Postmark response:', pmResponse.status, pmText);
+
       if (!pmResponse.ok) {
-        console.error('Postmark error:', pmResponse.status, pmText);
-        return res.status(502).json({ success: false, error: 'Email provider error' });
+      return res.status(502).json({ success: false, error: 'Email provider error' });
       }
 
       return res.status(200).json({ success: true });
