@@ -1,0 +1,23 @@
+{
+  "name": "vestibular-website",
+  "version": "1.0.0",
+  "description": "Vestibular Nexus website",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "lint": "echo \"No lint configured\" && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/timmzero/vestibular.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/timmzero/vestibular/issues"
+  },
+  "homepage": "https://github.com/timmzero/vestibular#readme",
+  "dependencies": {}
+}
