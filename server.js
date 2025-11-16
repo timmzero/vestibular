@@ -28,32 +28,36 @@ app.use('/api/contact', limiter);
 // POST /api/contact — matches your front-end fetch('/api/contact')
 app.post('/api/contact', async (req, res) => {
   const { name, email, message, website } = req.body || {};
+  console.log('Received contact form submission:', { name, email, message, website });
 
   // Honeypot check
   if (website) {
+    console.log('Honeypot triggered — spam detected');
     return res.status(400).json({ success: false, errors: ['Spam detected'] });
   }
 
-  // Basic server-side validation
+  // Validation
   const errors = [];
   if (!name || String(name).trim().length < 2) errors.push('Name must be at least 2 characters');
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email))) errors.push('Valid email required');
   if (!message || String(message).trim().length < 5) errors.push('Message must be at least 5 characters');
 
   if (errors.length) {
+    console.log('Validation errors:', errors);
     return res.status(400).json({ success: false, errors });
   }
 
-  // Basic sanitization (escape < to avoid naive HTML injection)
+  // Sanitization
   const safeName = String(name).replace(/</g, '&lt;');
   const safeEmail = String(email).replace(/</g, '&lt;');
   const safeMessage = String(message).replace(/</g, '&lt;').replace(/\n/g, '<br>');
 
-  // If POSTMARK_TOKEN present, send via Postmark; otherwise dev-fallback
   const POSTMARK_TOKEN = process.env.POSTMARK_TOKEN;
+  console.log('Postmark token loaded:', !!POSTMARK_TOKEN);
 
   try {
     if (POSTMARK_TOKEN) {
+      console.log('Sending email via Postmark...');
       const pmResponse = await fetch('https://api.postmarkapp.com/email', {
         method: 'POST',
         headers: {
@@ -61,15 +65,15 @@ app.post('/api/contact', async (req, res) => {
           'X-Postmark-Server-Token': POSTMARK_TOKEN,
         },
         body: JSON.stringify({
-          From: 'noreply@vestibular.nexus',          // replace with verified sender
-          To: 'consult@vestibular.nexus',           // replace with recipient you want
+          From: 'noreply@vestibular.nexus',
+          To: 'consult@vestibular.nexus',
           Subject: `Contact form submission from ${safeName}`,
           HtmlBody: `<p><strong>Name:</strong> ${safeName}</p>
                      <p><strong>Email:</strong> ${safeEmail}</p>
                      <p><strong>Message:</strong></p>
                      <p>${safeMessage}</p>`,
           TextBody: `Name: ${safeName}\nEmail: ${safeEmail}\n\n${String(message)}`,
-        MessageStream: 'outbound' // explicitly target the transactional stream
+          MessageStream: 'outbound'
         }),
       });
 
@@ -77,12 +81,12 @@ app.post('/api/contact', async (req, res) => {
       console.log('Postmark response:', pmResponse.status, pmText);
 
       if (!pmResponse.ok) {
-      return res.status(502).json({ success: false, error: 'Email provider error' });
+        return res.status(502).json({ success: false, error: 'Email provider error' });
       }
 
       return res.status(200).json({ success: true });
     } else {
-      // DEV fallback: don't send mail, just log and return success
+      console.log('No POSTMARK_TOKEN found — using dev fallback');
       console.log('Contact submission (DEV):', { name: safeName, email: safeEmail, message: safeMessage });
       return res.status(200).json({ success: true, note: 'logged to server console (no provider configured)' });
     }

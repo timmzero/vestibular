@@ -19,5 +19,13 @@
     "url": "https://github.com/timmzero/vestibular/issues"
   },
   "homepage": "https://github.com/timmzero/vestibular#readme",
-  "dependencies": {}
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.2.1",
+    "helmet": "^8.1.0",
+    "node-fetch": "^3.3.2",
+    "postmark": "^4.0.5"
+  }
 }
