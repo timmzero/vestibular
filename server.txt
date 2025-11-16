@@ -69,6 +69,7 @@ app.post('/api/contact', async (req, res) => {
                      <p><strong>Message:</strong></p>
                      <p>${safeMessage}</p>`,
           TextBody: `Name: ${safeName}\nEmail: ${safeEmail}\n\n${String(message)}`,
+        MessageStream: 'outbound' // explicitly target the transactional stream
         }),
       });
 
