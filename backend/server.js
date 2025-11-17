@@ -11,7 +11,7 @@ const app = express();
 
 // If frontend is served from another origin, set the allowed origin here or use cors() carefully.
 // Example: cors({ origin: 'https://vestibular.nexus' })
-app.use(cors());
+app.use(cors({ origin: 'https://vestibular.nexus' }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
