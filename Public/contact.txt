@@ -30,7 +30,7 @@
   <main>
 <section>
   <h2>Get in touch</h2>
-    <form id="contactForm" class="contact" method="post" action="/api/contact" novalidate>
+    <form id="contactForm" class="contact" method="post" novalidate>
       <!-- Honeypot field -->
       <input type="text" name="website" id="website" autocomplete="off" tabindex="-1" aria-hidden="true" class="sr-hidden" />
 
