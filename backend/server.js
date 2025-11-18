@@ -5,6 +5,7 @@ import rateLimit from 'express-rate-limit';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
+
 dotenv.config();
 
 const app = express();
@@ -15,6 +16,7 @@ app.use(cors({ origin: 'https://vestibular.nexus' }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
+app.set('trust proxy', 1);
 
 // Rate limit contact form submissions on the API route
 const limiter = rateLimit({
