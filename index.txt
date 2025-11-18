@@ -30,7 +30,7 @@
     <p>We help mid-sized tech teams and consulting firms clean up tool chaos, rebuild morale, and scale with clarity — using modular, science-backed frameworks that succeed.</p>
 
     <div class="cta-buttons">
-      <a href="#consult" class="btn" aria-disabled="true">Book a Free Consult</a>
+      <a href="contact.html" class="btn" aria-disabled="true">Book a Free Consult</a>
       <a href="#playbook" class="btn secondary" aria-disabled="true">Download the Playbook Preview</a>
       <div class="coming-soon" aria-hidden="true">(coming soon)</div>
     </div>
@@ -69,7 +69,7 @@
     <section class="cta-repeat">
       <h2>Declutter your Agile stack. Scale with clarity.</h2>
       <div class="cta-buttons">
-        <a href="#consult" class="btn" aria-disabled="true">Book a Free Consult</a>
+        <a href="contact.html" class="btn" aria-disabled="true">Book a Free Consult</a>
         <a href="#playbook" class="btn secondary" aria-disabled="true">Download the Playbook Preview</a>
         <div class="coming-soon" aria-hidden="true">(coming soon)</div>
       </div>
