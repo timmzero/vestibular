@@ -273,3 +273,6 @@ button:focus {
 .sr-hidden { 
   position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; 
 }
+.highlighted-intro {
+  color: #1b3d2f; /* Replace with your actual dark green hex if different */
+}

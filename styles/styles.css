@@ -51,12 +51,9 @@ header.hero {
   display: inline-block;
   line-height: 0;
   z-index: 5;
-}
+  /* Accessibility */
+.brand:focus { outline: 3px solid rgba(0,200,180,0.9); outline-offset: 4px; border-radius: 6px; }
 
-.brand:focus {
-  outline: 3px solid rgba(0,200,180,0.9);
-  outline-offset: 4px;
-  border-radius: 6px;
 }
 
 .brand-logo {
@@ -275,4 +272,7 @@ button:focus {
 }
 .sr-hidden { 
   position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; 
+}
+.highlighted-intro {
+  color: #1b3d2f; /* Replace with your actual dark green hex if different */
 }
