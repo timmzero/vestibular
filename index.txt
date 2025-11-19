@@ -27,7 +27,7 @@
       <span>Operationalize morale.</span>
     </h1>
 
-    <p>We help mid-sized tech teams and consulting firms clean up tool chaos, rebuild morale, and scale with clarity — using modular, science-backed frameworks that succeed.</p>
+    <p>We use a unique blend of product-first approach for value delivery, and Agile for transparency and communication. We help tech teams and consulting firms clean up tool chaos, rebuild morale, and scale with clarity — using modular, science-backed frameworks that succeed.</p>
 
     <div class="cta-buttons">
       <a href="contact.html" class="btn" aria-disabled="true">Book a Free Consult</a>
@@ -42,17 +42,18 @@
     <section class="pain">
       <h2>People in overwhelm mode? Cluttered tools?</h2>
       <p>Your Jira board is a graveyard.</p>
-      <p>No one knows what “ready” means.</p>
+      <p>Your "Sprint goal" is just a list of tickets?.</p>
       <p>Your retros are venting sessions.</p>
       <p>Your team’s burned out.</p>
-      <p>You’re "doing" Agile… but it feels hard and you can't build momentum.</p>
+      <p>How's that technical debt coming along?</p>
+      <p>You’re "doing" Agile… but it feels like you can't build momentum.</p>
     </section>
 
     <section class="solution">
       <h2>Bring clarity, modularity, and morale.</h2>
       <ul>
-        <li><strong>Agile Tools Sanitation:</strong> A maturity model and playbook that cleans up Jira et al., Confluence, and Slack workflows</li>
-        <li><strong>Modular Approach:</strong> Prove it with one team, the rest will follow.</li>
+        <li><strong>Agile Tools Sanitation:</strong> A maturity model and playbook that cleans up visual tools, practical process', and team communication.</li>
+        <li><strong>Modular Approach:</strong> Prove it with one team. Watch what happens.</li>
         <li><strong>Morale-First Consulting:</strong> Frameworks that prioritize team happiness boost value delivery</li>
       </ul>
     </section>
