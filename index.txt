@@ -28,8 +28,11 @@
     </h1>
 
     <p class="highlighted-intro">
-     Build momentum with a product-first approach for value delivery, and Agile for transparency and communication. We help tech teams and consulting firms clean up tool chaos, rebuild morale, and scale with clarity — using modular, science-backed frameworks that succeed.
-    </p>
+     <span>Build momentum.</br> Product‑first value delivery. Agile transparency and communication.</span></br>  
+	   <span>Build simplicity.</br> Declutter visual tools. Clarify roles and objectives.</span></br>  
+
+	   <span>Build morale.</br> Effective ceremonies build trust and iterate success.</span></p>  
+    <p><span>We help tech teams hear and be heard. We declutter tools, rebuild morale, and deliver with clarity — using modular, science‑backed frameworks.</span></p>
 
 
     <div class="cta-buttons">

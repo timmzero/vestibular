@@ -273,6 +273,7 @@ button:focus {
 .sr-hidden { 
   position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; 
 }
-.highlighted-intro {
-  color: var(--secondary-color)
+header.hero p.highlighted-intro {
+  color: var(--secondary-color); /* or #1b3d2f */
 }
+
