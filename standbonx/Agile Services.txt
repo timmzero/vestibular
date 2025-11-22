@@ -1,0 +1,47 @@
+1. Agile Tools Sanitation
+Clean up Jira boards, workflows, and visual clutter
+Apply a maturity model to restore clarity and reduce cognitive load
+Deliverable: Tool hygiene audit + sanitation playbook
+2. Morale-First Consulting
+Diagnose delivery friction, ceremony fatigue, and burnout
+Apply behavioral science to rebuild trust and sustainable momentum
+Employ devices, processes, perspectives, and environments that empower individuals within roles
+Deliverable: Morale metrics dashboard, role clarifications,  autonomous structure,  + team health interventions
+3. Modular Agile Enablement
+Refine routine, cadence, and practice. Develop meaningful, efficient Agile processes
+Pilot with one team, then scale by replicating successful practices across teams
+Modular rollout across tools, process’, and product. Enable independent, interchangeable components
+Deliverable: Team-specific enablement plan + coaching cadence
+4. Sprint Clarity Framework
+Define routines and rituals that have impact and clear outcomes
+Coaching for effective ceremony facilitation and participation
+Deliverable: Sprint scaffolding + engagement increase
+5. Retrospective Reboot
+Facilitate retros that surface systemic blockers, and provide a path forward
+Train teams in feedback loops and psychological safety
+Deliverable: Retrospective facilitation + improvement backlog
+
+1. Agile Tools Sanitation
+Declutter Jira boards, workflows, and dashboards
+Align filters and velocity tracking for cross‑team clarity
+Deliverable: Audit + sanitation playbook
+2. Morale‑First Consulting
+Diagnose burnout, ceremony fatigue, and delivery friction
+Introduce morale metrics and sustainable team practices
+Deliverable: Morale dashboard + health interventions
+3. Modular Agile Enablement
+Pilot Agile practices with one team, then scale modularly
+Roll out ceremonies, roles, and tooling in stages
+Deliverable: Enablement plan + coaching cadence
+4. Sprint Clarity Framework
+Define sprint goals that actually mean something
+Apply scoring rubrics for backlog prioritization
+Deliverable: Sprint scaffolding + prioritization rubric
+5. Retrospective Reboot
+Facilitate retros that surface systemic blockers, not just venting
+Train teams in feedback loops and psychological safety
+Deliverable: Retrospective facilitation + improvement backlog
+6. Cross‑Team Governance
+Configure boards and dashboards for multi‑team visibility
+Balance autonomy with governance and compliance frameworks
+Deliverable: Governance map + reporting layer
