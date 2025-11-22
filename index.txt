@@ -30,7 +30,7 @@
     <p class="highlighted-intro">
      <span>Build momentum by coupling product‑first value delivery with Agile transparency and communication.</span></br>  
 	   <span>Build simplicity: Declutter visual tools. Clarify roles and objectives.</span></br>  
-	   <span>Build morale with effective ceremonies that build trust and iterate success.</span></p>  
+	   <span>Build morale with effective ceremonies that cultivate trust and iterate success.</span></p>  
     <p><span>We help tech teams hear and be heard. We declutter tools, rebuild morale, and deliver with clarity — using modular, science‑backed frameworks.</span></p>
 
 
