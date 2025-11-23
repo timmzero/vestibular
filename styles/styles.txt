@@ -57,13 +57,42 @@ header.hero {
 }
 
 .brand-logo {
-  width: auto;
   height: auto;
-  max-height: 320px;
+  width: auto;
+  max-width: 96px;   /* base size for very small screens */
   display: block;
   filter: drop-shadow(0 6px 10px rgba(0, 80, 70, 0.15));
   transition: filter 160ms ease, transform 160ms ease;
 }
+
+/* Small phones (up to ~399px wide) */
+@media (max-width: 399px) {
+  .brand-logo {
+    max-width: 96px; /* keep compact */
+  }
+}
+
+/* Mid phones / small tablets (400px–767px) */
+@media (min-width: 400px) and (max-width: 767px) {
+  .brand-logo {
+    max-width: 140px;
+  }
+}
+
+/* Tablets / mid-range laptops (768px–999px) */
+@media (min-width: 768px) and (max-width: 999px) {
+  .brand-logo {
+    max-width: 200px;
+  }
+}
+
+/* Large desktops (1000px and up) */
+@media (min-width: 1000px) {
+  .brand-logo {
+    max-width: 300px;
+  }
+}
+
 
 /* Keep hover subtle and respectful of reduced-motion */
 .brand-logo:hover { transform: translateY(-2px); filter: drop-shadow(0 8px 12px rgba(0, 80, 70, 0.18)); }
@@ -182,18 +211,6 @@ footer {
   color: var(--hero-text-color);
   text-align: center;
   padding: 20px;
-}
-
-/* Responsive scaling */
-@media (min-width: 400px) {
-  :root { --topbar-height: 92px; }
-  .brand-logo { width: 140px; }
-  .hero { padding-top: calc(var(--topbar-height) + 12px); }
-}
-@media (min-width: 1000px) {
-  :root { --topbar-height: 160px; }
-  .brand-logo { width: 300px; }
-  .hero { padding-top: calc(var(--topbar-height) + 16px); }
 }
 
 /* Minor utility */
