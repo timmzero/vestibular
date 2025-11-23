@@ -12,14 +12,52 @@
   <title>Vestibular Agile Transformation</title>
   <link rel="stylesheet" href="styles/styles.css" />
 </head>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const toggle = document.querySelector('.nav-toggle');
+  const nav = document.querySelector('.main-nav');
+  const backdrop = document.querySelector('.nav-backdrop');
+
+  function closeMenu() {
+    nav.classList.remove('open');
+    backdrop.classList.remove('open');
+  }
+
+  toggle.addEventListener('click', () => {
+    nav.classList.toggle('open');
+    backdrop.classList.toggle('open');
+  });
+
+  backdrop.addEventListener('click', closeMenu);
+});
+</script>
+
 <body>
 <header class="hero">
   <div class="topbar" role="banner">
-    <a href="/" class="brand" aria-label="Vestibular home">
+      <div class="brand">
+    <a href="index.html" aria-label="Vestibular home">
       <img src="assets/vestibular_logo.svg" alt="Vestibular logo" class="brand-logo" />
     </a>
+    <button class="nav-toggle" aria-label="Toggle navigation">
+      ☰
+    </button>
   </div>
 
+  <nav class="main-nav" role="navigation">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="#playbook">Playbook Preview</a></li>
+      <li><a href="contact.html" class="btn cta">Book a Consult</a></li>
+    </ul>
+  </nav>
+
+  <div class="nav-backdrop"></div>
+
+  </div>
   <div class="hero-content">
     <h1>
       <span>Fix your tools.</span><br />
@@ -54,7 +92,7 @@
 <li>Declutter Jira boards, workflows, and dashboards</li>
 <li>Apply a maturity model to restore clarity and reduce cognitive load</li>
 <li>Establish throughput, cycle time, and morale metrics</li>
-<li>Deliverable: Tool hygiene audit + sanitation playbook + maturity assessment framework</br></li></p>
+<li>Deliverable: Tool hygiene audit + sanitation playbook + maturity assessment framework</li></br></p>
 <p>3. <strong>Modular Agile Enablement</strong></br>
 <li>Refine routine, cadence, and practice for meaningful Agile processes</li>
 <li>Pilot with one team, then scale by replicating successful practices</li>
@@ -76,26 +114,8 @@
 
     </section>
 
-    <section class="solution">
-      <h2>Bring clarity, modularity, and morale.</h2>
-      <ul>
-        <li><strong>Agile Tools Sanitation:</strong> A maturity model and playbook that cleans up visual tools, practical process', and team communication.</li>
-        <li><strong>Modular Approach:</strong> Prove it with one team. Watch what happens.</li>
-        <li><strong>Morale-First Consulting:</strong> Frameworks that prioritize team happiness boost value delivery</li>
-      </ul>
-    </section>
-
-    <section class="credibility">
-      <h2>Why Vestibular?</h2>
-      <ul>
-        <li>Built by consultants who know what it is like</li>
-        <li>Backed by behavioral science and technical hygiene</li>
-        <li>Designed for scale, auditability, and real-world resistance</li>
-      </ul>
-    </section>
-
     <section class="cta-repeat">
-      <h2>Declutter your Agile stack. Scale with clarity.</h2>
+      <h2>Declutter your Agile stack. Less is more.</h2>
       <div class="cta-buttons">
         <a href="contact.html" class="btn" aria-disabled="true">Book a Free Consult</a>
         <a href="#playbook" class="btn secondary" aria-disabled="true">Download the Playbook Preview</a>

@@ -12,12 +12,51 @@
   <title>Contact – Vestibular</title>
   <link rel="stylesheet" href="styles/styles.css" />
 </head>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const toggle = document.querySelector('.nav-toggle');
+  const nav = document.querySelector('.main-nav');
+  const backdrop = document.querySelector('.nav-backdrop');
+
+  function closeMenu() {
+    nav.classList.remove('open');
+    backdrop.classList.remove('open');
+  }
+
+  toggle.addEventListener('click', () => {
+    nav.classList.toggle('open');
+    backdrop.classList.toggle('open');
+  });
+
+  backdrop.addEventListener('click', closeMenu);
+});
+</script>
+
 <body>
   <header class="hero">
     <div class="topbar" role="banner">
-      <a href="/" class="brand" aria-label="Vestibular home">
-        <img src="assets/vestibular_logo.svg" alt="Vestibular logo" class="brand-logo" />
-      </a>
+      <div class="brand">
+    <a href="index.html" aria-label="Vestibular home">
+      <img src="assets/vestibular_logo.svg" alt="Vestibular logo" class="brand-logo" />
+    </a>
+    <button class="nav-toggle" aria-label="Toggle navigation">
+      ☰
+    </button>
+  </div>
+
+  <nav class="main-nav" role="navigation">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="#playbook">Playbook Preview</a></li>
+      <li><a href="contact.html" class="btn cta">Book a Consult</a></li>
+    </ul>
+  </nav>
+
+  <div class="nav-backdrop"></div>
+
     </div>
 
     <div class="hero-content">
