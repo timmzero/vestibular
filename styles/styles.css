@@ -212,6 +212,13 @@ footer {
   text-align: center;
   padding: 20px;
 }
+/* Feature */
+.feature {
+  background: var(--secondary-color);
+  color: var(--hero-text-color);
+  text-align: center;
+  padding: 20px;
+}
 
 /* Minor utility */
 .hidden-visually {
