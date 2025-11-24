@@ -37,25 +37,24 @@ document.addEventListener('DOMContentLoaded', () => {
 <header class="hero">
   <div class="topbar" role="banner">
     <div class="brand">
-    <a href="index.html" aria-label="Vestibular home">
-      <img src="assets/vestibular_logo.svg" alt="Vestibular logo" class="brand-logo" />
-    </a>
-    <button class="nav-toggle" aria-label="Toggle navigation">
-      ☰
-    </button>
-  </div>
+      <a href="index.html" aria-label="Vestibular home">
+        <img src="assets/vestibular_logo.svg" alt="Vestibular logo" class="brand-logo" />
+      </a>
+      <button class="nav-toggle" aria-label="Toggle navigation">
+        ☰
+      </button>
+    </div>
 
-  <nav class="main-nav" role="navigation">
-    <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="services.html">Services</a></li>
-      <li><a href="contact.html">Contact</a></li>
-      <li><a href="#playbook">Playbook Preview</a></li>
-      <li><a href="contact.html" class="btn cta">Book a Consult</a></li>
-    </ul>
-  </nav>
-
-  <div class="nav-backdrop"></div>
+    <!-- Shared nav include -->
+    <div id="nav-placeholder"></div>
+    <div class="nav-backdrop"></div>
+    <script>
+      fetch("nav.html")
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("nav-placeholder").innerHTML = html;
+        });
+    </script>
   </div>
 
   <div class="hero-content">
@@ -66,11 +65,13 @@ document.addEventListener('DOMContentLoaded', () => {
     </h1>
 
     <p class="highlighted-intro">
-     <span>Build momentum by coupling product‑first value delivery with Agile transparency and communication.</span></br>  
-	   <span>Build simplicity: Declutter visual tools. Clarify roles and objectives.</span></br>  
-	   <span>Build morale with effective ceremonies that cultivate trust and iterate success.</span></p>  
-    <p><span>We help tech teams hear and be heard. We declutter tools, rebuild morale, and deliver with clarity — using modular, science‑backed frameworks.</span></p>
-
+      <span>Build momentum by coupling product‑first value delivery with Agile transparency and communication.</span><br />
+      <span>Build simplicity: Declutter visual tools. Clarify roles and objectives.</span><br />
+      <span>Build morale with effective ceremonies that cultivate trust and iterate success.</span>
+    </p>
+    <p>
+      <span>We help tech teams hear and be heard. We declutter tools, rebuild morale, and deliver with clarity — using modular, science‑backed frameworks.</span>
+    </p>
 
     <div class="cta-buttons">
       <a href="contact.html" class="btn" aria-disabled="true">Book a Free Consult</a>
