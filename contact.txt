@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 <body>
-  <header class="hero">
+<header class="hero">
   <div class="topbar" role="banner">
     <div class="brand">
       <a href="index.html" aria-label="Vestibular home">
@@ -49,11 +49,29 @@ document.addEventListener('DOMContentLoaded', () => {
     <div id="nav-placeholder"></div>
     <div class="nav-backdrop"></div>
     <script>
-      fetch("nav.html")
+      fetch("/nav.html")   // absolute path ensures it works from any page
         .then(res => res.text())
         .then(html => {
           document.getElementById("nav-placeholder").innerHTML = html;
-        });
+
+          // Now wire up the toggle after nav is injected
+          const toggle = document.querySelector('.nav-toggle');
+          const nav = document.querySelector('.main-nav');
+          const backdrop = document.querySelector('.nav-backdrop');
+
+          function closeMenu() {
+            nav.classList.remove('open');
+            backdrop.classList.remove('open');
+          }
+
+          toggle.addEventListener('click', () => {
+            nav.classList.toggle('open');
+            backdrop.classList.toggle('open');
+          });
+
+          backdrop.addEventListener('click', closeMenu);
+        })
+        .catch(err => console.error("Nav load failed:", err));
     </script>
   </div>
 
@@ -80,6 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
   </div>
 </header>
+
 
 
   <main>
