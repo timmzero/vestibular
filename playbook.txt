@@ -210,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
 </section>
 
     <section class="cta-repeat">
-      <h2>Declutter your Agile stack. Scale with clarity.</h2>
+      <h2>Meaningful delivery.</h2>
       <div class="cta-buttons">
         <a href="contact.html" class="btn" aria-disabled="true">Book a Free Consult</a>
         </div>

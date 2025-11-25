@@ -179,11 +179,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     <section class="cta-repeat">
-      <h2>Declutter your Agile stack. Less is more.</h2>
+      <h2>Iterate success. Automate flow.</h2>
       <div class="cta-buttons">
         <a href="contact.html" class="btn" aria-disabled="true">Book a Free Consult</a>
-        <a href="#playbook" class="btn secondary" aria-disabled="true">Download the Playbook Preview</a>
-        <div class="coming-soon" aria-hidden="true">(coming soon)</div>
       </div>
     </section>
   </main>
