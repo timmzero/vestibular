@@ -89,7 +89,7 @@ header.hero {
 /* Large desktops (1000px and up) */
 @media (min-width: 1000px) {
   .brand-logo {
-    max-width: 300px;
+    max-width: 260px;
   }
 }
 
