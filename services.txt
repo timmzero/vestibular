@@ -11,6 +11,9 @@
   <link rel="manifest" href="assets/site.webmanifest">
   <title>Vestibular Agile Transformation</title>
   <link rel="stylesheet" href="styles/styles.css" />
+ <link rel="icon" href="/favicon.ico" type="image/x-icon">
+ <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
 </head>
 
 <script>
