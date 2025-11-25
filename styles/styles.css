@@ -287,7 +287,15 @@ button:hover, button:focus { background: #333; }
 
 /* Desktop inline nav */
 @media (min-width: 768px) {
-  .nav-toggle { display: none; }
+  .topbar {
+    justify-content: center; /* center contents horizontally */
+  }
+
+  .brand {
+    position: absolute;
+    left: var(--brand-padding);
+    top: var(--brand-padding);
+  }
 
   .main-nav {
     position: static;
@@ -296,11 +304,15 @@ button:hover, button:focus { background: #333; }
     width: auto;
     background: transparent;
   }
+
   .main-nav ul {
     flex-direction: row;
     gap: 2rem;
     margin: 0;
     padding: 0;
+    justify-content: center; /* center nav items */
   }
+
   .nav-backdrop { display: none; }
+  .nav-toggle { display: none; }
 }
