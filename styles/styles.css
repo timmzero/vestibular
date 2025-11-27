@@ -36,7 +36,7 @@ header.hero {
   position: relative;
   background: var(--primary-color);
   color: var(--hero-text-color);
-  padding: calc(var(--brand-padding) + 8px) 16px 48px;
+  padding: calc(var(--brand-padding) + 0px) 16px 40px;
   text-align: center;
   overflow: visible;
 }

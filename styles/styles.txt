@@ -12,14 +12,12 @@
   --max-content-width: 900px;
   --topbar-height: 74px;
   --topbar-bg: #000;
-
 }
 
-/* Global reset / box model */
+/* Reset */
 *,
 *::before,
 *::after { box-sizing: border-box; }
-
 html, body { height: 100%; }
 
 body {
@@ -33,17 +31,16 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* HERO (mobile-first) */
+/* Hero */
 header.hero {
-  position: relative;              /* required for .brand absolute placement */
+  position: relative;
   background: var(--primary-color);
   color: var(--hero-text-color);
-  padding: calc(var(--brand-padding) + 8px) 16px 48px;
+  padding: calc(var(--brand-padding) + 0px) 16px 40px;
   text-align: center;
   overflow: visible;
 }
 
-/* Logo container */
 .brand {
   position: absolute;
   top: var(--brand-padding);
@@ -51,58 +48,34 @@ header.hero {
   display: inline-block;
   line-height: 0;
   z-index: 5;
-  /* Accessibility */
-.brand:focus { outline: 3px solid rgba(0,200,180,0.9); outline-offset: 4px; border-radius: 6px; }
-
+}
+.brand:focus {
+  outline: 3px solid var(--focus-color);
+  outline-offset: 4px;
+  border-radius: 6px;
 }
 
 .brand-logo {
   height: auto;
   width: auto;
-  max-width: 96px;   /* base size for very small screens */
+  max-width: 96px;
   display: block;
   filter: drop-shadow(0 6px 10px rgba(0, 80, 70, 0.15));
   transition: filter 160ms ease, transform 160ms ease;
 }
+@media (max-width: 399px) { .brand-logo { max-width: 96px; } }
+@media (min-width: 400px) and (max-width: 767px) { .brand-logo { max-width: 140px; } }
+@media (min-width: 768px) and (max-width: 999px) { .brand-logo { max-width: 200px; } }
+@media (min-width: 1000px) { .brand-logo { max-width: 260px; } }
 
-/* Small phones (up to ~399px wide) */
-@media (max-width: 399px) {
-  .brand-logo {
-    max-width: 96px; /* keep compact */
-  }
+.brand-logo:hover {
+  transform: translateY(-2px);
+  filter: drop-shadow(0 8px 12px rgba(0, 80, 70, 0.18));
 }
-
-/* Mid phones / small tablets (400px–767px) */
-@media (min-width: 400px) and (max-width: 767px) {
-  .brand-logo {
-    max-width: 140px;
-  }
-}
-
-/* Tablets / mid-range laptops (768px–999px) */
-@media (min-width: 768px) and (max-width: 999px) {
-  .brand-logo {
-    max-width: 200px;
-  }
-}
-
-/* Large desktops (1000px and up) */
-@media (min-width: 1000px) {
-  .brand-logo {
-    max-width: 260px;
-  }
-}
-
-
-/* Keep hover subtle and respectful of reduced-motion */
-.brand-logo:hover { transform: translateY(-2px); filter: drop-shadow(0 8px 12px rgba(0, 80, 70, 0.18)); }
-
 @media (prefers-reduced-motion: reduce) {
   .brand-logo, .btn { transition: none; transform: none; }
 }
 
-/* Reserve space so hero content is not hidden under fixed topbar */
-/* Hero content area (your existing hero styling can live here) */
 .hero .hero-content {
   background: var(--primary-color, #254a2a);
   color: var(--hero-text-color, #fff);
@@ -116,22 +89,22 @@ header.hero {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;                
+  right: 0;
   width: 100%;
   height: var(--topbar-height);
-  background: var(--topbar-bg); 
+  background: var(--topbar-bg);
   display: flex;
   justify-content: space-between; 
   align-items: center;
-  padding: 0.5rem 1rem;     
-  z-index: 1000;            
-  box-shadow: 0 1px 6px rgba(0,0,0,0.25); /* keep subtle shadow */
+  padding: 0.5rem 1rem;           
+  z-index: 1000;                  
+  box-shadow: 0 1px 6px rgba(0,0,0,0.25);
 }
 
-/* Headline and hero copy */
+/* Headline */
 header.hero h1 {
   font-size: 1.25rem;
-  margin: 48px 0 12px; /* creates space to clear logo on small screens */
+  margin: 48px 0 12px;
   font-family: var(--font-heading);
   font-weight: 600;
   line-height: 1.15;
@@ -140,22 +113,21 @@ header.hero h1 {
   margin-left: auto;
   margin-right: auto;
 }
-
 header.hero p {
   font-size: 1rem;
   max-width: calc(var(--max-content-width) - 40px);
   margin: 0 auto 30px;
   color: var(--hero-text-color);
 }
+header.hero p.highlighted-intro { color: var(--secondary-color); }
 
-/* CTAs (wrap on small screens) */
+/* CTAs */
 .cta-buttons {
   display: flex;
   justify-content: center;
   gap: 12px;
   flex-wrap: wrap;
 }
-
 .btn {
   background: var(--accent-color);
   color: var(--hero-text-color);
@@ -170,15 +142,11 @@ header.hero p {
   min-height: 44px;
   cursor: pointer;
 }
-
-/* Secondary CTA */
 .btn.secondary {
   background: var(--hero-text-color);
   color: var(--accent-color);
   border: 2px solid var(--accent-color);
 }
-
-/* Focus styles for accessibility */
 a:focus, .btn:focus {
   outline: 3px solid var(--focus-color);
   outline-offset: 2px;
@@ -191,92 +159,58 @@ section {
   max-width: var(--max-content-width);
   margin: 0 auto;
 }
-
 section h2 {
   font-size: 1.125rem;
   margin-bottom: 16px;
   font-family: var(--font-heading);
   color: var(--hero-text-color);
 }
-
 section ul {
   list-style: disc;
   padding-left: 20px;
   color: var(--body-text-color);
 }
 
-/* Footer */
-footer {
-  background: var(--secondary-color);
-  color: var(--hero-text-color);
-  text-align: center;
-  padding: 20px;
-}
-/* Feature */
-.feature {
+/* Footer & Feature */
+footer, .feature {
   background: var(--secondary-color);
   color: var(--hero-text-color);
   text-align: center;
   padding: 20px;
 }
 
-/* Minor utility */
+/* Utilities */
 .hidden-visually {
   position: absolute !important;
   height: 1px; width: 1px;
   overflow: hidden; clip: rect(1px, 1px, 1px, 1px);
   white-space: nowrap;
 }
-
-/* Contact Form Styles */
-.vn-form__error {
-  color: var(--color-error, #c32); font-size: 0.95em; margin-top: 0.25rem; 
-}
-.vn-form__status {
-  margin-top: 1rem; font-size: 1rem; 
-}
-.vn-form__status.success {
-  color: var(--color-success, #080); 
-}
-.vn-form__status.error {
-  color: var(--color-error, #c32); 
+.hidden { display: none; }
+.sr-hidden {
+  position: absolute; left: -9999px;
+  width: 1px; height: 1px;
+  overflow: hidden;
 }
 
-.contact {
-  max-width: 600px;
-  margin: 2rem auto;
-  padding: 1rem;
-}
+/* Contact Form */
+.vn-form__error { color: var(--color-error, #c32); font-size: 0.95em; margin-top: 0.25rem; }
+.vn-form__status { margin-top: 1rem; font-size: 1rem; }
+.vn-form__status.success { color: var(--color-success, #080); }
+.vn-form__status.error { color: var(--color-error, #c32); }
 
-.contact h2 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  text-align: center;
-}
-
-.form-group {
-  margin-bottom: 1rem;
-}
-
-label {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-}
-
-input,
-textarea {
+.contact { max-width: 600px; margin: 2rem auto; padding: 1rem; }
+.contact h2 { font-size: 1.5rem; margin-bottom: 1rem; text-align: center; }
+.form-group { margin-bottom: 1rem; }
+label { display: block; font-weight: 600; margin-bottom: 0.5rem; }
+input, textarea {
   width: 100%;
   padding: 0.75rem;
   border: 1px solid #ccc;
   border-radius: 4px;
   font: inherit;
 }
-
-textarea {
-  resize: vertical;
-}
-
+textarea { resize: vertical; }
 button {
   background: #000;
   color: #fff;
@@ -286,31 +220,10 @@ button {
   cursor: pointer;
   font-weight: 600;
 }
+button:hover, button:focus { background: #333; }
 
-button:hover,
-button:focus {
-  background: #333;
-}
-
-.hidden {
-  display: none;
-}
-.sr-hidden { 
-  position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; 
-}
-header.hero p.highlighted-intro {
-  color: var(--secondary-color); /* or #1b3d2f */
-}
-
-.nav-toggle {
-  background: none;
-  border: none;
-  color: #fff;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-
-/* Overlay menu */
+/* Nav */
+/* Mobile overlay nav (default) */
 .main-nav {
   position: fixed;
   top: 0;
@@ -322,10 +235,7 @@ header.hero p.highlighted-intro {
   transition: transform 0.3s ease-in-out;
   z-index: 999;
 }
-
-.main-nav.open {
-  transform: translateX(0);
-}
+.main-nav.open { transform: translateX(0); }
 
 .main-nav ul {
   list-style: none;
@@ -335,14 +245,12 @@ header.hero p.highlighted-intro {
   flex-direction: column;
   gap: 1.5rem;
 }
-
 .main-nav a {
   text-decoration: none;
   color: #fff;
   font-weight: 600;
   font-size: 1.2rem;
 }
-
 .main-nav .cta {
   background: #fff;
   color: #000;
@@ -350,7 +258,7 @@ header.hero p.highlighted-intro {
   border-radius: 4px;
 }
 
-/* Backdrop overlay */
+/* Backdrop for mobile */
 .nav-backdrop {
   position: fixed;
   top: 0;
@@ -363,17 +271,32 @@ header.hero p.highlighted-intro {
   transition: opacity 0.3s ease-in-out;
   z-index: 998;
 }
-
 .nav-backdrop.open {
   opacity: 1;
   visibility: visible;
 }
 
-/* Desktop view */
+/* Nav toggle */
+.nav-toggle {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* Desktop inline nav */
 @media (min-width: 768px) {
-  .nav-toggle {
-    display: none;
+  .topbar {
+    justify-content: center; /* center contents horizontally */
   }
+
+  .brand {
+    position: absolute;
+    left: var(--brand-padding);
+    top: var(--brand-padding);
+  }
+
   .main-nav {
     position: static;
     transform: none;
@@ -381,14 +304,15 @@ header.hero p.highlighted-intro {
     width: auto;
     background: transparent;
   }
+
   .main-nav ul {
     flex-direction: row;
     gap: 2rem;
     margin: 0;
     padding: 0;
+    justify-content: center; /* center nav items */
   }
-  .nav-backdrop {
-    display: none;
-  }
-}
 
+  .nav-backdrop { display: none; }
+  .nav-toggle { display: none; }
+}
