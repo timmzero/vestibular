@@ -81,7 +81,7 @@ header.hero {
   color: var(--hero-text-color, #fff);
   text-align: center;
   padding: 28px 16px 48px;
-  padding-top: calc(var(--topbar-height) + 12px);
+  padding-top: calc(var(--topbar-height) + 4px);
 }
 
 /* Topbar */
