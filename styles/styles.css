@@ -80,7 +80,7 @@ header.hero {
   background: var(--primary-color, #254a2a);
   color: var(--hero-text-color, #fff);
   text-align: center;
-  padding: 28px 16px 48px;
+  padding: 24px 16px 32px;
   padding-top: calc(var(--topbar-height) + 4px);
 }
 
