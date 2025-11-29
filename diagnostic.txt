@@ -60,8 +60,8 @@
     <section class="feature">
       <h2>How to use this model</h2>
       <ol>
-        <li>Fill: The Agile diagnostic scorecard. Get immediate result.</li>
-        <li>Diagnose: Place teams using the diagnostic lens.</li>
+        <li>Fill: The Agile diagnostic scorecard. Get immediate result. (Coming Soon Dec'25)</li>
+        <li>Diagnose: Place teams using the diagnostic lens. (Start here, for now ;)</li>
         <li>Fix: Follow the modular progression.</li>
       </ol>
       <p><strong>Endemic AI:</strong> We weave AI augmentation into retros, backlog hygiene, governance, and strategy — as native modules.</p>
