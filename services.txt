@@ -103,7 +103,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   <main>
     <section class="pain">
-      <p><strong>Morale‑First Consulting</strong></br>
+      <h1>Services</h1>
+<p><strong>Morale‑First Consulting</strong></br>
 <li>Diagnose burnout, ceremony fatigue, and delivery friction</li>
 <li>Apply behavioral science to rebuild trust and sustainable momentum</li>
 <li>Clarify roles and empower autonomous structures within teams</li>

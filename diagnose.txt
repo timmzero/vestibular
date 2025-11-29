@@ -105,14 +105,25 @@ document.addEventListener('DOMContentLoaded', () => {
   <main>
  <section class="vestibular-hybrid-maturity-model">
   <header>
+    <h1>Diagnostic</h1>
     <h2>Vestibular Maturity Model Framework</h2>
+    
+    <section class="feature">
+    <h4>How to use this model</h4>
+      1.Fill: The Agile diagnostic scorecard. Get immediate result.
+      2.Diagnose: Place teams using the diagnostic lens.</br>
+      3.Fix: Follow the modular progression</br></br>
+      <strong>Endemic AI:</strong> We weave AI augmentation into retros, backlog hygiene, governance, and strategy —  as native modules.</br>
+    </section>
+
+</section>
     <p>This model connects a team maturity diagnostic lens with modular progression.</p>
   </header>
 
   <article class="stage stage-1">
     <h3>Stage 1: Foundational</h3>
     <ul>
-      <li><strong>Diagnostic lens:</strong> Chaotic → teams drowning in tool sprawl, unclear workflows, burnout signals ignored.</li>
+      <li><strong>Diagnostic lens:</strong> Chaotic → teams experiencing tool sprawl, unclear workflows, burnout signals apparent.</li>
       <li><strong>Focus:</strong> Restore clarity, reduce cognitive load, establish hygiene.</li>
       <li><strong>Outcomes:</strong> Reduced clutter, clear workflows, initial alignment.</li>
       <li><strong>Deliverables:</strong> Tool hygiene audit, sanitation playbook.</li>
@@ -168,16 +179,6 @@ document.addEventListener('DOMContentLoaded', () => {
       <li><strong>AI augmentation:</strong> Predictive analytics, strategic scenario modeling, continuous improvement dashboards.</li>
     </ul>
   </article>
-
-<section class="feature">
-    <h4>How to use this model</h4>
-      Diagnose: Place teams using the diagnostic lens.</br>
-      Follow the modular progression</br>
-      <strong>Endemic AI:</strong> We weave AI augmentation into retros, backlog hygiene, governance, and strategy —  as native modules.</br>
-</section>
-
-</section>
-
 
     <section class="cta-repeat">
       <h2>Iterate success. Automate flow.</h2>
