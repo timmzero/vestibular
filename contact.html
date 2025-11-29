@@ -103,30 +103,8 @@
   </footer>
 
   <!-- Scripts -->
+  <script src="scripts/nav.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const toggle = document.querySelector('.nav-toggle');
-      const nav = document.querySelector('.main-nav');
-      const backdrop = document.querySelector('.nav-backdrop');
-
-      function closeMenu() {
-        nav?.classList.remove('open');
-        backdrop?.classList.remove('open');
-      }
-
-      toggle?.addEventListener('click', () => {
-        nav?.classList.toggle('open');
-        backdrop?.classList.toggle('open');
-      });
-
-      backdrop?.addEventListener('click', closeMenu);
-
-      fetch("/nav.html")
-        .then(res => res.text())
-        .then(html => {
-          document.getElementById("nav-placeholder").innerHTML = html;
-        })
-        .catch(err => console.error("Nav load failed:", err));
 
       // Contact form validation and submission
       const form = document.querySelector('#contactForm');
@@ -230,9 +208,14 @@
             statusEl.classList.add('error');
             statusEl.setAttribute('role', 'alert');
           }
-        } catch (err) {
+       } catch (err) {
           statusEl.textContent = 'Network error. Please try again later.';
           statusEl.classList.add('error');
           statusEl.setAttribute('role', 'alert');
         } finally {
-          if (submitBtn)
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.removeAttribute('aria-busy');
+          }
+        }
+      });

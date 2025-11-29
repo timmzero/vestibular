@@ -16,26 +16,6 @@
 
 </head>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const toggle = document.querySelector('.nav-toggle');
-  const nav = document.querySelector('.main-nav');
-  const backdrop = document.querySelector('.nav-backdrop');
-
-  function closeMenu() {
-    nav.classList.remove('open');
-    backdrop.classList.remove('open');
-  }
-
-  toggle.addEventListener('click', () => {
-    nav.classList.toggle('open');
-    backdrop.classList.toggle('open');
-  });
-
-  backdrop.addEventListener('click', closeMenu);
-});
-</script>
-
 <body>
 <header class="hero">
   <div class="topbar" role="banner">
@@ -43,40 +23,17 @@ document.addEventListener('DOMContentLoaded', () => {
       <a href="index.html" aria-label="Vestibular home">
         <img src="assets/vestibular_logo.svg" alt="Vestibular logo" class="brand-logo" />
       </a>
-      <button class="nav-toggle" aria-label="Toggle navigation">
-        ☰
-      </button>
+<button class="nav-toggle"
+        aria-label="Toggle navigation"
+        aria-controls="nav-placeholder"
+        aria-expanded="false">☰</button>
+
     </div>
 
     <!-- Shared nav include -->
     <div id="nav-placeholder"></div>
     <div class="nav-backdrop"></div>
-    <script>
-      fetch("/nav.html")   // absolute path ensures it works from any page
-        .then(res => res.text())
-        .then(html => {
-          document.getElementById("nav-placeholder").innerHTML = html;
-
-          // Now wire up the toggle after nav is injected
-          const toggle = document.querySelector('.nav-toggle');
-          const nav = document.querySelector('.main-nav');
-          const backdrop = document.querySelector('.nav-backdrop');
-
-          function closeMenu() {
-            nav.classList.remove('open');
-            backdrop.classList.remove('open');
-          }
-
-          toggle.addEventListener('click', () => {
-            nav.classList.toggle('open');
-            backdrop.classList.toggle('open');
-          });
-
-          backdrop.addEventListener('click', closeMenu);
-        })
-        .catch(err => console.error("Nav load failed:", err));
-    </script>
-  </div>
+    </div>
 
   <div class="hero-content">
     <h1>
@@ -141,5 +98,8 @@ document.addEventListener('DOMContentLoaded', () => {
   <footer>
     <p>&copy; 2025 Vestibular. Built for clarity, scale, and morale.</p>
   </footer>
+
+<script src="scripts/nav.js"></script>
+
 </body>
 </html>
