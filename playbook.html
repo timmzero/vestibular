@@ -5,223 +5,203 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="description" content="Vestibular Agile Transformation helps tech teams declutter Agile tooling, rebuild morale, and scale with a modular, science-backed playbook." />
   <meta name="theme-color" content="#000000" />
+
+  <!-- Favicons -->
   <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
   <link rel="manifest" href="assets/site.webmanifest">
-  <title>Vestibular Agile Transformation</title>
-  <link rel="stylesheet" href="styles/styles.css" />
-  <link rel="icon" href="/favicon.ico" type="image/x-icon">
-  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 
+  <title>Vestibular Agile Transformation – Playbook</title>
+  <link rel="stylesheet" href="styles/styles.css" />
 </head>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const toggle = document.querySelector('.nav-toggle');
-  const nav = document.querySelector('.main-nav');
-  const backdrop = document.querySelector('.nav-backdrop');
-
-  function closeMenu() {
-    nav.classList.remove('open');
-    backdrop.classList.remove('open');
-  }
-
-  toggle.addEventListener('click', () => {
-    nav.classList.toggle('open');
-    backdrop.classList.toggle('open');
-  });
-
-  backdrop.addEventListener('click', closeMenu);
-});
-</script>
-
 <body>
-<header class="hero">
-  <div class="topbar" role="banner">
-    <div class="brand">
-      <a href="index.html" aria-label="Vestibular home">
-        <img src="assets/vestibular_logo.svg" alt="Vestibular logo" class="brand-logo" />
-      </a>
-      <button class="nav-toggle" aria-label="Toggle navigation">
-        ☰
-      </button>
+  <!-- Hero Header -->
+  <header class="hero">
+    <div class="topbar" role="banner">
+      <div class="brand">
+        <a href="index.html" aria-label="Vestibular home">
+          <img src="assets/vestibular_logo.svg" alt="Vestibular logo" class="brand-logo" />
+        </a>
+        <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
+      </div>
+
+      <div id="nav-placeholder"></div>
+      <div class="nav-backdrop"></div>
     </div>
 
-    <!-- Shared nav include -->
-    <div id="nav-placeholder"></div>
-    <div class="nav-backdrop"></div>
-    <script>
-      fetch("/nav.html")   // absolute path ensures it works from any page
-        .then(res => res.text())
-        .then(html => {
-          document.getElementById("nav-placeholder").innerHTML = html;
+    <div class="hero-content">
+      <h1>
+        <span>Fix your tools.</span><br />
+        <span>Free your team.</span><br />
+        <span>Operationalize morale.</span>
+      </h1>
 
-          // Now wire up the toggle after nav is injected
-          const toggle = document.querySelector('.nav-toggle');
-          const nav = document.querySelector('.main-nav');
-          const backdrop = document.querySelector('.nav-backdrop');
+      <p class="highlighted-intro">
+        Build momentum by coupling product‑first value delivery with Agile transparency and communication.<br />
+        Build simplicity: Declutter visual tools. Clarify roles and objectives.<br />
+        Build morale with effective ceremonies that cultivate trust and iterate success.
+      </p>
 
-          function closeMenu() {
-            nav.classList.remove('open');
-            backdrop.classList.remove('open');
-          }
+      <p>
+        We help tech teams hear and be heard. We declutter tools, rebuild morale, and deliver with clarity — using modular, science‑backed frameworks.
+      </p>
 
-          toggle.addEventListener('click', () => {
-            nav.classList.toggle('open');
-            backdrop.classList.toggle('open');
-          });
-
-          backdrop.addEventListener('click', closeMenu);
-        })
-        .catch(err => console.error("Nav load failed:", err));
-    </script>
-  </div>
-
-  <div class="hero-content">
-    <h1>
-      <span>Fix your tools.</span><br />
-      <span>Free your team.</span><br />
-      <span>Operationalize morale.</span>
-    </h1>
-
-    <p class="highlighted-intro">
-      <span>Build momentum by coupling product‑first value delivery with Agile transparency and communication.</span><br />
-      <span>Build simplicity: Declutter visual tools. Clarify roles and objectives.</span><br />
-      <span>Build morale with effective ceremonies that cultivate trust and iterate success.</span>
-    </p>
-    <p>
-      <span>We help tech teams hear and be heard. We declutter tools, rebuild morale, and deliver with clarity — using modular, science‑backed frameworks.</span>
-    </p>
-
-    <div class="cta-buttons">
-      <a href="contact.html" class="btn" aria-disabled="true">Book a Free Consult</a>
+      <div class="cta-buttons">
+        <a href="contact.html" class="btn">Book a Free Consult</a>
+      </div>
     </div>
-  </div>
-</header>
-
-
-
-  <main>
-<section class="vestibular-playbook-toc">
-  <header>
-    <h1>Playbook</h1>
-    <h2>Vestibular Consulting Playbook — Table of Contents</h2>
-    <p>Our Playbook blends diagnostic rigor with client-facing packages, guiding organizations from Declutter to Optimize while embedding AI augmentation organically.</p>
   </header>
 
-  <ol>
-    <li>
-      <h3>Introduction</h3>
-      <ul>
-        <li>Philosophy: Momentum, Simplicity, Morale</li>
-        <li>Why audit-ready Agile matters</li>
-        <li>How the Playbook works: diagnostic lens + package progression</li>
-      </ul>
-    </li>
+  <!-- Main Content -->
+  <main>
+    <section class="vestibular-playbook-toc">
+      <h2>Playbook</h2>
+      <h3>Vestibular Consulting Playbook — Table of Contents</h3>
+      <p>Our Playbook blends diagnostic rigor with client-facing packages, guiding organizations from Declutter to Optimize while embedding AI augmentation organically.</p>
 
-    <li>
-      <h3>Maturity Model Framework</h3>
-      <ul>
-        <li>Diagnostic states: Chaotic → Structured → Modular → Sustainable</li>
-        <li>Client packages: Declutter → Reboot → Enable → Scale → Optimize</li>
-        <li>Self-assessment and engagement guidance</li>
-      </ul>
-    </li>
+      <ol>
+        <li>
+          <h4>Introduction</h4>
+          <ul>
+            <li>Philosophy: Momentum, Simplicity, Morale</li>
+            <li>Why audit-ready Agile matters</li>
+            <li>How the Playbook works: diagnostic lens + package progression</li>
+          </ul>
+        </li>
 
-    <li>
-      <h3>Stage 1 — Foundational (Declutter Package)</h3>
-      <ul>
-        <li>Focus: Tool hygiene, clarity, alignment</li>
-        <li>Outcomes: Reduced clutter, clear workflows, initial alignment</li>
-        <li>Deliverables: Tool hygiene audit, sanitation playbook</li>
-        <li>AI Augmentation: Automated Jira board cleanup, duplicate detection, backlog hygiene assistant</li>
-      </ul>
-    </li>
+        <li>
+          <h4>Maturity Model Framework</h4>
+          <ul>
+            <li>Diagnostic states: Chaotic → Structured → Modular → Sustainable</li>
+            <li>Client packages: Declutter → Reboot → Enable → Scale → Optimize</li>
+            <li>Self-assessment and engagement guidance</li>
+          </ul>
+        </li>
 
-    <li>
-      <h3>Stage 2 — Emerging (Reboot Package)</h3>
-      <ul>
-        <li>Focus: Team health, morale, ceremony clarity</li>
-        <li>Outcomes: Improved trust, reduced burnout, meaningful rituals</li>
-        <li>Deliverables: Morale metrics dashboard, role clarifications, team health interventions</li>
-        <li>AI Augmentation: Retro documentation, sprint flow insights, facilitation prompts</li>
-      </ul>
-    </li>
+        <li>
+          <h4>Stage 1 — Foundational (Declutter Package)</h4>
+          <ul>
+            <li>Focus: Tool hygiene, clarity, alignment</li>
+            <li>Outcomes: Reduced clutter, clear workflows, initial alignment</li>
+            <li>Deliverables: Tool hygiene audit, sanitation playbook</li>
+            <li>AI Augmentation: Automated Jira board cleanup, duplicate detection, backlog hygiene assistant</li>
+          </ul>
+        </li>
 
-    <li>
-      <h3>Stage 3 — Enabled (Enable Package)</h3>
-      <ul>
-        <li>Focus: Pilot modular Agile practices, refine cadence, prepare for scale</li>
-        <li>Outcomes: Autonomous teams, faster iteration, clear accountability</li>
-        <li>Deliverables: Team-specific enablement plan, coaching cadence</li>
-        <li>AI Augmentation: Backlog prioritization rubric, automated work item creation, sprint health dashboards</li>
-      </ul>
-    </li>
+        <li>
+          <h4>Stage 2 — Emerging (Reboot Package)</h4>
+          <ul>
+            <li>Focus: Team health, morale, ceremony clarity</li>
+            <li>Outcomes: Improved trust, reduced burnout, meaningful rituals</li>
+            <li>Deliverables: Morale metrics dashboard, role clarifications, team health interventions</li>
+            <li>AI Augmentation: Retro documentation, sprint flow insights, facilitation prompts</li>
+          </ul>
+        </li>
 
-    <li>
-      <h3>Stage 4 — Scaling (Scale Package)</h3>
-      <ul>
-        <li>Focus: Replicate modular practices, align governance, cross-team transparency</li>
-        <li>Outcomes: Scalable Agile practices, consistent delivery, governance alignment</li>
-        <li>Deliverables: Scaled rollout plan, cross-team coaching, governance map</li>
-        <li>AI Augmentation: Cross-team dashboards, compliance reporting, predictive bottleneck detection</li>
-      </ul>
-    </li>
+        <li>
+          <h4>Stage 3 — Enabled (Enable Package)</h4>
+          <ul>
+            <li>Focus: Pilot modular Agile practices, refine cadence, prepare for scale</li>
+            <li>Outcomes: Autonomous teams, faster iteration, clear accountability</li>
+            <li>Deliverables: Team-specific enablement plan, coaching cadence</li>
+            <li>AI Augmentation: Backlog prioritization rubric, automated work item creation, sprint health dashboards</li>
+          </ul>
+        </li>
 
-    <li>
-      <h3>Stage 5 — Optimizing (Optimize Package)</h3>
-      <ul>
-        <li>Focus: Strategic agility, continuous improvement, business alignment</li>
-        <li>Outcomes: Sustained momentum, strategic alignment, high morale</li>
-        <li>Deliverables: Advanced dashboards, strategic workshops, compliance frameworks</li>
-        <li>AI Augmentation: Predictive analytics, strategic scenario modeling, continuous improvement dashboards</li>
-      </ul>
-    </li>
+        <li>
+          <h4>Stage 4 — Scaling (Scale Package)</h4>
+          <ul>
+            <li>Focus: Replicate modular practices, align governance, cross-team transparency</li>
+            <li>Outcomes: Scalable Agile practices, consistent delivery, governance alignment</li>
+            <li>Deliverables: Scaled rollout plan, cross-team coaching, governance map</li>
+            <li>AI Augmentation: Cross-team dashboards, compliance reporting, predictive bottleneck detection</li>
+          </ul>
+        </li>
 
-    <li>
-      <h3>Templates & Tools</h3>
-      <ul>
-        <li>Jira hygiene checklist</li>
-        <li>Morale survey template</li>
-        <li>Backlog prioritization rubric</li>
-        <li>Retro facilitation cards</li>
-        <li>Governance reporting framework</li>
-      </ul>
-    </li>
+        <li>
+          <h4>Stage 5 — Optimizing (Optimize Package)</h4>
+          <ul>
+            <li>Focus: Strategic agility, continuous improvement, business alignment</li>
+            <li>Outcomes: Sustained momentum, strategic alignment, high morale</li>
+            <li>Deliverables: Advanced dashboards, strategic workshops, compliance frameworks</li>
+            <li>AI Augmentation: Predictive analytics, strategic scenario modeling, continuous improvement dashboards</li>
+          </ul>
+        </li>
 
-    <li>
-      <h3>Case Studies & Scenarios</h3>
-      <ul>
-        <li>Before/after tool sanitation</li>
-        <li>Morale metrics in action</li>
-        <li>Scaling retros across multiple teams</li>
-        <li>Governance balancing autonomy vs. compliance</li>
-      </ul>
-    </li>
+        <li>
+          <h4>Templates & Tools</h4>
+          <ul>
+            <li>Jira hygiene checklist</li>
+            <li>Morale survey template</li>
+            <li>Backlog prioritization rubric</li>
+            <li>Retro facilitation cards</li>
+            <li>Governance reporting framework</li>
+          </ul>
+        </li>
 
-    <li>
-      <h3>Quick Reference Cheat Sheets</h3>
-      <ul>
-        <li>One-page summaries for each package</li>
-        <li>Diagnostic questions for free consults</li>
-        <li>Red flag indicators (burnout, tool clutter, governance gaps)</li>
-      </ul>
-    </li>
-  </ol>
-</section>
+        <li>
+          <h4>Case Studies & Scenarios</h4>
+          <ul>
+            <li>Before/after tool sanitation</li>
+            <li>Morale metrics in action</li>
+            <li>Scaling retros across multiple teams</li>
+            <li>Governance balancing autonomy vs. compliance</li>
+          </ul>
+        </li>
 
+        <li>
+          <h4>Quick Reference Cheat Sheets</h4>
+          <ul>
+            <li>One-page summaries for each package</li>
+            <li>Diagnostic questions for free consults</li>
+            <li>Red flag indicators (burnout, tool clutter, governance gaps)</li>
+          </ul>
+        </li>
+      </ol>
+    </section>
+
+    <!-- CTA Repeat -->
     <section class="cta-repeat">
       <h2>Meaningful delivery.</h2>
       <div class="cta-buttons">
-        <a href="contact.html" class="btn" aria-disabled="true">Book a Free Consult</a>
-        </div>
+        <a href="contact.html" class="btn">Book a Free Consult</a>
       </div>
     </section>
   </main>
 
+  <!-- Footer -->
   <footer>
     <p>&copy; 2025 Vestibular. Built for clarity, scale, and morale.</p>
   </footer>
+
+  <!-- Scripts -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggle = document.querySelector('.nav-toggle');
+      const nav = document.querySelector('.main-nav');
+      const backdrop = document.querySelector('.nav-backdrop');
+
+      function closeMenu() {
+        nav?.classList.remove('open');
+        backdrop?.classList.remove('open');
+      }
+
+      toggle?.addEventListener('click', () => {
+        nav?.classList.toggle('open');
+        backdrop?.classList.toggle('open');
+      });
+
+      backdrop?.addEventListener('click', closeMenu);
+
+      fetch("/nav.html")
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("nav-placeholder").innerHTML = html;
+        })
+        .catch(err => console.error("Nav load failed:", err));
+    });
+  </script>
 </body>
 </html>

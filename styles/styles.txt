@@ -316,3 +316,8 @@ button:hover, button:focus { background: #333; }
   .nav-backdrop { display: none; }
   .nav-toggle { display: none; }
 }
+.content-wrapper {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 16px;
+}

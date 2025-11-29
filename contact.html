@@ -3,268 +3,236 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Contact Vestibular Agile transformation— book a consult or ask about our Agile Sanitation playbook." />
+  <meta name="description" content="Contact Vestibular Agile Transformation — book a consult or ask about our Agile Sanitation playbook." />
   <meta name="theme-color" content="#000000" />
+
+  <!-- Favicons -->
   <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
   <link rel="manifest" href="assets/site.webmanifest">
+
   <title>Contact – Vestibular</title>
   <link rel="stylesheet" href="styles/styles.css" />
-  <link rel="icon" href="/favicon.ico" type="image/x-icon">
-  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-
 </head>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const toggle = document.querySelector('.nav-toggle');
-  const nav = document.querySelector('.main-nav');
-  const backdrop = document.querySelector('.nav-backdrop');
-
-  function closeMenu() {
-    nav.classList.remove('open');
-    backdrop.classList.remove('open');
-  }
-
-  toggle.addEventListener('click', () => {
-    nav.classList.toggle('open');
-    backdrop.classList.toggle('open');
-  });
-
-  backdrop.addEventListener('click', closeMenu);
-});
-</script>
-
 <body>
-<header class="hero">
-  <div class="topbar" role="banner">
-    <div class="brand">
-      <a href="index.html" aria-label="Vestibular home">
-        <img src="assets/vestibular_logo.svg" alt="Vestibular logo" class="brand-logo" />
-      </a>
-      <button class="nav-toggle" aria-label="Toggle navigation">
-        ☰
-      </button>
+  <!-- Hero Header -->
+  <header class="hero">
+    <div class="topbar" role="banner">
+      <div class="brand">
+        <a href="index.html" aria-label="Vestibular home">
+          <img src="assets/vestibular_logo.svg" alt="Vestibular logo" class="brand-logo" />
+        </a>
+        <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
+      </div>
+
+      <div id="nav-placeholder"></div>
+      <div class="nav-backdrop"></div>
     </div>
 
-    <!-- Shared nav include -->
-    <div id="nav-placeholder"></div>
-    <div class="nav-backdrop"></div>
-    <script>
-      fetch("/nav.html")   // absolute path ensures it works from any page
-        .then(res => res.text())
-        .then(html => {
-          document.getElementById("nav-placeholder").innerHTML = html;
+    <div class="hero-content">
+      <h1>
+        <span>Fix your tools.</span><br />
+        <span>Free your team.</span><br />
+        <span>Operationalize morale.</span>
+      </h1>
 
-          // Now wire up the toggle after nav is injected
-          const toggle = document.querySelector('.nav-toggle');
-          const nav = document.querySelector('.main-nav');
-          const backdrop = document.querySelector('.nav-backdrop');
+      <p class="highlighted-intro">
+        Build momentum by coupling product‑first value delivery with Agile transparency and communication.<br />
+        Build simplicity: Declutter visual tools. Clarify roles and objectives.<br />
+        Build morale with effective ceremonies that cultivate trust and iterate success.
+      </p>
 
-          function closeMenu() {
-            nav.classList.remove('open');
-            backdrop.classList.remove('open');
-          }
+      <p>
+        We help tech teams hear and be heard. We declutter tools, rebuild morale, and deliver with clarity — using modular, science‑backed frameworks.
+      </p>
 
-          toggle.addEventListener('click', () => {
-            nav.classList.toggle('open');
-            backdrop.classList.toggle('open');
-          });
-
-          backdrop.addEventListener('click', closeMenu);
-        })
-        .catch(err => console.error("Nav load failed:", err));
-    </script>
-  </div>
-
-  <div class="hero-content">
-    <h1>
-      <span>Fix your tools.</span><br />
-      <span>Free your team.</span><br />
-      <span>Operationalize morale.</span>
-    </h1>
-
-    <p class="highlighted-intro">
-      <span>Build momentum by coupling product‑first value delivery with Agile transparency and communication.</span><br />
-      <span>Build simplicity: Declutter visual tools. Clarify roles and objectives.</span><br />
-      <span>Build morale with effective ceremonies that cultivate trust and iterate success.</span>
-    </p>
-    <p>
-      <span>We help tech teams hear and be heard. We declutter tools, rebuild morale, and deliver with clarity — using modular, science‑backed frameworks.</span>
-    </p>
-
-    <div class="cta-buttons">
-      <a href="contact.html" class="btn" aria-disabled="true">Book a Free Consult</a>
+      <div class="cta-buttons">
+        <a href="contact.html" class="btn">Book a Free Consult</a>
+      </div>
     </div>
-  </div>
-</header>
+  </header>
 
-
-
+  <!-- Main Content -->
   <main>
-<section>
-  <h1>Contact Us</h1>
-  <h2>Get in touch</h2>
-    <form id="contactForm" class="contact" method="post" novalidate>
-      <!-- Honeypot field -->
-      <input type="text" name="website" id="website" autocomplete="off" tabindex="-1" aria-hidden="true" class="sr-hidden" />
+    <section>
+      <h2>Contact Us</h2>
+      <h3>Get in touch</h3>
 
-      <div class="form-group">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required minlength="2" aria-describedby="nameError" />
-        <div id="nameError" class="vn-form__error" aria-live="polite"></div>
-      </div>
+      <form id="contactForm" class="contact" method="post" novalidate>
+        <!-- Honeypot field -->
+        <input type="text" name="website" id="website" autocomplete="off" tabindex="-1" aria-hidden="true" class="sr-hidden" />
 
-      <div class="form-group">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required aria-describedby="emailError" />
-        <div id="emailError" class="vn-form__error" aria-live="polite"></div>
-      </div>
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name" required minlength="2" aria-describedby="nameError" />
+          <div id="nameError" class="vn-form__error" aria-live="polite"></div>
+        </div>
 
-      <div class="form-group">
-        <label for="message">Message:</label>
-        <textarea id="message" name="message" required minlength="5" aria-describedby="messageError"></textarea>
-        <div id="messageError" class="vn-form__error" aria-live="polite"></div>
-      </div>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" required aria-describedby="emailError" />
+          <div id="emailError" class="vn-form__error" aria-live="polite"></div>
+        </div>
 
-      <button type="submit">Send</button>
-    </form>
-</section>
+        <div class="form-group">
+          <label for="message">Message:</label>
+          <textarea id="message" name="message" required minlength="5" aria-describedby="messageError"></textarea>
+          <div id="messageError" class="vn-form__error" aria-live="polite"></div>
+        </div>
+
+        <button type="submit">Send</button>
+      </form>
+    </section>
 
     <div id="formStatus" class="vn-form__status" role="status" aria-live="polite"></div>
-  </main>
 
-  <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const form = document.querySelector('#contactForm');
-  const nameInput = form.querySelector('#name');
-  const emailInput = form.querySelector('#email');
-  const messageInput = form.querySelector('#message');
-  const submitBtn = form.querySelector('button[type="submit"]');
-
-  const nameError = document.getElementById('nameError');
-  const emailError = document.getElementById('emailError');
-  const messageError = document.getElementById('messageError');
-  const statusEl = document.getElementById('formStatus');
-
-  const setError = (el, text) => {
-    el.textContent = text;
-    el.classList.add('vn-form__error');
-  };
-
-  const clearErrors = () => {
-    [nameError, emailError, messageError].forEach(e => { e.textContent = ''; e.classList.remove('vn-form__error'); });
-    statusEl.textContent = '';
-    statusEl.className = 'vn-form__status';
-    statusEl.removeAttribute('role');
-  };
-
-  function validateEmail(email) {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
-  }
-
-  form.addEventListener('submit', async (event) => {
-    event.preventDefault();
-    clearErrors();
-
-    const name = nameInput.value.trim();
-    const email = emailInput.value.trim();
-    const message = messageInput.value.trim();
-
-    let valid = true;
-
-    if (name.length < 2) {
-      setError(nameError, 'Name must be at least 2 characters long.');
-      valid = false;
-      nameInput.setAttribute('aria-invalid', 'true');
-    } else {
-      nameInput.removeAttribute('aria-invalid');
-    }
-
-    if (!validateEmail(email)) {
-      setError(emailError, 'Please enter a valid email address.');
-      valid = false;
-      emailInput.setAttribute('aria-invalid', 'true');
-    } else {
-      emailInput.removeAttribute('aria-invalid');
-    }
-
-    if (message.length < 5) {
-      setError(messageError, 'Message must be at least 5 characters long.');
-      valid = false;
-      messageInput.setAttribute('aria-invalid', 'true');
-    } else {
-      messageInput.removeAttribute('aria-invalid');
-    }
-
-    if (!valid) {
-      const firstError = form.querySelector('[aria-invalid="true"]');
-      if (firstError) firstError.focus();
-      return;
-    }
-
-    const payload = { name, email, message };
-
-    // Disable submit button to prevent double submits and provide UX feedback
-    if (submitBtn) {
-      submitBtn.disabled = true;
-      submitBtn.setAttribute('aria-busy', 'true');
-    }
-
-    statusEl.textContent = 'Sending…';
-    statusEl.className = 'vn-form__status';
-
-    try {
-      const response = await fetch('https://vestibular-backend.onrender.com/api/contact', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-      });
-
-      let result = null;
-      try { result = await response.json(); } catch (e) { result = null; }
-
-      if (response.ok && result && result.success) {
-        statusEl.textContent = 'Thank you! Your message has been sent.';
-        statusEl.classList.add('success');
-        form.reset();
-        nameInput.focus();
-      } else {
-        const messageText = result && result.errors
-          ? result.errors.join('; ')
-          : (result && result.error) ? result.error : 'An error occurred while sending your message.';
-        statusEl.textContent = messageText;
-        statusEl.classList.add('error');
-        statusEl.setAttribute('role', 'alert');
-      }
-    } catch (err) {
-      statusEl.textContent = 'Network error. Please try again later.';
-      statusEl.classList.add('error');
-      statusEl.setAttribute('role', 'alert');
-    } finally {
-      if (submitBtn) {
-        submitBtn.disabled = false;
-        submitBtn.removeAttribute('aria-busy');
-      }
-    }
-  });
-});
-  </script>
- 
-<section class="cta-repeat">
+    <!-- CTA Repeat -->
+    <section class="cta-repeat">
       <h2>Clear communication. Transparent accountability.</h2>
       <div class="cta-buttons">
-        <a href="contact.html" class="btn" aria-disabled="true">Book a Free Consult</a>
-        </div>
+        <a href="contact.html" class="btn">Book a Free Consult</a>
       </div>
     </section>
   </main>
 
+  <!-- Footer -->
   <footer>
-    <p>&copy; 2025 Vestibular. Bespoke to synergise</p>
+    <p>&copy; 2025 Vestibular. Bespoke to synergise.</p>
   </footer>
 
-</body>
-</html>
+  <!-- Scripts -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggle = document.querySelector('.nav-toggle');
+      const nav = document.querySelector('.main-nav');
+      const backdrop = document.querySelector('.nav-backdrop');
+
+      function closeMenu() {
+        nav?.classList.remove('open');
+        backdrop?.classList.remove('open');
+      }
+
+      toggle?.addEventListener('click', () => {
+        nav?.classList.toggle('open');
+        backdrop?.classList.toggle('open');
+      });
+
+      backdrop?.addEventListener('click', closeMenu);
+
+      fetch("/nav.html")
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("nav-placeholder").innerHTML = html;
+        })
+        .catch(err => console.error("Nav load failed:", err));
+
+      // Contact form validation and submission
+      const form = document.querySelector('#contactForm');
+      const nameInput = form.querySelector('#name');
+      const emailInput = form.querySelector('#email');
+      const messageInput = form.querySelector('#message');
+      const submitBtn = form.querySelector('button[type="submit"]');
+
+      const nameError = document.getElementById('nameError');
+      const emailError = document.getElementById('emailError');
+      const messageError = document.getElementById('messageError');
+      const statusEl = document.getElementById('formStatus');
+
+      const setError = (el, text) => {
+        el.textContent = text;
+        el.classList.add('vn-form__error');
+      };
+
+      const clearErrors = () => {
+        [nameError, emailError, messageError].forEach(e => { e.textContent = ''; e.classList.remove('vn-form__error'); });
+        statusEl.textContent = '';
+        statusEl.className = 'vn-form__status';
+        statusEl.removeAttribute('role');
+      };
+
+      function validateEmail(email) {
+        const re = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+        return re.test(email);
+      }
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        clearErrors();
+
+        const name = nameInput.value.trim();
+        const email = emailInput.value.trim();
+        const message = messageInput.value.trim();
+
+        let valid = true;
+
+        if (name.length < 2) {
+          setError(nameError, 'Name must be at least 2 characters long.');
+          valid = false;
+          nameInput.setAttribute('aria-invalid', 'true');
+        } else {
+          nameInput.removeAttribute('aria-invalid');
+        }
+
+        if (!validateEmail(email)) {
+          setError(emailError, 'Please enter a valid email address.');
+          valid = false;
+          emailInput.setAttribute('aria-invalid', 'true');
+        } else {
+          emailInput.removeAttribute('aria-invalid');
+        }
+
+        if (message.length < 5) {
+          setError(messageError, 'Message must be at least 5 characters long.');
+          valid = false;
+          messageInput.setAttribute('aria-invalid', 'true');
+        } else {
+          messageInput.removeAttribute('aria-invalid');
+        }
+
+        if (!valid) {
+          const firstError = form.querySelector('[aria-invalid="true"]');
+          if (firstError) firstError.focus();
+          return;
+        }
+
+        const payload = { name, email, message };
+
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.setAttribute('aria-busy', 'true');
+        }
+
+        statusEl.textContent = 'Sending…';
+        statusEl.className = 'vn-form__status';
+
+        try {
+          const response = await fetch('https://vestibular-backend.onrender.com/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          let result = null;
+          try { result = await response.json(); } catch (e) { result = null; }
+
+          if (response.ok && result && result.success) {
+            statusEl.textContent = 'Thank you! Your message has been sent.';
+            statusEl.classList.add('success');
+            form.reset();
+            nameInput.focus();
+          } else {
+            const messageText = result && result.errors
+              ? result.errors.join('; ')
+              : (result && result.error) ? result.error : 'An error occurred while sending your message.';
+            statusEl.textContent = messageText;
+            statusEl.classList.add('error');
+            statusEl.setAttribute('role', 'alert');
+          }
+        } catch (err) {
+          statusEl.textContent = 'Network error. Please try again later.';
+          statusEl.classList.add('error');
+          statusEl.setAttribute('role', 'alert');
+        } finally {
+          if (submitBtn)

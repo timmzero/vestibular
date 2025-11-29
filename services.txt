@@ -5,146 +5,159 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="description" content="Vestibular Agile Transformation helps tech teams declutter Agile tooling, rebuild morale, and scale with a modular, science-backed playbook." />
   <meta name="theme-color" content="#000000" />
+
+  <!-- Favicons -->
   <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
   <link rel="manifest" href="assets/site.webmanifest">
-  <title>Vestibular Agile Transformation</title>
-  <link rel="stylesheet" href="styles/styles.css" />
- <link rel="icon" href="/favicon.ico" type="image/x-icon">
- <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 
+  <title>Vestibular Agile Transformation – Services</title>
+  <link rel="stylesheet" href="styles/styles.css" />
 </head>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const toggle = document.querySelector('.nav-toggle');
-  const nav = document.querySelector('.main-nav');
-  const backdrop = document.querySelector('.nav-backdrop');
-
-  function closeMenu() {
-    nav.classList.remove('open');
-    backdrop.classList.remove('open');
-  }
-
-  toggle.addEventListener('click', () => {
-    nav.classList.toggle('open');
-    backdrop.classList.toggle('open');
-  });
-
-  backdrop.addEventListener('click', closeMenu);
-});
-</script>
-
 <body>
-<header class="hero">
-  <div class="topbar" role="banner">
-    <div class="brand">
-      <a href="index.html" aria-label="Vestibular home">
-        <img src="assets/vestibular_logo.svg" alt="Vestibular logo" class="brand-logo" />
-      </a>
-      <button class="nav-toggle" aria-label="Toggle navigation">
-        ☰
-      </button>
+  <!-- Hero Header -->
+  <header class="hero">
+    <div class="topbar" role="banner">
+      <div class="brand">
+        <a href="index.html" aria-label="Vestibular home">
+          <img src="assets/vestibular_logo.svg" alt="Vestibular logo" class="brand-logo" />
+        </a>
+        <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
+      </div>
+
+      <div id="nav-placeholder"></div>
+      <div class="nav-backdrop"></div>
     </div>
 
-    <!-- Shared nav include -->
-    <div id="nav-placeholder"></div>
-    <div class="nav-backdrop"></div>
-    <script>
-      fetch("/nav.html")   // absolute path ensures it works from any page
-        .then(res => res.text())
-        .then(html => {
-          document.getElementById("nav-placeholder").innerHTML = html;
+    <div class="hero-content">
+      <h1>
+        <span>Fix your tools.</span><br />
+        <span>Free your team.</span><br />
+        <span>Operationalize morale.</span>
+      </h1>
 
-          // Now wire up the toggle after nav is injected
-          const toggle = document.querySelector('.nav-toggle');
-          const nav = document.querySelector('.main-nav');
-          const backdrop = document.querySelector('.nav-backdrop');
+      <p class="highlighted-intro">
+        Build momentum by coupling product‑first value delivery with Agile transparency and communication.<br />
+        Build simplicity: Declutter visual tools. Clarify roles and objectives.<br />
+        Build morale with effective ceremonies that cultivate trust and iterate success.
+      </p>
 
-          function closeMenu() {
-            nav.classList.remove('open');
-            backdrop.classList.remove('open');
-          }
+      <p>
+        We help tech teams hear and be heard. We declutter tools, rebuild morale, and deliver with clarity — using modular, science‑backed frameworks.
+      </p>
 
-          toggle.addEventListener('click', () => {
-            nav.classList.toggle('open');
-            backdrop.classList.toggle('open');
-          });
-
-          backdrop.addEventListener('click', closeMenu);
-        })
-        .catch(err => console.error("Nav load failed:", err));
-    </script>
-  </div>
-
-  <div class="hero-content">
-    <h1>
-      <span>Fix your tools.</span><br />
-      <span>Free your team.</span><br />
-      <span>Operationalize morale.</span>
-    </h1>
-
-    <p class="highlighted-intro">
-      <span>Build momentum by coupling product‑first value delivery with Agile transparency and communication.</span><br />
-      <span>Build simplicity: Declutter visual tools. Clarify roles and objectives.</span><br />
-      <span>Build morale with effective ceremonies that cultivate trust and iterate success.</span>
-    </p>
-    <p>
-      <span>We help tech teams hear and be heard. We declutter tools, rebuild morale, and deliver with clarity — using modular, science‑backed frameworks.</span>
-    </p>
-
-    <div class="cta-buttons">
-      <a href="contact.html" class="btn" aria-disabled="true">Book a Free Consult</a>
+      <div class="cta-buttons">
+        <a href="contact.html" class="btn">Book a Free Consult</a>
+      </div>
     </div>
-  </div>
-</header>
+  </header>
 
-
+  <!-- Main Content -->
   <main>
-    <section class="pain">
-      <h1>Services</h1>
-<p><strong>Morale‑First Consulting</strong></br>
-<li>Diagnose burnout, ceremony fatigue, and delivery friction</li>
-<li>Apply behavioral science to rebuild trust and sustainable momentum</li>
-<li>Clarify roles and empower autonomous structures within teams</li>
-<li>Deliverable: Morale metrics dashboard + role clarifications + individual and team health intervention plans</li></br></p>
-<p><strong>Agile Tools Sanitation</strong></br>
-<li>Declutter Jira boards, workflows, and dashboards</li>
-<li>Apply a maturity model to restore clarity and reduce cognitive load</li>
-<li>Establish throughput, cycle time, and morale metrics</li>
-<li>Deliverable: Tool hygiene audit + sanitation playbook + maturity assessment framework</li></br></p>
-<p><strong>Modular Agile Enablement</strong></br>
-<li>Refine routine, cadence, and practice for meaningful Agile processes</li>
-<li>Pilot with one team, then scale by replicating successful practices</li>
-<li>Roll out independent, interchangeable components across tools, processes, and product</li>
-<li>Deliverable: Team‑specific enablement plan + coaching cadence framework</li></br></p>
-<p><strong>Sprint Clarity Framework</strong></br>
-<li>Define routines and metrics that are meaningful, visible, and trusted</li>
-<li>Apply scoring rubrics for backlog prioritization</li>
-<li>Coach teams in ceremony facilitation and participation for impactful outcomes</li>
-<li>Deliverable: Sprint scaffolding + prioritization rubric + engagement improvement plan</li></br></p>
-<p><strong>Retrospective Reboot</strong></br>
-<li>Facilitate retros that surface systemic blockers and provide actionable paths forward</li>
-<li>Train teams in feedback loops and psychological safety</li>
-<li>Deliverable: Retrospective facilitation + improvement backlog framework</li></br></p>
-<p><strong>Cross‑Team Governance</strong></br>
-<li>Configure boards and dashboards for multi‑team visibility</li>
-<li>Balance autonomy with governance and compliance frameworks</li>
-<li>Deliverable: Governance map + reporting framework</li></p>
+    <section class="services">
+      <h2>Services</h2>
 
+      <article>
+        <h3>Morale‑First Consulting</h3>
+        <ul>
+          <li>Diagnose burnout, ceremony fatigue, and delivery friction</li>
+          <li>Apply behavioral science to rebuild trust and sustainable momentum</li>
+          <li>Clarify roles and empower autonomous structures within teams</li>
+          <li><strong>Deliverable:</strong> Morale metrics dashboard, role clarifications, team health intervention plans</li>
+        </ul>
+      </article>
+
+      <article>
+        <h3>Agile Tools Sanitation</h3>
+        <ul>
+          <li>Declutter Jira boards, workflows, and dashboards</li>
+          <li>Apply a maturity model to restore clarity and reduce cognitive load</li>
+          <li>Establish throughput, cycle time, and morale metrics</li>
+          <li><strong>Deliverable:</strong> Tool hygiene audit, sanitation playbook, maturity assessment framework</li>
+        </ul>
+      </article>
+
+      <article>
+        <h3>Modular Agile Enablement</h3>
+        <ul>
+          <li>Refine routine, cadence, and practice for meaningful Agile processes</li>
+          <li>Pilot with one team, then scale by replicating successful practices</li>
+          <li>Roll out independent, interchangeable components across tools, processes, and product</li>
+          <li><strong>Deliverable:</strong> Team‑specific enablement plan, coaching cadence framework</li>
+        </ul>
+      </article>
+
+      <article>
+        <h3>Sprint Clarity Framework</h3>
+        <ul>
+          <li>Define routines and metrics that are meaningful, visible, and trusted</li>
+          <li>Apply scoring rubrics for backlog prioritization</li>
+          <li>Coach teams in ceremony facilitation and participation for impactful outcomes</li>
+          <li><strong>Deliverable:</strong> Sprint scaffolding, prioritization rubric, engagement improvement plan</li>
+        </ul>
+      </article>
+
+      <article>
+        <h3>Retrospective Reboot</h3>
+        <ul>
+          <li>Facilitate retros that surface systemic blockers and provide actionable paths forward</li>
+          <li>Train teams in feedback loops and psychological safety</li>
+          <li><strong>Deliverable:</strong> Retrospective facilitation, improvement backlog framework</li>
+        </ul>
+      </article>
+
+      <article>
+        <h3>Cross‑Team Governance</h3>
+        <ul>
+          <li>Configure boards and dashboards for multi‑team visibility</li>
+          <li>Balance autonomy with governance and compliance frameworks</li>
+          <li><strong>Deliverable:</strong> Governance map, reporting framework</li>
+        </ul>
+      </article>
     </section>
 
+    <!-- CTA Repeat -->
     <section class="cta-repeat">
-      <h2>Min-max your agile stack. Less is more.</h2>
+      <h2>Min‑max your Agile stack. Less is more.</h2>
       <div class="cta-buttons">
-        <a href="contact.html" class="btn" aria-disabled="true">Book a Free Consult</a>
+        <a href="contact.html" class="btn">Book a Free Consult</a>
       </div>
     </section>
   </main>
 
+  <!-- Footer -->
   <footer>
     <p>&copy; 2025 Vestibular. Bespoke to synergise.</p>
   </footer>
+
+  <!-- Scripts -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggle = document.querySelector('.nav-toggle');
+      const nav = document.querySelector('.main-nav');
+      const backdrop = document.querySelector('.nav-backdrop');
+
+      function closeMenu() {
+        nav?.classList.remove('open');
+        backdrop?.classList.remove('open');
+      }
+
+      toggle?.addEventListener('click', () => {
+        nav?.classList.toggle('open');
+        backdrop?.classList.toggle('open');
+      });
+
+      backdrop?.addEventListener('click', closeMenu);
+
+      fetch("/nav.html")
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("nav-placeholder").innerHTML = html;
+        })
+        .catch(err => console.error("Nav load failed:", err));
+    });
+  </script>
 </body>
 </html>
