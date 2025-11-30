@@ -57,7 +57,6 @@
   <!-- Main Content -->
   <main>
     <section>
-      <h2>Contact Us</h2>
       <h3>Get in touch</h3>
 
       <form id="contactForm" class="contact" method="post" novalidate>
