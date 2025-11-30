@@ -366,3 +366,13 @@ button:hover, button:focus { background: #333; }
   border: 1px solid #cc6666;
   color: #660000;
 }
+#scorecard-form input[type="number"] {
+  width: 80px;          /* narrow width, enough for 1–2 digits */
+  text-align: center;   /* center the number inside the box */
+  margin-left: 8px;     /* small spacing from label */
+}
+#scorecard-form label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
