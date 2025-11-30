@@ -64,6 +64,8 @@
         <!-- Honeypot field -->
         <input type="text" name="website" id="website" autocomplete="off" tabindex="-1" aria-hidden="true" class="sr-hidden" />
 
+        <input type="hidden" id="scorecard-hidden" name="scorecard_result">
+
         <div class="form-group">
           <label for="name">Name:</label>
           <input type="text" id="name" name="name" required minlength="2" aria-describedby="nameError" />
@@ -104,8 +106,8 @@
 
   <!-- Scripts -->
   <script src="scripts/nav.js"></script>
+  
   <script>
-
       // Contact form validation and submission
       const form = document.querySelector('#contactForm');
       const nameInput = form.querySelector('#name');
@@ -142,6 +144,7 @@
         const name = nameInput.value.trim();
         const email = emailInput.value.trim();
         const message = messageInput.value.trim();
+        const scorecardResult = document.getElementById('scorecard-hidden').value;
 
         let valid = true;
 
@@ -175,7 +178,7 @@
           return;
         }
 
-        const payload = { name, email, message };
+        const payload = { name, email, message, scorecard_result: scorecardResult };
 
         if (submitBtn) {
           submitBtn.disabled = true;
@@ -218,4 +221,23 @@
             submitBtn.removeAttribute('aria-busy');
           }
         }
+       });
+      </script> 
+
+<script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const hiddenField = document.getElementById('scorecard-hidden');
+        const result = localStorage.getItem('scorecardResult');
+        if (hiddenField && result) {
+          hiddenField.value = result;
+          const statusEl = document.getElementById('formStatus');
+          if (statusEl) {
+            statusEl.textContent = `You’re sending us your scorecard result: ${result}`;
+            statusEl.classList.add('info');
+      }
+
+          // Clear it so it doesn’t persist forever
+          localStorage.removeItem('scorecardResult');
+        }
       });
+    </script>

@@ -60,12 +60,33 @@
     <section class="feature">
       <h2>How to use this model</h2>
       <ol>
-        <li>Fill: The Agile diagnostic scorecard. Get immediate result. (Coming Soon Dec'25)</li>
-        <li>Diagnose: Place teams using the diagnostic lens. (Start here, for now ;)</li>
-        <li>Fix: Follow the modular progression.</li>
+        <li>Fill: The Agile diagnostic scorecard.</li>
+        <li>Diagnose: Place teams using the diagnostic lens below.</li>
+        <li>Fix: Follow the modular progression below.</li>
+        <li>Free: Send us your scorecard and contact details</li>
       </ol>
       <p><strong>Endemic AI:</strong> We weave AI augmentation into retros, backlog hygiene, governance, and strategy — as native modules.</p>
     </section>
+
+<section>
+  <h2>Agile Diagnostic Scorecard</h2>
+  <form id="scorecard-form">
+    <label>Tool Hygiene (1–5): <input type="number" name="tool_hygiene" min="1" max="5" required></label>
+    <label>Team Health (1–5): <input type="number" name="team_health" min="1" max="5" required></label>
+    <label>Enablement (1–5): <input type="number" name="enablement" min="1" max="5" required></label>
+    <label>Governance (1–5): <input type="number" name="governance" min="1" max="5" required></label>
+    <label>Alignment (1–5): <input type="number" name="alignment" min="1" max="5" required></label>
+    <button type="submit">Calculate Result</button>
+  </form>
+
+  <div id="scorecard-result" class="result"></div>
+  <button id="contact-cta" class="btn" style="display:none">Send Result to Vestibular</button>
+</section>
+
+<script src="scripts/scorecard.js"></script>
+
+
+
 
     <section class="vestibular-hybrid-maturity-model">
       <h2>Diagnostic</h2>
