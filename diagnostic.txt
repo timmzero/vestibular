@@ -76,28 +76,34 @@
 <form id="scorecard-form">
   <label>
     <input type="number" name="tool_hygiene" min="1" max="5" required>
-    <span class="label-text">Our tools and stack are exquisitely maintained. (1–5)</span>
+    <span class="label-text">Our tools and stack are consistently maintained and reliable. (1–5)</span>
   </label>
 
   <label>
     <input type="number" name="team_health" min="1" max="5" required>
-    <span class="label-text">Every team member contributes vigorously during feedback opportunities. (1–5)</span>
+    <span class="label-text">Every team member contributes meaningfully during feedback opportunities. (1–5)</span>
   </label>
 
   <label>
     <input type="number" name="enablement" min="1" max="5" required>
-    <span class="label-text">Our team runs the basics, we trust the routine to keep our flow state smooth. (1–5)</span>
+    <span class="label-text">Our team has established routines that sustain flow and reduce friction. (1–5)</span>
   </label>
 
   <label>
     <input type="number" name="governance" min="1" max="5" required>
-    <span class="label-text">Our team's routine, conventions, and cadence are the same as other teams. (1–5)</span>
+    <span class="label-text">Our team’s cadence and conventions are aligned with other teams, enabling collaboration (1–5)</span>
   </label>
 
   <label>
     <input type="number" name="alignment" min="1" max="5" required>
-    <span class="label-text">All your base are belong to us. Our work aligns with organizational goals, and outcomes are predictable. (1–5)</span>
+    <span class="label-text">Our work aligns with organizational goals, and outcomes are predictable. (1–5)</span>
   </label>
+
+<label>
+    <input type="number" name="alignment" min="1" max="5" required>
+    <span class="label-text">We regularly reflect and adapt our practices to improve outcomes. (1–5)</span>
+  </label>
+
 
   <button type="submit" class="btn">Calculate Result</button>
   </form>
@@ -115,7 +121,7 @@
     <section class="vestibular-hybrid-maturity-model">
       <h2>Diagnostic</h2>
       <h3>Vestibular Maturity Model Framework</h3>
-      <p>This model connects a team maturity diagnostic lens with modular progression.</p>
+      This model connects a team maturity diagnostic lens with modular progression.
     </section>
 
     <!-- Stages -->

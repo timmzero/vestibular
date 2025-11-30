@@ -8,13 +8,23 @@ if (formEl) {
 
     const formData = new FormData(e.target);
     const scores = Array.from(formData.values()).map(Number);
-    const overall = scores.reduce((a, b) => a + b, 0) / scores.length;
+    const total = scores.reduce((a, b) => a + b, 0);
 
-    let stage = 'Emerging';
-    if (overall >= 4) stage = 'Mature';
-    else if (overall >= 3) stage = 'Developing';
+    let stage = 'Foundational';
 
-    const resultText = `Overall Score: ${overall.toFixed(1)} → Maturity Stage: ${stage}`;
+    if (total >= 27) {
+      stage = 'Optimizing'; // Stage 5 — rare, only near-perfect scores
+    } else if (total >= 22) {
+      stage = 'Scaling';    // Stage 4
+    } else if (total >= 17) {
+      stage = 'Enabled';    // Stage 3
+    } else if (total >= 12) {
+      stage = 'Emerging';   // Stage 2
+    } else {
+      stage = 'Foundational'; // Stage 1
+    }
+
+    const resultText = `Total Score: ${total} → Maturity Stage: ${stage}`;
     if (resultEl) resultEl.innerText = resultText;
 
     if (ctaEl) ctaEl.style.display = 'block';
