@@ -69,13 +69,16 @@
     </section>
 
 <section>
-  <h2>Agile Diagnostic Scorecard</h2>
+  <h2>Agile Diagnostic Scorecard</h2></br>
+   <section>
+    1. Strongly disagree 2.Somewhat disagree 3. Neutral/Slightly Agree 4. Somewhat agree 5. Strongly agree
+   </section>
   <form id="scorecard-form">
-    <label>Tool Hygiene (1–5): <input type="number" name="tool_hygiene" min="1" max="5" required></label>
-    <label>Team Health (1–5): <input type="number" name="team_health" min="1" max="5" required></label>
-    <label>Enablement (1–5): <input type="number" name="enablement" min="1" max="5" required></label>
-    <label>Governance (1–5): <input type="number" name="governance" min="1" max="5" required></label>
-    <label>Alignment (1–5): <input type="number" name="alignment" min="1" max="5" required></label>
+    <label>Our tools and stack are exquisitely maintaned. (1–5): <input type="number" name="tool_hygiene" min="1" max="5" required></label>
+    <label>Every team member contributes vigorously during feedback opportunities. (1–5): <input type="number" name="team_health" min="1" max="5" required></label>
+    <label>Our team runs the basics, we trust the routine to keep our flow state smooth. (1–5): <input type="number" name="enablement" min="1" max="5" required></label>
+    <label>Our team's routine, conventions, and cadence are the same as other teams. (1–5): <input type="number" name="governance" min="1" max="5" required></label>
+    <label>All team's mood is buzz. Our work aligns with organizational goals and outcomes are predictable. (1–5): <input type="number" name="alignment" min="1" max="5" required></label>
     <button type="submit">Calculate Result</button>
   </form>
 
