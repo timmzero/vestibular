@@ -67,11 +67,10 @@
       </ol>
       <p><strong>Endemic AI:</strong> We weave AI augmentation into retros, backlog hygiene, governance, and strategy — as native modules.</p>
     </section>
-
 <section>
-  <h2>Agile Diagnostic Scorecard</h2></br>
-   <section>
-    1. Strongly disagree  2.Somewhat disagree  3. Neutral/Slightly Agree  4. Somewhat agree  5. Strongly agree
+  <h2>Agile Diagnostic Scorecard</h2>
+   <section>How well does each of the following describe your team?</br>
+    1= Strongly disagree &nbsp;&nbsp;&nbsp; 2= Somewhat disagree &nbsp;&nbsp;&nbsp; 3= Neutral/Slightly Agree &nbsp;&nbsp;&nbsp; 4= Somewhat agree &nbsp;&nbsp;&nbsp; 5= Strongly agree
    </section>
 <form id="scorecard-form">
   <label>
