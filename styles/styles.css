@@ -179,6 +179,8 @@ footer, .feature {
   padding: 20px;
 }
 
+.feature-left { text-align: left; }
+
 /* Utilities */
 .hidden-visually {
   position: absolute !important;
