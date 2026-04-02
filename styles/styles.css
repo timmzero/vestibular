@@ -6,7 +6,7 @@
   --hero-text-color: #FFFFFF;
   --body-text-color: #E0E0E0;
   --font-base: 'IBM Plex Sans', sans-serif;
-  --font-heading: 'Source Sans Pro', sans-serif;
+  --font-heading: 'Source Sans 3', sans-serif;
   --brand-padding: 16px;
   --focus-color: rgba(0, 200, 180, 0.9);
   --max-content-width: 900px;
@@ -197,7 +197,6 @@ footer, .feature {
 
 /* Contact Form */
 .vn-form__error { color: var(--color-error, #c32); font-size: 0.95em; margin-top: 0.25rem; }
-.vn-form__status { margin-top: 1rem; font-size: 1rem; }
 .vn-form__status.success { color: var(--color-success, #080); }
 .vn-form__status.error { color: var(--color-error, #c32); }
 
