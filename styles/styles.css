@@ -35,9 +35,6 @@ body {
 header.hero {
   position: relative;
   background-color: var(--primary-color);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='60'%3E%3Cpath d='M0 30C30 10 90 50 120 30' fill='none' stroke='%23003300' stroke-opacity='0.13' stroke-width='1.5'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='60'%3E%3Cpath d='M0 30C30 10 90 50 120 30' fill='none' stroke='%23003300' stroke-opacity='0.13' stroke-width='1.5'/%3E%3C/svg%3E");
-  background-size: 120px 60px;
-  background-position: 0 0, 60px 30px;
   color: var(--hero-text-color);
   padding: calc(var(--brand-padding) + 0px) 16px 40px;
   text-align: center;
@@ -80,6 +77,8 @@ header.hero {
 }
 
 .hero .hero-content {
+  position: relative;
+  z-index: 1;
   background: transparent;
   color: var(--hero-text-color, #fff);
   text-align: center;
@@ -448,4 +447,26 @@ button:hover, button:focus { background: #333; }
 }
 .services article > div { flex: 1; }
 .services article h3 { margin-top: 0.25rem; }
+
+/* Hero — large 3D logo watermark */
+.hero-logo-3d {
+  position: absolute;
+  right: -6%;
+  top: 50%;
+  width: 52%;
+  max-width: 520px;
+  transform: translateY(-50%) perspective(700px) rotateY(-22deg) rotateX(6deg);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.22;
+}
+.hero-logo-3d svg { width: 100%; height: auto; display: block; }
+
+@media (max-width: 767px) {
+  .hero-logo-3d {
+    width: 85%;
+    right: -25%;
+    opacity: 0.14;
+  }
+}
 
