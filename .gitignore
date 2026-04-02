@@ -1,7 +1,7 @@
 # macOS system files
 .DS_Store
 
-# Node.js (if you add tooling later)
+# Node.js
 node_modules/
 dist/
 build/
@@ -16,5 +16,5 @@ build/
 # OS-specific
 Thumbs.db
 
-#env variables
+# Environment variables
 .env
