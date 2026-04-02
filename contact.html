@@ -13,6 +13,9 @@
   <link rel="manifest" href="assets/site.webmanifest">
 
   <title>Contact – Vestibular</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/styles.css" />
 </head>
 
@@ -57,7 +60,7 @@
   <!-- Main Content -->
   <main>
     <section>
-      <h3>Get in touch</h3>
+      <h2>Get in touch</h2>
 
       <form id="contactForm" class="contact" method="post" novalidate>
         <!-- Honeypot field -->
@@ -100,7 +103,7 @@
 
   <!-- Footer -->
   <footer>
-    <p>&copy; 2025 Vestibular. Bespoke to synergise.</p>
+    <p>&copy; 2026 Vestibular. Built for clarity, scale, and morale.</p>
   </footer>
 
   <!-- Scripts -->
@@ -187,12 +190,17 @@
         statusEl.textContent = 'Sending…';
         statusEl.className = 'vn-form__status';
 
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 15000);
+
         try {
           const response = await fetch('https://vestibular-backend.onrender.com/api/contact', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
+            body: JSON.stringify(payload),
+            signal: controller.signal,
           });
+          clearTimeout(timeoutId);
 
           let result = null;
           try { result = await response.json(); } catch (e) { result = null; }
@@ -211,7 +219,12 @@
             statusEl.setAttribute('role', 'alert');
           }
        } catch (err) {
-          statusEl.textContent = 'Network error. Please try again later.';
+          clearTimeout(timeoutId);
+          if (err.name === 'AbortError') {
+            statusEl.textContent = 'Taking longer than expected — please try again or email consult@vestibular.nexus directly.';
+          } else {
+            statusEl.textContent = 'Network error. Please try again later.';
+          }
           statusEl.classList.add('error');
           statusEl.setAttribute('role', 'alert');
         } finally {
