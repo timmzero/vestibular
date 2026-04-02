@@ -575,3 +575,188 @@ button:hover, button:focus { background: #333; }
   .cta-repeat h2 { font-size: 1.25rem; }
 }
 
+/* ── Section intro paragraph ─────────────────────────────────────────────── */
+.section-intro {
+  font-size: 1rem;
+  color: rgba(224,224,224,0.65);
+  max-width: 580px;
+  margin: 0 0 2rem;
+  line-height: 1.65;
+}
+
+/* ── Services — article cards ────────────────────────────────────────────── */
+section.services article {
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  padding: 1.5rem;
+  border-bottom: none;
+  margin-bottom: 1rem;
+  background: rgba(255,255,255,0.02);
+  transition: background 0.2s ease;
+}
+section.services article:hover { background: rgba(255,255,255,0.04); }
+section.services article:last-child { margin-bottom: 0; }
+
+section.services article h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--hero-text-color);
+  margin: 0 0 0.6rem;
+}
+
+/* Deliverable — always last <li> in each service */
+section.services article ul li:last-child {
+  list-style: none;
+  margin-top: 0.75rem;
+  margin-left: -1.25rem;
+  padding: 0.45rem 0.75rem;
+  background: rgba(152,203,43,0.07);
+  border-left: 2px solid rgba(152,203,43,0.35);
+  border-radius: 0 4px 4px 0;
+  font-size: 0.87rem;
+  color: rgba(224,224,224,0.7);
+}
+
+/* ── Playbook — numbered chapter cards ───────────────────────────────────── */
+.vestibular-playbook-toc > ol {
+  list-style: none;
+  padding: 0;
+  counter-reset: toc;
+}
+.vestibular-playbook-toc > ol > li {
+  counter-increment: toc;
+  position: relative;
+  padding: 1.25rem 1.5rem 1.25rem 4.25rem;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+  background: rgba(255,255,255,0.02);
+  transition: background 0.2s;
+}
+.vestibular-playbook-toc > ol > li:hover { background: rgba(255,255,255,0.04); }
+.vestibular-playbook-toc > ol > li::before {
+  content: counter(toc, decimal-leading-zero);
+  position: absolute;
+  left: 1.1rem;
+  top: 1.25rem;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  font-family: var(--font-heading);
+  opacity: 0.5;
+  line-height: 1;
+}
+.vestibular-playbook-toc > ol > li h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--hero-text-color);
+  margin: 0 0 0.5rem;
+}
+.vestibular-playbook-toc > ol > li ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.vestibular-playbook-toc > ol > li ul li {
+  padding: 0.15rem 0;
+  font-size: 0.84rem;
+  color: rgba(224,224,224,0.55);
+}
+.vestibular-playbook-toc > ol > li ul li::before {
+  content: "→ ";
+  color: var(--accent-color);
+  opacity: 0.7;
+}
+
+/* ── Diagnostic — numbered how-to steps ──────────────────────────────────── */
+.feature ol {
+  list-style: none;
+  padding: 0;
+  counter-reset: steps;
+  margin: 0 0 1rem;
+}
+.feature ol li {
+  counter-increment: steps;
+  position: relative;
+  padding: 0.65rem 0 0.65rem 3rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  font-size: 0.92rem;
+  color: rgba(224,224,224,0.75);
+}
+.feature ol li:last-child { border-bottom: none; }
+.feature ol li::before {
+  content: counter(steps);
+  position: absolute;
+  left: 0;
+  top: 0.6rem;
+  width: 1.6rem;
+  height: 1.6rem;
+  background: var(--primary-color);
+  color: var(--secondary-color);
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 0.78rem;
+  text-align: center;
+  line-height: 1.6rem;
+}
+
+/* ── Diagnostic — solution cards ─────────────────────────────────────────── */
+.solution ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.solution ul li {
+  padding: 0.9rem 1rem 0.9rem 1.25rem;
+  border-left: 2px solid var(--primary-color);
+  border-radius: 0 6px 6px 0;
+  background: rgba(255,255,255,0.02);
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+  color: rgba(224,224,224,0.72);
+  transition: background 0.2s;
+}
+.solution ul li:hover { background: rgba(255,255,255,0.04); }
+.solution ul li strong {
+  color: var(--primary-color);
+  display: block;
+  margin-bottom: 0.2rem;
+  font-size: 0.95rem;
+}
+
+/* ── Diagnostic — maturity stage cards ───────────────────────────────────── */
+article.stage {
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  background: rgba(255,255,255,0.02);
+  max-width: var(--max-content-width);
+  margin-left: auto;
+  margin-right: auto;
+  transition: background 0.2s;
+}
+article.stage:hover { background: rgba(255,255,255,0.04); }
+article.stage h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin: 0 0 0.75rem;
+}
+article.stage ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+article.stage ul li {
+  padding: 0.35rem 0;
+  font-size: 0.88rem;
+  color: rgba(224,224,224,0.68);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+article.stage ul li:last-child { border-bottom: none; }
+article.stage ul li strong { color: rgba(152,203,43,0.8); }
+
+/* ── Contact — form section spacing ──────────────────────────────────────── */
+.contact { margin-top: 1.5rem; }
+
