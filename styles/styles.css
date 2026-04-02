@@ -470,3 +470,108 @@ button:hover, button:focus { background: #333; }
   }
 }
 
+/* ── Homepage credibility section ───────────────────────────────────────── */
+
+.section-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+  color: var(--accent-color);
+  margin: 0 0 0.4rem;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--hero-text-color);
+  font-family: var(--font-heading);
+  line-height: 1.15;
+  margin: 0 0 2.25rem;
+}
+
+/* Three-column BAG pillar grid */
+.pillar-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  margin-bottom: 2rem;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.pillar {
+  padding: 1.75rem 1.5rem;
+  border-right: 1px solid rgba(255,255,255,0.08);
+  transition: background 0.2s ease;
+}
+.pillar:last-child { border-right: none; }
+.pillar:hover { background: rgba(255,255,255,0.03); }
+
+.pillar-word {
+  display: block;
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  font-family: var(--font-heading);
+  letter-spacing: -0.01em;
+  margin-bottom: 0.2rem;
+}
+
+.pillar-tagline {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--accent-color);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.9rem;
+  opacity: 0.85;
+}
+
+.pillar p {
+  font-size: 0.92rem;
+  color: rgba(224,224,224,0.72);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* Trust chips */
+.trust-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.chip {
+  display: inline-block;
+  padding: 0.3rem 0.9rem;
+  border: 1px solid rgba(152,203,43,0.3);
+  border-radius: 100px;
+  font-size: 0.78rem;
+  color: var(--primary-color);
+  letter-spacing: 0.04em;
+  opacity: 0.8;
+}
+
+/* CTA repeat heading — give it real weight */
+.cta-repeat h2 {
+  font-size: 1.6rem;
+  line-height: 1.2;
+  font-weight: 700;
+  font-family: var(--font-heading);
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+  .pillar-grid { grid-template-columns: 1fr; }
+  .pillar {
+    border-right: none;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .pillar:last-child { border-bottom: none; }
+  .section-title { font-size: 1.5rem; }
+  .cta-repeat h2 { font-size: 1.25rem; }
+}
+
