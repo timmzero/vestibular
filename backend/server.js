@@ -30,7 +30,7 @@ app.use('/api/contact', limiter);
 // POST /api/contact — matches your front-end fetch('/api/contact')
 app.post('/api/contact', async (req, res) => {
   const { name, email, message, website } = req.body || {};
-  console.log('Received contact form submission:', { name, email, message, website });
+  console.log('Received contact form submission');
 
   // Honeypot check
   if (website) {
@@ -75,6 +75,7 @@ app.post('/api/contact', async (req, res) => {
                      <p><strong>Message:</strong></p>
                      <p>${safeMessage}</p>`,
           TextBody: `Name: ${safeName}\nEmail: ${safeEmail}\n\n${String(message)}`,
+          ReplyTo: safeEmail,
           MessageStream: 'outbound'
         }),
       });
