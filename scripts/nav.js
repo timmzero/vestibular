@@ -23,6 +23,24 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       backdrop.addEventListener('click', closeMenu);
+
+      // Close mobile nav on Escape
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && nav.classList.contains('open')) {
+          closeMenu();
+          toggle.focus();
+        }
+      });
+
+      // Highlight active nav link
+      const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+      nav.querySelectorAll('a').forEach(link => {
+        const linkPath = link.getAttribute('href');
+        if (linkPath === currentPath || (currentPath === '' && linkPath === 'index.html')) {
+          link.classList.add('active');
+          link.setAttribute('aria-current', 'page');
+        }
+      });
     })
     .catch(err => console.error("Nav load failed:", err));
 });
