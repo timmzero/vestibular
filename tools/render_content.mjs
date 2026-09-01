@@ -387,9 +387,26 @@ function renderServices(services, pricing, phases) {
     ].join('\n');
   };
 
+  // Within a phase, cheapest first, so the smaller price is always the
+  // left-hand card of a row. Sorted at render time rather than by hand-ordering
+  // the source, so a service added later cannot land out of order.
+  //
+  // 'scoped' sorts LAST because it is the top of the range, not merely because
+  // it has no figure to sort on. A scoped engagement is open-ended, so it is
+  // always the potentially higher-value item in its phase — it belongs at the
+  // expensive end of the row whatever the priced cards beside it cost. Infinity
+  // is the mechanism; this is the reason.
+  //
+  // Sequence is still carried by the phase grouping; only the order WITHIN a
+  // phase is by price.
+  const amount = (s) =>
+    s.price && typeof s.price.ex_gst === 'number' ? s.price.ex_gst : Infinity;
+
   return order
     .map((phase) => {
-      const inPhase = services.filter((s) => s.phase === phase);
+      const inPhase = services
+        .filter((s) => s.phase === phase)
+        .sort((a, b) => amount(a) - amount(b));
       if (!inPhase.length) return null;
       return [
         '      <div class="phase-heading">',
