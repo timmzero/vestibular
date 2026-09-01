@@ -312,6 +312,35 @@ body { overflow-x: clip; }
 
 .main-nav .submenu a { font-size: 1rem; font-weight: 500; }
 
+/* The mark deliberately overhangs the topbar into the hero band — 202px below
+   a 74px bar at full size. That is the design and it is untouched.
+
+   What is NOT intended is that its bounding box also swallows clicks on
+   whatever sits underneath. Measured, it was eating the first two questions of
+   the readiness form at every width from 1280 down.
+
+   Hit-testing only. The mark is made transparent to pointer events and the
+   link's hit area becomes .brand-hit, which covers just the part of the mark
+   inside the bar. It is absolutely positioned against .brand, so it adds
+   nothing to layout, and a click on it still activates the link it sits in.
+
+   Two things NOT used here, both measured and both rejected: `display:
+   inline-block` on the link shifted the mark at mobile widths, and `display:
+   block` resized it from 260px to 300px. Hence a real element rather than a
+   display change or a pseudo-element on a line-height:0 inline box. */
+.brand,
+.brand a,
+.brand-logo { pointer-events: none; }
+
+.brand-hit {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: calc(var(--topbar-height) - var(--brand-padding));
+  pointer-events: auto;
+}
+
 /* Backdrop for mobile */
 .nav-backdrop {
   position: fixed;
