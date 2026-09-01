@@ -91,6 +91,24 @@ function render(cfg, answers, total) {
 if (formEl) {
   const cfg = loadConfig();
 
+  // The radar is a view over the form inputs, so it reuses the dimension list
+  // already parsed above rather than reading the config a second time. It is
+  // strictly additive: if the module is missing or throws, the scorecard below
+  // still scores and submits exactly as before.
+  const radarEl = document.getElementById('radar');
+  if (cfg && radarEl && window.vestibular_radar) {
+    try {
+      window.vestibular_radar.create_radar({
+        container: radarEl,
+        form: formEl,
+        dimensions: cfg.dimensions,
+        max: 5,
+      });
+    } catch (err) {
+      console.error('scorecard: radar failed to initialise', err);
+    }
+  }
+
   formEl.addEventListener('submit', function (e) {
     e.preventDefault();
     if (!cfg) {
@@ -134,7 +152,16 @@ if (formEl) {
 
     const hiddenField = document.getElementById('scorecard-hidden');
     if (hiddenField) hiddenField.value = resultText;
-    localStorage.setItem('scorecardResult', resultText);
+
+    // localStorage THROWS, not returns null, when storage is blocked (Safari
+    // private browsing, blocked cookies). Unguarded it took down the tail of
+    // this handler for those users. The handoff to the contact form goes via
+    // the hidden field above, so losing this is a graceful degradation.
+    try {
+      localStorage.setItem('scorecardResult', resultText);
+    } catch (err) {
+      console.warn('scorecard: could not persist result locally', err);
+    }
   });
 }
 

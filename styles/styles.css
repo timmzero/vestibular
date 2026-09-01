@@ -1048,3 +1048,65 @@ article.stage .price { margin-top: 1rem; }
 .result-next-pkg { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; align-items: baseline; }
 .result-pkg-name { font-weight: 700; color: var(--hero-text-color); }
 .result-pkg-price { color: var(--primary-color); font-family: var(--font-heading); font-weight: 700; }
+
+/* --- Team-health radar -----------------------------------------------------
+   A view over the scorecard inputs. Sized by the --max-content-width token's
+   sibling conventions rather than a literal, and capped so the chart never
+   outgrows the column it sits in. */
+.radar {
+  margin: 1.5rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.radar-svg {
+  width: 100%;
+  max-width: 360px;
+  height: auto;
+  overflow: visible;
+}
+
+.radar-caption {
+  order: 2;
+  margin-top: 0.75rem;
+  font-size: 0.82rem;
+  color: rgba(224, 224, 224, 0.6);
+  text-align: center;
+}
+
+/* The caption stops being a prompt once every axis has an answer. */
+.radar.is-complete .radar-caption { visibility: hidden; }
+
+.radar-ring {
+  fill: none;
+  stroke: rgba(224, 224, 224, 0.14);
+  stroke-width: 1;
+}
+
+.radar-spoke {
+  stroke: rgba(224, 224, 224, 0.14);
+  stroke-width: 1;
+}
+
+.radar-shape {
+  fill: hsla(79, 65%, 48%, 0.18);
+  stroke: var(--primary-color);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.radar-point {
+  fill: var(--primary-color);
+}
+
+.radar-label {
+  fill: var(--body-text-color);
+  font-family: var(--font-base);
+  font-size: 11px;
+}
+
+@media (max-width: 480px) {
+  .radar-label { font-size: 10px; }
+}

@@ -29,3 +29,10 @@ jobs:
       # hand-edited, or because the source changed without regenerating.
       - name: Verify generated HTML matches content/practices.json
         run: node tools/render_content.mjs --check
+
+      # The radar's maths is separated from the DOM so it can be checked with
+      # no browser. Each assertion was driven over a known-bad mutation of the
+      # module before being trusted — a wrong angle, or a blank answer plotted
+      # at the centre, both render happily and lie.
+      - name: Radar geometry checks
+        run: node tools/test_radar.cjs
