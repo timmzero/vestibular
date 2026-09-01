@@ -12,7 +12,7 @@
 
 const assert = require('assert');
 const {
-  band_for, weakest_dimension, render_dimension_list, question_keys, axis_values, read_answers,
+  band_for, weakest_dimension, render_dimension_list, question_keys, axis_values, axis_progress, read_answers,
 } = require('../scripts/dimension_read.js');
 
 const dimensions = [
@@ -158,6 +158,53 @@ check('read_answers rejects a non-numeric answer', () => {
 
 check('read_answers rejects a half-answered axis', () => {
   assert.strictEqual(read_answers(fake_form({ systems_1: 4, morale_1: 3, morale_2: 3 }), multi, 5).ok, false);
+});
+
+// --- axis_progress (the live sketch) ----------------------------------------
+// The chart wants a running value so every answer visibly does something; the
+// submitted result must still refuse a half-answered axis. Same reader, two
+// strictnesses, so both are pinned here.
+
+check('a half-answered axis has a running value and is flagged provisional', () => {
+  const p = axis_progress(fake_form({ systems_1: 4, morale_1: 2, morale_2: 4 }), multi, 5);
+  assert.strictEqual(p.values.systems, 4, 'running mean of the answers so far');
+  assert.strictEqual(p.provisional.systems, true);
+  assert.strictEqual(p.values.morale, 3);
+  assert.strictEqual(p.provisional.morale, false, 'a full axis is not provisional');
+});
+
+check('the running value updates as the second answer arrives', () => {
+  const a = axis_progress(fake_form({ systems_1: 5 }), multi, 5);
+  const b = axis_progress(fake_form({ systems_1: 5, systems_2: 1 }), multi, 5);
+  assert.strictEqual(a.values.systems, 5);
+  assert.strictEqual(b.values.systems, 3);
+});
+
+check('an untouched axis has no value and is not provisional', () => {
+  const p = axis_progress(fake_form({ systems_1: 4, systems_2: 4 }), multi, 5);
+  assert.strictEqual(p.values.morale, undefined);
+  assert.strictEqual(p.provisional.morale, false, 'nothing answered is absent, not in progress');
+});
+
+check('progress counts answered questions, not axes', () => {
+  const p = axis_progress(fake_form({ systems_1: 4, morale_1: 3 }), multi, 5);
+  assert.strictEqual(p.answered, 2);
+  assert.strictEqual(p.questions, 4);
+});
+
+check('an invalid answer does not count toward progress', () => {
+  const p = axis_progress(fake_form({ systems_1: 9, systems_2: 4 }), multi, 5);
+  assert.strictEqual(p.answered, 1);
+  assert.strictEqual(p.values.systems, 4, 'the valid answer alone');
+  assert.strictEqual(p.provisional.systems, true);
+});
+
+check('axis_values stays strict where axis_progress is permissive', () => {
+  const form = fake_form({ systems_1: 4, morale_1: 3, morale_2: 3 });
+  assert.strictEqual(axis_progress(form, multi, 5).values.systems, 4);
+  assert.strictEqual(axis_values(form, multi, 5).systems, undefined,
+    'the submitted reading must not average half an axis');
+  assert.strictEqual(read_answers(form, multi, 5).ok, false);
 });
 
 console.log('\n' + passed + ' dimension_read checks passed');

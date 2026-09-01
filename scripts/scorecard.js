@@ -82,13 +82,13 @@ if (formEl) {
         form: formEl,
         dimensions: cfg.dimensions,
         max: 5,
-        values_source: window.vestibular_dimension_read.axis_values,
+        values_source: window.vestibular_dimension_read.axis_progress,
         on_render: function (geometry) {
           const caption = radarEl.querySelector('.radar-caption');
           if (!caption) return;
-          caption.textContent = geometry.complete
-            ? 'All six answered.'
-            : geometry.plotted + ' of ' + geometry.total + ' answered.';
+          caption.textContent = geometry.settled
+            ? 'All six answered \u2014 this is your shape.'
+            : geometry.answered + ' of ' + geometry.questions + ' answered.';
         },
       });
     } catch (err) {

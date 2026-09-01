@@ -1148,10 +1148,32 @@ article.stage .price { margin-top: 1rem; }
   stroke: var(--primary-color);
   stroke-width: 2;
   stroke-linejoin: round;
+  transition: fill 0.2s ease-out;
+}
+
+/* The shape closes as soon as every axis has something to say, but stays a
+   sketch until every axis is settled. */
+.radar-shape.is-provisional {
+  fill: hsla(79, 65%, 48%, 0.07);
+  stroke-dasharray: 5 4;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .radar-point, .radar-shape { transition: none; }
 }
 
 .radar-point {
   fill: var(--primary-color);
+  transition: cx 0.18s ease-out, cy 0.18s ease-out;
+}
+
+/* A running value: the axis has an answer but not all of them yet. Drawn
+   hollow so it reads as pencil rather than ink, without withholding the
+   feedback that makes filling the form feel like it is doing something. */
+.radar-point.is-provisional {
+  fill: var(--background-color);
+  stroke: var(--primary-color);
+  stroke-width: 2;
 }
 
 .radar-label {
