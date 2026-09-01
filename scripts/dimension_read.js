@@ -79,32 +79,65 @@
   }
 
   /**
-   * Live per-axis values for the chart, read straight off the form elements.
+   * Per-axis reading of the form, including partially answered axes.
    *
-   * An axis is the MEAN of its questions, and is undefined unless EVERY one of
-   * them holds a valid answer. Averaging a half-answered axis would plot a
-   * value derived from half the evidence, which is the same fabrication as
-   * plotting a blank at the centre.
+   * `value` is the running mean of the questions answered SO FAR, and an axis
+   * is `provisional` until every one of its questions holds a valid answer.
+   * The distinction matters because the two consumers need different things:
+   *
+   *   - The live chart wants provisional values. A sketch that refuses to move
+   *     until it is certain is not honest, it is unresponsive, and the person
+   *     filling the form learns nothing from their own answers as they go.
+   *   - The submitted result wants settled values only. That is the reading
+   *     someone acts on or sends to us, and averaging half the evidence there
+   *     would be stating a number nobody gave.
+   *
+   * One reader, two strictnesses, so the rule about what counts as an answer
+   * lives in exactly one place.
    */
-  function axis_values(form, dimensions, max) {
+  function axis_progress(form, dimensions, max) {
     const limit = max || 5;
     const values = {};
+    const provisional = {};
+    let answered = 0;
+    let questions = 0;
+
     dimensions.forEach(function (d) {
       const keys = question_keys(d);
+      questions += keys.length;
       let sum = 0;
-      let complete = true;
+      let count = 0;
       for (let i = 0; i < keys.length; i++) {
         const el = form ? form.elements[keys[i]] : null;
         const raw = el ? el.value : undefined;
         const v = Number(raw);
         if (raw === undefined || raw === null || raw === '' ||
             !Number.isFinite(v) || v < 1 || v > limit) {
-          complete = false;
-          break;
+          continue;
         }
         sum += v;
+        count += 1;
       }
-      values[d.key] = complete ? sum / keys.length : undefined;
+      answered += count;
+      values[d.key] = count ? sum / count : undefined;
+      provisional[d.key] = count > 0 && count < keys.length;
+    });
+
+    return {
+      values: values, provisional: provisional,
+      answered: answered, questions: questions,
+    };
+  }
+
+  /**
+   * Settled values only: an axis is undefined unless EVERY one of its questions
+   * holds a valid answer. Used for scoring, never for the live chart.
+   */
+  function axis_values(form, dimensions, max) {
+    const progress = axis_progress(form, dimensions, max);
+    const values = {};
+    Object.keys(progress.values).forEach(function (key) {
+      values[key] = progress.provisional[key] ? undefined : progress.values[key];
     });
     return values;
   }
@@ -130,6 +163,7 @@
     band_for: band_for,
     question_keys: question_keys,
     axis_values: axis_values,
+    axis_progress: axis_progress,
     read_answers: read_answers,
     weakest_dimension: weakest_dimension,
     render_dimension_list: render_dimension_list,

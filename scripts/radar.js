@@ -27,6 +27,8 @@
   function radar_geometry(options) {
     const dimensions = options.dimensions || [];
     const values = options.values || {};
+    // Which axes are still a running mean rather than a settled reading.
+    const provisional = options.provisional || {};
     const max = options.max || 5;
     const radius = options.radius || 100;
     const cx = options.cx || 0;
@@ -62,22 +64,27 @@
       return {
         key: axis.key,
         value: v,
+        provisional: !!provisional[axis.key],
         x: cx + r * Math.cos(axis.angle),
         y: cy + r * Math.sin(axis.angle),
       };
     });
 
-    // The shape is only drawn once every axis has a real answer. A polygon
-    // over a partial set implies a reading that was never taken.
-    const complete = points.every(function (p) { return p !== null; });
-    const polygon = complete
+    // The shape closes as soon as every axis has SOMETHING to say, so it forms
+    // while the form is being filled rather than appearing all at once at the
+    // end. It is drawn as a sketch until every axis is settled: an axis still
+    // averaging half its questions is a running value, not a reading.
+    const plottable = points.every(function (p) { return p !== null; });
+    const settled = plottable && points.every(function (p) { return !p.provisional; });
+    const polygon = plottable
       ? points.map(function (p) { return p.x.toFixed(2) + ',' + p.y.toFixed(2); }).join(' ')
       : null;
 
     const plotted = points.filter(function (p) { return p !== null; }).length;
     return {
       axes: axes, points: points, polygon: polygon,
-      complete: complete, plotted: plotted, total: dimensions.length,
+      complete: settled, settled: settled, plottable: plottable,
+      plotted: plotted, total: dimensions.length,
     };
   }
 
@@ -121,13 +128,17 @@
     svg.appendChild(grid);
 
     if (geometry.polygon) {
-      svg.appendChild(el('polygon', { points: geometry.polygon, class: 'radar-shape' }));
+      svg.appendChild(el('polygon', {
+        points: geometry.polygon,
+        class: 'radar-shape' + (geometry.settled ? '' : ' is-provisional'),
+      }));
     }
 
     geometry.points.forEach(function (p) {
       if (!p) return;
       svg.appendChild(el('circle', {
-        cx: p.x.toFixed(2), cy: p.y.toFixed(2), r: 4, class: 'radar-point',
+        cx: p.x.toFixed(2), cy: p.y.toFixed(2), r: 4,
+        class: 'radar-point' + (p.provisional ? ' is-provisional' : ''),
       }));
     });
 
@@ -185,7 +196,9 @@
     // An axis may be fed by one input or several. The caller supplies the
     // reader so this module never duplicates the averaging rule; the default
     // is the simple one-input-per-axis case.
-    const read_values = options.values_source
+    // A source returns { values, provisional, ... }; the default is the simple
+    // one-input-per-axis case, where nothing can be provisional.
+    const read_state = options.values_source
       ? function () { return options.values_source(form, dimensions, max); }
       : function () {
           const values = {};
@@ -193,14 +206,19 @@
             const input = form ? form.elements[d.key] : null;
             values[d.key] = input ? input.value : undefined;
           });
-          return values;
+          return { values: values, provisional: {} };
         };
 
     function update() {
+      const state = read_state();
       const geometry = radar_geometry({
-        dimensions: dimensions, values: read_values(),
+        dimensions: dimensions,
+        values: state.values,
+        provisional: state.provisional,
         max: max, radius: radius, cx: cx, cy: cy,
       });
+      geometry.answered = state.answered;
+      geometry.questions = state.questions;
       render_radar(svg, geometry, config);
       container.classList.toggle('is-complete', geometry.complete);
       if (typeof options.on_render === 'function') options.on_render(geometry);
@@ -210,7 +228,7 @@
     if (form) form.addEventListener('input', update);
     update();
 
-    return { update: update, svg: svg, read_values: read_values };
+    return { update: update, svg: svg, read_state: read_state };
   }
 
   const api = {

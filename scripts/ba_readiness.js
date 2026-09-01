@@ -52,14 +52,18 @@ if (formEl) {
         form: formEl,
         dimensions: cfg.dimensions,
         max: 5,
-        values_source: window.vestibular_dimension_read.axis_values,
+        values_source: window.vestibular_dimension_read.axis_progress,
         on_render: function (geometry) {
           const caption = radarEl.querySelector('.radar-caption');
           if (!caption) return;
-          caption.textContent = geometry.complete
-            ? 'All six areas plotted.'
-            : geometry.plotted + ' of ' + geometry.total +
-              ' areas plotted \u2014 an area needs both of its questions answered.';
+          if (geometry.settled) {
+            caption.textContent = 'All twelve answered \u2014 this is your shape.';
+          } else if (geometry.answered === 0) {
+            caption.textContent = 'The shape builds as you answer.';
+          } else {
+            caption.textContent = geometry.answered + ' of ' + geometry.questions +
+              ' answered \u2014 the shape firms up as you go.';
+          }
         },
       });
     } catch (err) {
