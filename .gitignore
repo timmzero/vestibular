@@ -3,8 +3,8 @@
 
 # Node.js
 node_modules/
-dist/
-build/
+/dist/
+/build/
 
 # VS Code settings
 .vscode/

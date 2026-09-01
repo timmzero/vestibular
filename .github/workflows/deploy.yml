@@ -1,21 +1,31 @@
 name: CI
 
+# Runs on pushes AND pull requests. The previous version ran on pushes to main
+# only, so a PR could never be checked before merge — by the time it ran, the
+# content was already live via Cloudflare Pages.
 on:
   push:
     branches:
       - main
+  pull_request:
 
 jobs:
-  build:
+  content-drift:
+    name: Content SSOT drift check
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Use Postmark token
-        env:
-          POSTMARK_TOKEN: ${{ secrets.POSTMARK_TOKEN }}
-        run: |
-          echo "Postmark token is set"
-          # Replace the following with your actual commands that use the token
-          # For example, run tests or deploy scripts
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # The stage table used to be maintained by hand in diagnostic.html and
+      # playbook.html. 5 of 20 shared fields had silently drifted apart before
+      # this check existed. This fails the build if a GENERATED region no longer
+      # matches content/practices.json — either because the region was
+      # hand-edited, or because the source changed without regenerating.
+      - name: Verify generated HTML matches content/practices.json
+        run: node tools/render_content.mjs --check

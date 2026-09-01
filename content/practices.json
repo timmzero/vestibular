@@ -1,0 +1,64 @@
+{
+  "_comment": "SINGLE SOURCE OF TRUTH for practice content. HTML regions marked GENERATED are produced from this file by scripts/build/render_content.mjs. Never hand-edit a GENERATED region — run the generator instead. CI verifies the committed HTML matches this file.",
+
+  "practices": {
+    "agile": {
+      "label": "Agile Transformation",
+      "model": "maturity",
+      "_comment": "A maturity model: answers 'where are you now' and routes to a package.",
+
+      "stages": [
+        {
+          "number": 1,
+          "name": "Foundational",
+          "package": "Declutter",
+          "diagnostic_lens": "Chaotic → tool sprawl, unclear workflows, burnout signals.",
+          "focus": "Restore clarity, reduce cognitive load, establish hygiene.",
+          "outcomes": "Reduced clutter, clear workflows, initial alignment.",
+          "deliverables": "Tool hygiene audit, sanitation playbook.",
+          "ai_augmentation": "Automated Jira board cleanup, duplicate detection, backlog hygiene assistant."
+        },
+        {
+          "number": 2,
+          "name": "Emerging",
+          "package": "Reboot",
+          "diagnostic_lens": "Structured → boards cleaned, cadence exists, but ceremonies feel stale.",
+          "focus": "Team health, morale, ceremony clarity.",
+          "outcomes": "Improved trust, reduced burnout, meaningful rituals.",
+          "deliverables": "Morale metrics dashboard, role clarifications, team health interventions.",
+          "ai_augmentation": "Retro documentation, sprint flow insights, facilitation prompts."
+        },
+        {
+          "number": 3,
+          "name": "Enabled",
+          "package": "Enable",
+          "diagnostic_lens": "Modular → frameworks adopted, backlog hygiene maintained, morale engagement rising.",
+          "focus": "Pilot modular Agile practices with one team, refine cadence, prepare for scale.",
+          "outcomes": "Autonomous teams, faster iteration, clear accountability.",
+          "deliverables": "Team-specific enablement plan, coaching cadence.",
+          "ai_augmentation": "Backlog prioritization rubric, automated work item creation, sprint health dashboards."
+        },
+        {
+          "number": 4,
+          "name": "Scaling",
+          "package": "Scale",
+          "diagnostic_lens": "Sustainable (early) → teams self-manage hygiene, cross-team visibility emerging.",
+          "focus": "Replicate modular practices across teams, align governance.",
+          "outcomes": "Scalable Agile practices, consistent delivery, cross-team transparency.",
+          "deliverables": "Scaled rollout plan, cross-team coaching, governance map.",
+          "ai_augmentation": "Cross-team dashboards, compliance reporting, predictive bottleneck detection."
+        },
+        {
+          "number": 5,
+          "name": "Optimizing",
+          "package": "Optimize",
+          "diagnostic_lens": "Sustainable (advanced) → predictive dashboards, audit-ready compliance, continuous improvement culture.",
+          "focus": "Strategic agility, continuous improvement, business alignment.",
+          "outcomes": "Sustained momentum, strategic alignment, high morale.",
+          "deliverables": "Advanced dashboards, strategic workshops, compliance frameworks.",
+          "ai_augmentation": "Predictive analytics, strategic scenario modeling, continuous improvement dashboards."
+        }
+      ]
+    }
+  }
+}
