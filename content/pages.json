@@ -1,0 +1,41 @@
+{
+  "_comment": "Per-page <head> metadata. Everything else in <head> is shared chrome rendered from tools/render_content.mjs. Adding a page means adding an entry here — the generator fails loudly on a page it has no metadata for.",
+  "pages": {
+    "agile.html": {
+      "title": "Vestibular Agile Transformation – Practice",
+      "description": "Agile Transformation consulting: declutter Agile tooling, rebuild morale, and scale with a modular, science-backed maturity model."
+    },
+    "ai-playbook.html": {
+      "title": "Vestibular AI Transformation – Playbook",
+      "description": "The Vestibular AI Transformation playbook: twelve steps across Listen, Design, and Land — from surfacing ground truth to measuring realised uplift."
+    },
+    "ai-services.html": {
+      "title": "Vestibular AI Transformation – Services",
+      "description": "Six AI-Transformational Business Analysis services: readiness assessment, value case, operating model redesign, requirements and governance, roadmap, and adoption."
+    },
+    "ai-transformation.html": {
+      "title": "Vestibular AI Transformation – Business Analysis",
+      "description": "AI-Transformational Business Analysis: operating model redesign, AI opportunity identification, and value modelling grounded in what your team already knows."
+    },
+    "contact.html": {
+      "title": "Contact – Vestibular",
+      "description": "Contact Vestibular Agile Transformation — book a consult or ask about our Agile Sanitation playbook."
+    },
+    "diagnostic.html": {
+      "title": "Vestibular Agile Transformation – Diagnostic",
+      "description": "Vestibular Agile Transformation helps tech teams rebuild morale, declutter Agile tooling, and scale with a modular, science-backed playbook."
+    },
+    "index.html": {
+      "title": "Vestibular Agile Transformation",
+      "description": "Vestibular Agile Transformation helps tech teams declutter Agile tooling, rebuild morale, and scale with a modular, science-backed playbook."
+    },
+    "playbook.html": {
+      "title": "Vestibular Agile Transformation – Playbook",
+      "description": "Vestibular Agile Transformation helps tech teams declutter Agile tooling, rebuild morale, and scale with a modular, science-backed playbook."
+    },
+    "services.html": {
+      "title": "Vestibular Agile Transformation – Services",
+      "description": "Vestibular Agile Transformation helps tech teams declutter Agile tooling, rebuild morale, and scale with a modular, science-backed playbook."
+    }
+  }
+}
