@@ -18,10 +18,24 @@ const ALLOWED_ORIGINS = [
   'https://www.vestibular.nexus',
 ];
 
+// Cloudflare Pages builds a preview for every branch and every commit on this
+// project, and a preview you cannot submit from is only half a preview — the
+// contact form is the one thing most worth testing before merge.
+//
+// Anchored to THIS project's subdomain, not *.pages.dev, which would open the
+// endpoint to every site on the platform. The `vestibular-5rj` label is
+// globally unique to this Pages project, so nobody else can mint a hostname
+// that matches. Both ^ and $ are load-bearing: without $, an attacker-owned
+// `vestibular-5rj.pages.dev.example.com` would pass.
+const PREVIEW_ORIGIN = /^https:\/\/[a-z0-9-]+\.vestibular-5rj\.pages\.dev$/;
+
+const isAllowedOrigin = (origin) =>
+  ALLOWED_ORIGINS.includes(origin) || PREVIEW_ORIGIN.test(origin);
+
 app.use(cors({
   origin(origin, callback) {
     // Non-browser callers (curl, uptime pings) send no Origin header.
-    if (!origin || ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
+    if (!origin || isAllowedOrigin(origin)) return callback(null, true);
     // Omit the header rather than throwing: the browser blocks the response
     // either way, and throwing turns every stray origin into a 500 that buries
     // real errors in the log. Log it so the rejection is still visible.
@@ -53,6 +67,9 @@ app.get('/api/health', (req, res) => res.status(200).json({ ok: true }));
 // POST /api/contact — matches your front-end fetch('/api/contact')
 app.post('/api/contact', async (req, res) => {
   const { name, email, message, website, scorecard_result } = req.body || {};
+  // Submissions from a branch preview are tests, not leads. Tag them so a
+  // trial run never lands in the inbox looking like a real enquiry.
+  const isPreview = PREVIEW_ORIGIN.test(req.get('origin') || '');
   console.log('Received contact form submission');
 
   // Honeypot check
@@ -96,7 +113,7 @@ app.post('/api/contact', async (req, res) => {
         body: JSON.stringify({
           From: 'noreply@vestibular.nexus',
           To: 'consult@vestibular.nexus',
-          Subject: `Contact form submission from ${safeName}`,
+          Subject: `${isPreview ? '[PREVIEW] ' : ''}Contact form submission from ${safeName}`,
           HtmlBody: `<p><strong>Name:</strong> ${safeName}</p>
                      <p><strong>Email:</strong> ${safeEmail}</p>
                      ${safeScorecard ? `<p><strong>Scorecard:</strong> ${safeScorecard}</p>` : ''}
@@ -123,6 +140,7 @@ app.post('/api/contact', async (req, res) => {
       // Mirrors the fields the Postmark branch sends — if these two drift,
       // local testing stops telling the truth about production.
       console.log('Contact submission (DEV):', {
+        preview: isPreview,
         name: safeName,
         email: safeEmail,
         scorecard: safeScorecard || '(none)',
