@@ -45,5 +45,64 @@
       "title": "Vestibular AI Transformation – Readiness",
       "description": "A twelve-question readiness check across six areas: goals, systems, pain points, morale, roles and AI enablement."
     }
-  }
+  },
+  "_nav_comment": "SSOT for the top-level nav. Every page in CHROME_PAGES must be reachable from here or the generator fails: 'add it to nav.html' was a manual checklist step, and ai-proof and ai-readiness had already been added to the site without ever appearing in the nav.",
+  "nav": [
+    {
+      "label": "Home",
+      "href": "index.html"
+    },
+    {
+      "label": "Agile",
+      "href": "agile.html",
+      "children": [
+        {
+          "label": "Practice",
+          "href": "agile.html"
+        },
+        {
+          "label": "Diagnostic",
+          "href": "diagnostic.html"
+        },
+        {
+          "label": "Services",
+          "href": "services.html"
+        },
+        {
+          "label": "Playbook",
+          "href": "playbook.html"
+        }
+      ]
+    },
+    {
+      "label": "AI Transformation",
+      "href": "ai-transformation.html",
+      "children": [
+        {
+          "label": "Practice",
+          "href": "ai-transformation.html"
+        },
+        {
+          "label": "Readiness",
+          "href": "ai-readiness.html"
+        },
+        {
+          "label": "Services",
+          "href": "ai-services.html"
+        },
+        {
+          "label": "Playbook",
+          "href": "ai-playbook.html"
+        },
+        {
+          "label": "Proof",
+          "href": "ai-proof.html"
+        }
+      ]
+    },
+    {
+      "label": "Contact",
+      "href": "contact.html"
+    }
+  ]
 }

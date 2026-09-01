@@ -33,29 +33,33 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       // Highlight the active nav link.
-      // The nav lists practice hubs, not every page, so a sub-page must light
-      // up its parent hub. Without this map nothing highlights on Services,
-      // Diagnostic or Playbook, which reads as "you are nowhere".
-      const PRACTICE_HUB = {
-        'services.html': 'agile.html',
-        'diagnostic.html': 'agile.html',
-        'playbook.html': 'agile.html',
-        'ai-services.html': 'ai-transformation.html',
-        'ai-playbook.html': 'ai-transformation.html',
-      };
-
+      //
+      // Derived from the rendered nav rather than a hand-maintained page->hub
+      // map. That map listed five sub-pages and had already drifted: ai-proof
+      // and ai-readiness highlighted nothing, which reads as "you are nowhere".
       const currentPath = window.location.pathname.split('/').pop() || 'index.html';
-      const activeHref = PRACTICE_HUB[currentPath] || currentPath;
+      const currentBase = currentPath.replace(/\.html$/, '');
 
+      let matched = null;
       nav.querySelectorAll('a').forEach(link => {
-        const linkPath = link.getAttribute('href');
-        const isActive = linkPath === activeHref
-          || (currentPath === '' && linkPath === 'index.html');
-        if (isActive && !link.classList.contains('cta')) {
-          link.classList.add('active');
-          link.setAttribute('aria-current', currentPath === linkPath ? 'page' : 'true');
-        }
+        if (link.classList.contains('cta')) return;
+        const href = (link.getAttribute('href') || '').replace(/\.html$/, '');
+        if (href !== currentBase) return;
+        link.classList.add('active');
+        link.setAttribute('aria-current', 'page');
+        matched = matched || link;
       });
+
+      // A sub-page also lights its parent, so the practice it belongs to is
+      // visible at the top level.
+      if (matched) {
+        const parentItem = matched.closest('.has-submenu');
+        const parentLink = parentItem && parentItem.querySelector(':scope > a');
+        if (parentLink && parentLink !== matched) {
+          parentLink.classList.add('active');
+          parentLink.setAttribute('aria-current', 'true');
+        }
+      }
     })
     .catch(err => console.error("Nav load failed:", err));
 });

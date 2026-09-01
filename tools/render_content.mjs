@@ -158,6 +158,11 @@ const REGIONS = [
     render: (data) => renderProof(data.practices.ai_transformation.proof),
   },
   {
+    name: 'site_nav',
+    file: 'nav.html',
+    render: (data) => renderNav(data.nav),
+  },
+  {
     name: 'ba_readiness_intro',
     file: 'ai-readiness.html',
     render: (data) => renderBaReadinessIntro(data.practices.ai_transformation.readiness),
@@ -436,6 +441,46 @@ function renderProofTeaser(proof) {
 /** The form fields. Generated so a question cannot exist without a unique key
  *  — two questions previously shared name="alignment", which silently collapsed
  *  the sixth dimension and made any keyed read of the answers wrong. */
+/**
+ * The top-level nav, rendered from pages.json.
+ *
+ * Every page with chrome must be reachable from here — see the coverage check
+ * in main(). Adding a page to the site while forgetting the nav was a manual
+ * checklist step, and it had already been missed twice.
+ */
+function renderNav(nav) {
+  const link = (item, cls) =>
+    `<a href="${escapeHtml(item.href)}"${cls ? ` class="${cls}"` : ''}>${escapeHtml(item.label)}</a>`;
+
+  const items = nav.map((item) => {
+    if (!item.children || !item.children.length) {
+      return `    <li>${link(item)}</li>`;
+    }
+    const children = item.children
+      .map((c) => `        <li>${link(c)}</li>`)
+      .join('\n');
+    // No JS: the submenu opens on hover and on :focus-within, so it is
+    // keyboard reachable, and on the mobile slide-in panel it is always shown.
+    return [
+      '    <li class="has-submenu">',
+      `      ${link(item)}`,
+      `      <ul class="submenu" aria-label="${escapeHtml(item.label)}">`,
+      children,
+      '      </ul>',
+      '    </li>',
+    ].join('\n');
+  }).join('\n');
+
+  return [
+    '<nav class="main-nav" role="navigation">',
+    '  <ul>',
+    items,
+    '    <li><a href="contact.html" class="btn cta">Book a Consult</a></li>',
+    '  </ul>',
+    '</nav>',
+  ].join('\n');
+}
+
 function renderBaReadinessIntro(readiness) {
   return `  <p class="ba-readiness-intro">${escapeHtml(readiness.intro)}</p>`;
 }
@@ -542,7 +587,24 @@ function spliceRegion(source, name, body) {
 function main() {
   const check = process.argv.includes('--check');
   const data = JSON.parse(readFileSync(resolve(ROOT, SOURCE), 'utf8'));
-  data.pages = JSON.parse(readFileSync(resolve(ROOT, PAGES), 'utf8')).pages;
+  const pagesFile = JSON.parse(readFileSync(resolve(ROOT, PAGES), 'utf8'));
+  data.pages = pagesFile.pages;
+  data.nav = pagesFile.nav;
+
+  // Coverage guard: a page can be created, registered and shipped while never
+  // being linked from the nav. That happened to ai-proof and ai-readiness.
+  const reachable = new Set();
+  for (const item of data.nav || []) {
+    reachable.add(item.href);
+    for (const child of item.children || []) reachable.add(child.href);
+  }
+  const unreachable = CHROME_PAGES.filter((p) => !reachable.has(p) && p !== 'contact.html');
+  if (unreachable.length) {
+    throw new Error(
+      `page(s) not reachable from the nav: ${unreachable.join(', ')}. ` +
+      'Add them to "nav" in content/pages.json.'
+    );
+  }
 
   // A region may target one file or many; flatten to one entry per file.
   const flat = REGIONS.flatMap((r) =>
