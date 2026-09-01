@@ -14,7 +14,14 @@
           "focus": "Restore clarity, reduce cognitive load, establish hygiene.",
           "outcomes": "Reduced clutter, clear workflows, initial alignment.",
           "deliverables": "Tool hygiene audit, sanitation playbook.",
-          "ai_augmentation": "Automated Jira board cleanup, duplicate detection, backlog hygiene assistant."
+          "ai_augmentation": "Automated Jira board cleanup, duplicate detection, backlog hygiene assistant.",
+          "price": {
+            "basis": "fixed",
+            "ex_gst": 6000,
+            "duration": "1 week",
+            "effort_days": 3,
+            "proximity": "2 days on-site, remainder remote"
+          }
         },
         {
           "number": 2,
@@ -24,7 +31,14 @@
           "focus": "Team health, morale, ceremony clarity.",
           "outcomes": "Improved trust, reduced burnout, meaningful rituals.",
           "deliverables": "Morale metrics dashboard, role clarifications, team health interventions.",
-          "ai_augmentation": "Retro documentation, sprint flow insights, facilitation prompts."
+          "ai_augmentation": "Retro documentation, sprint flow insights, facilitation prompts.",
+          "price": {
+            "basis": "from",
+            "ex_gst": 16000,
+            "duration": "3–4 weeks",
+            "effort_days": 8,
+            "proximity": "Weekly on-site, ceremonies facilitated in person"
+          }
         },
         {
           "number": 3,
@@ -34,7 +48,14 @@
           "focus": "Pilot modular Agile practices with one team, refine cadence, prepare for scale.",
           "outcomes": "Autonomous teams, faster iteration, clear accountability.",
           "deliverables": "Team-specific enablement plan, coaching cadence.",
-          "ai_augmentation": "Backlog prioritization rubric, automated work item creation, sprint health dashboards."
+          "ai_augmentation": "Backlog prioritization rubric, automated work item creation, sprint health dashboards.",
+          "price": {
+            "basis": "from",
+            "ex_gst": 32000,
+            "duration": "6–8 weeks",
+            "effort_days": 16,
+            "proximity": "Embedded 2 days/week with one pilot team"
+          }
         },
         {
           "number": 4,
@@ -44,7 +65,12 @@
           "focus": "Replicate modular practices across teams, align governance.",
           "outcomes": "Scalable Agile practices, consistent delivery, cross-team transparency.",
           "deliverables": "Scaled rollout plan, cross-team coaching, governance map.",
-          "ai_augmentation": "Cross-team dashboards, compliance reporting, predictive bottleneck detection."
+          "ai_augmentation": "Cross-team dashboards, compliance reporting, predictive bottleneck detection.",
+          "price": {
+            "basis": "scoped",
+            "duration": "3–6 months",
+            "proximity": "Embedded cadence agreed per team"
+          }
         },
         {
           "number": 5,
@@ -54,7 +80,14 @@
           "focus": "Strategic agility, continuous improvement, business alignment.",
           "outcomes": "Sustained momentum, strategic alignment, high morale.",
           "deliverables": "Advanced dashboards, strategic workshops, compliance frameworks.",
-          "ai_augmentation": "Predictive analytics, strategic scenario modeling, continuous improvement dashboards."
+          "ai_augmentation": "Predictive analytics, strategic scenario modeling, continuous improvement dashboards.",
+          "price": {
+            "basis": "retainer",
+            "ex_gst": 4000,
+            "duration": "Ongoing",
+            "proximity": "2 days/month on-site, async access between",
+            "effort_days": 2
+          }
         }
       ]
     },
@@ -218,7 +251,14 @@
             "Surface pain points and quantify what they cost",
             "Team Health Report and role-alignment analysis as measured input"
           ],
-          "deliverable": "Readiness report with prioritised opportunities and a costed pain map"
+          "deliverable": "Readiness report with prioritised opportunities and a costed pain map",
+          "price": {
+            "basis": "fixed",
+            "ex_gst": 7500,
+            "duration": "1 week",
+            "effort_days": 3,
+            "proximity": "2 days on-site for interviews and shadowing"
+          }
         },
         {
           "name": "AI Opportunity & Value Case",
@@ -227,7 +267,14 @@
             "Prioritise by value, feasibility, and risk — and say no where the case is weak",
             "Quantify uplift into a business case that survives a CFO"
           ],
-          "deliverable": "Opportunity register and ROI model with stated assumptions"
+          "deliverable": "Opportunity register and ROI model with stated assumptions",
+          "price": {
+            "basis": "from",
+            "ex_gst": 17500,
+            "duration": "2–3 weeks",
+            "effort_days": 7,
+            "proximity": "Remote, with on-site prioritisation workshops"
+          }
         },
         {
           "name": "Operating Model & Process Redesign",
@@ -236,7 +283,14 @@
             "Design decision systems, not just automations",
             "Define the future-state operating model and what it asks of each role"
           ],
-          "deliverable": "Future-state operating model and re-engineered process maps"
+          "deliverable": "Future-state operating model and re-engineered process maps",
+          "price": {
+            "basis": "from",
+            "ex_gst": 45000,
+            "duration": "6–10 weeks",
+            "effort_days": 18,
+            "proximity": "Embedded 2 days/week"
+          }
         },
         {
           "name": "AI-Ready Requirements & Governance",
@@ -245,7 +299,14 @@
             "Specify data, model behaviour, and integration points",
             "Set regulatory, ethical, and operational boundaries before build, not after"
           ],
-          "deliverable": "Requirements pack and AI governance framework"
+          "deliverable": "Requirements pack and AI governance framework",
+          "price": {
+            "basis": "from",
+            "ex_gst": 30000,
+            "duration": "4–6 weeks",
+            "effort_days": 12,
+            "proximity": "Remote, on-site for elicitation sessions"
+          }
         },
         {
           "name": "Transformation Roadmap & Orchestration",
@@ -254,7 +315,12 @@
             "Coordinate execs, product, engineering, ops, and compliance",
             "Keep the roadmap honest as reality moves"
           ],
-          "deliverable": "Phased roadmap with dependency map and orchestration cadence"
+          "deliverable": "Phased roadmap with dependency map and orchestration cadence",
+          "price": {
+            "basis": "scoped",
+            "duration": "Ongoing",
+            "proximity": "Cadence agreed per programme"
+          }
         },
         {
           "name": "Adoption & AI Capability Uplift",
@@ -263,7 +329,14 @@
             "Manage resistance and build confidence in new workflows",
             "Measure adoption, not attendance"
           ],
-          "deliverable": "Capability uplift programme and adoption metrics"
+          "deliverable": "Capability uplift programme and adoption metrics",
+          "price": {
+            "basis": "from",
+            "ex_gst": 20000,
+            "duration": "3–4 weeks",
+            "effort_days": 8,
+            "proximity": "On-site delivery, remote follow-up"
+          }
         }
       ],
       "proof": {
@@ -314,5 +387,11 @@
         "bridge": "This is the same sequence the AI Transformation practice runs with clients: listen first, ground every claim in something measurable, design for the human who has to sign their name to the output, and be honest about where AI does not belong."
       }
     }
+  },
+  "_pricing": {
+    "_comment": "Prices are EX-GST integers in AUD. tools/render_content.mjs derives the GST-inclusive figure and renders it as the prominent price. Change a number here and BOTH figures update; never hand-write an inclusive price.",
+    "currency": "AUD",
+    "gst_rate": 0.1,
+    "note": "Prices shown include GST. Fixed-fee engagements — nothing is billed hourly. Sydney metro included; travel beyond quoted separately. Scope, deliverables and exclusions agreed in writing before work starts."
   }
 }
