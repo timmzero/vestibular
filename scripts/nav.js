@@ -32,13 +32,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
 
-      // Highlight active nav link
+      // Highlight the active nav link.
+      // The nav lists practice hubs, not every page, so a sub-page must light
+      // up its parent hub. Without this map nothing highlights on Services,
+      // Diagnostic or Playbook, which reads as "you are nowhere".
+      const PRACTICE_HUB = {
+        'services.html': 'agile.html',
+        'diagnostic.html': 'agile.html',
+        'playbook.html': 'agile.html',
+        'ai-services.html': 'ai-transformation.html',
+        'ai-playbook.html': 'ai-transformation.html',
+      };
+
       const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+      const activeHref = PRACTICE_HUB[currentPath] || currentPath;
+
       nav.querySelectorAll('a').forEach(link => {
         const linkPath = link.getAttribute('href');
-        if (linkPath === currentPath || (currentPath === '' && linkPath === 'index.html')) {
+        const isActive = linkPath === activeHref
+          || (currentPath === '' && linkPath === 'index.html');
+        if (isActive && !link.classList.contains('cta')) {
           link.classList.add('active');
-          link.setAttribute('aria-current', 'page');
+          link.setAttribute('aria-current', currentPath === linkPath ? 'page' : 'true');
         }
       });
     })

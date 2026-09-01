@@ -320,7 +320,9 @@ button:hover, button:focus { background: #333; }
   .nav-toggle { display: none; }
 }
 .content-wrapper {
-  max-width: 960px;
+  /* Was a hardcoded 960px while every other page used the 900px token, so
+     Diagnostic silently rendered 60px wider than the rest of the site. */
+  max-width: var(--max-content-width);
   margin: 0 auto;
   padding: 0 16px;
 }
@@ -760,3 +762,120 @@ article.stage ul li strong { color: rgba(152,203,43,0.8); }
 /* ── Contact — form section spacing ──────────────────────────────────────── */
 .contact { margin-top: 1.5rem; }
 
+
+/* ── Practice router (homepage front door) ───────────────────────────────── */
+.router-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+@media (min-width: 768px) {
+  .router-grid { grid-template-columns: 1fr 1fr; }
+}
+.router-card {
+  display: block;
+  text-decoration: none;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  padding: 1.5rem;
+  background: rgba(255,255,255,0.02);
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.router-card:hover,
+.router-card:focus-visible {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(152,203,43,0.4);
+}
+.router-card h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--hero-text-color);
+  margin: 0 0 0.6rem;
+}
+.router-card p {
+  font-size: 0.92rem;
+  color: rgba(224,224,224,0.7);
+  margin: 0 0 0.75rem;
+  line-height: 1.6;
+}
+.router-card .router-practice {
+  color: var(--primary-color);
+  font-weight: 700;
+  font-size: 0.88rem;
+  margin: 0;
+}
+
+/* ── AI Transformation — domain purpose line ─────────────────────────────── */
+.domain-purpose {
+  color: rgba(224,224,224,0.75);
+  font-size: 0.92rem;
+  margin: 0 0 0.75rem;
+  line-height: 1.6;
+}
+
+/* ── AI Transformation — playbook phases ─────────────────────────────────── */
+.ba-phase { padding: 0; margin: 0 0 2rem; max-width: none; }
+.ba-phase h3 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin: 0 0 0.4rem;
+  font-family: var(--font-heading);
+}
+.phase-blurb {
+  color: rgba(224,224,224,0.65);
+  font-size: 0.95rem;
+  margin: 0 0 1rem;
+  line-height: 1.6;
+}
+.ba-phase > ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.ba-phase > ol > li {
+  border-left: 2px solid rgba(152,203,43,0.35);
+  border-radius: 0 6px 6px 0;
+  background: rgba(255,255,255,0.02);
+  padding: 0.9rem 1rem 0.9rem 1.25rem;
+  margin-bottom: 0.6rem;
+}
+.ba-phase > ol > li h4 {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--hero-text-color);
+  margin: 0 0 0.35rem;
+}
+.ba-phase > ol > li p {
+  font-size: 0.9rem;
+  color: rgba(224,224,224,0.7);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ── Hub "where to next" lists ───────────────────────────────────────────── */
+.ba-nav-cards ul { list-style: none; padding: 0; margin: 0; }
+.ba-nav-cards ul li {
+  padding: 0.9rem 1rem;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.02);
+  margin-bottom: 0.6rem;
+  color: rgba(224,224,224,0.7);
+  font-size: 0.92rem;
+}
+.ba-nav-cards ul li a {
+  color: var(--primary-color);
+  font-weight: 700;
+  text-decoration: none;
+}
+.ba-nav-cards ul li a:hover { text-decoration: underline; }
+
+/* ── Two-column card grid on wide screens (accepted design call) ─────────── */
+/* Services and playbook lists ran as one long single-column ribbon on desktop.
+   Applies to both practices, so the BA pages inherit it automatically. */
+@media (min-width: 1000px) {
+  section.services { max-width: var(--max-content-width); }
+  section.services article { display: inline-block; width: calc(50% - 0.55rem); vertical-align: top; }
+  section.services article:nth-child(odd) { margin-right: 0.9rem; }
+}

@@ -1,12 +1,10 @@
 {
   "_comment": "SINGLE SOURCE OF TRUTH for practice content. HTML regions marked GENERATED are produced from this file by scripts/build/render_content.mjs. Never hand-edit a GENERATED region — run the generator instead. CI verifies the committed HTML matches this file.",
-
   "practices": {
     "agile": {
       "label": "Agile Transformation",
       "model": "maturity",
       "_comment": "A maturity model: answers 'where are you now' and routes to a package.",
-
       "stages": [
         {
           "number": 1,
@@ -57,6 +55,215 @@
           "outcomes": "Sustained momentum, strategic alignment, high morale.",
           "deliverables": "Advanced dashboards, strategic workshops, compliance frameworks.",
           "ai_augmentation": "Predictive analytics, strategic scenario modeling, continuous improvement dashboards."
+        }
+      ]
+    },
+    "ai_transformation": {
+      "label": "AI Transformation",
+      "discipline": "Business Analysis",
+      "model": "sequence",
+      "_comment": "An engagement sequence: answers 'what happens when we work together'. Deliberately NOT a maturity model — the Agile practice owns that shape, and reusing its Declutter/Reboot/Enable vocabulary here would make the two practices indistinguishable.",
+      "ethos": {
+        "name": "Listen First",
+        "statement": "We start from the assumption that your team already knows what is wrong. Our job is to surface it, not to arrive with the answer.",
+        "principles": [
+          "The people doing the work hold the truth. Interviews, workshops and shadowing get it out; a template does not.",
+          "Validate before proposing. No premature optimisation, no solution looking for a problem.",
+          "Every finding is traceable to a person, a system, or a number — never to an assumption."
+        ]
+      },
+      "domains": [
+        {
+          "name": "Company Goals",
+          "purpose": "Understand what the organisation is actually trying to achieve — and whether its parts agree.",
+          "points": [
+            "Gather and validate goals across execs, ops, product, and field teams",
+            "Test that goals are aligned, measurable, and sequenced — not merely stated",
+            "Map goals to AI leverage points, system dependencies, and capability gaps"
+          ]
+        },
+        {
+          "name": "Systems",
+          "purpose": "Establish what you run, how well you run it, and what it is capable of.",
+          "points": [
+            "Inventory every system in use — core, satellite, and shadow IT",
+            "Mastery: assess whether each system is used to a fraction of its potential",
+            "Integration: identify what can, should, and already does connect",
+            "AI-readiness: evaluate data quality, accessibility, and automation potential"
+          ]
+        },
+        {
+          "name": "Pain Points",
+          "purpose": "Find where the pressure is greatest and put a number on it.",
+          "points": [
+            "Locate bottlenecks, delays, rework, and compliance exposure",
+            "Map who and what is at risk — roles, customers, revenue, safety, reputation",
+            "Quantify impact in cycle time, cost, error rate, and emotional load"
+          ]
+        },
+        {
+          "name": "Morale & Team Health",
+          "purpose": "Treat team health as a measurable input to the redesign, not a soft afterthought.",
+          "points": [
+            "Team Health Reports measuring wellbeing, clarity, alignment, and psychological safety",
+            "Identify role misalignment — where responsibility and job description have parted ways",
+            "Surface the cultural blockers to transformation: fear, fatigue, confusion, siloing"
+          ]
+        },
+        {
+          "name": "Roles & Alignment",
+          "purpose": "Put the right people in the right place for the operating model you are building toward.",
+          "points": [
+            "Match capability, temperament, and workload to role",
+            "Redefine roles for an AI-enabled operating model",
+            "Clarify decision rights, ownership, and accountability"
+          ]
+        },
+        {
+          "name": "AI Enablement",
+          "purpose": "Decide where AI genuinely earns its place, and prepare the ground for it.",
+          "points": [
+            "Identify where AI meets a real need: automation, prediction, decision support, workflow augmentation",
+            "Prioritise opportunities by value, feasibility, and risk",
+            "Define AI-ready requirements: data, model behaviour, integration points",
+            "Build AI literacy across teams so adoption is not left to chance"
+          ]
+        }
+      ],
+      "phases": [
+        {
+          "name": "Listen",
+          "blurb": "Before anything is designed, the ground truth is established with the people who hold it.",
+          "steps": [
+            {
+              "number": 1,
+              "name": "Establish the goals",
+              "detail": "Gather and validate what the organisation is trying to achieve, across every level that has a stake in it."
+            },
+            {
+              "number": 2,
+              "name": "Surface the ground truth",
+              "detail": "Interviews, workshops, and shadowing to extract the tacit knowledge that never reaches a status report."
+            },
+            {
+              "number": 3,
+              "name": "Map the systems",
+              "detail": "Every system in use, how well it is used, what it integrates with, and whether its data is fit for AI."
+            },
+            {
+              "number": 4,
+              "name": "Locate and quantify the pain",
+              "detail": "Where the pressure is greatest, who carries it, and what it costs in time, money, error, and morale."
+            },
+            {
+              "number": 5,
+              "name": "Assess people and roles",
+              "detail": "Team Health Reports and role-alignment analysis, feeding the redesign as measured input rather than opinion."
+            }
+          ]
+        },
+        {
+          "name": "Design",
+          "blurb": "Only once the picture is real do we design against it — value case first, so the work is justified before it is scoped.",
+          "steps": [
+            {
+              "number": 6,
+              "name": "Identify AI opportunities",
+              "detail": "Find the leverage points where AI materially improves margin, throughput, or risk — and rule out the ones where it does not."
+            },
+            {
+              "number": 7,
+              "name": "Model the value case",
+              "detail": "Quantify the uplift and build the business case. This comes early because it is what unlocks the budget, not what reports on it afterwards."
+            },
+            {
+              "number": 8,
+              "name": "Redesign the operating model",
+              "detail": "Rebuild processes end to end with automation, agents, and predictive systems embedded — not bolted on."
+            },
+            {
+              "number": 9,
+              "name": "Define requirements and governance",
+              "detail": "Translate business need into AI-ready requirements, with regulatory, ethical, and operational boundaries set at the same time."
+            }
+          ]
+        },
+        {
+          "name": "Land",
+          "blurb": "A transformation that is designed but not adopted has changed nothing.",
+          "steps": [
+            {
+              "number": 10,
+              "name": "Build the roadmap",
+              "detail": "Phases, dependencies, quick wins, and long-term uplift — the artefact an executive can actually hold and fund."
+            },
+            {
+              "number": 11,
+              "name": "Orchestrate delivery and adoption",
+              "detail": "Coordinate execs, product, engineering, ops, and compliance. Manage resistance and build confidence in the new workflows."
+            },
+            {
+              "number": 12,
+              "name": "Measure uplift and iterate",
+              "detail": "Track the value actually realised against the case that was modelled, then expand capability from what worked."
+            }
+          ]
+        }
+      ],
+      "services": [
+        {
+          "name": "AI Readiness Assessment",
+          "bullets": [
+            "Inventory systems, data quality, and integration potential",
+            "Surface pain points and quantify what they cost",
+            "Team Health Report and role-alignment analysis as measured input"
+          ],
+          "deliverable": "Readiness report with prioritised opportunities and a costed pain map"
+        },
+        {
+          "name": "AI Opportunity & Value Case",
+          "bullets": [
+            "Locate leverage points where AI moves margin, throughput, or risk",
+            "Prioritise by value, feasibility, and risk — and say no where the case is weak",
+            "Quantify uplift into a business case that survives a CFO"
+          ],
+          "deliverable": "Opportunity register and ROI model with stated assumptions"
+        },
+        {
+          "name": "Operating Model & Process Redesign",
+          "bullets": [
+            "Rebuild processes end to end around AI-enabled workflows",
+            "Design decision systems, not just automations",
+            "Define the future-state operating model and what it asks of each role"
+          ],
+          "deliverable": "Future-state operating model and re-engineered process maps"
+        },
+        {
+          "name": "AI-Ready Requirements & Governance",
+          "bullets": [
+            "Translate business need into requirements a build team can act on",
+            "Specify data, model behaviour, and integration points",
+            "Set regulatory, ethical, and operational boundaries before build, not after"
+          ],
+          "deliverable": "Requirements pack and AI governance framework"
+        },
+        {
+          "name": "Transformation Roadmap & Orchestration",
+          "bullets": [
+            "Sequence phases, dependencies, quick wins, and long-term uplift",
+            "Coordinate execs, product, engineering, ops, and compliance",
+            "Keep the roadmap honest as reality moves"
+          ],
+          "deliverable": "Phased roadmap with dependency map and orchestration cadence"
+        },
+        {
+          "name": "Adoption & AI Capability Uplift",
+          "bullets": [
+            "Build AI literacy: fundamentals, real limits, and practical use",
+            "Manage resistance and build confidence in new workflows",
+            "Measure adoption, not attendance"
+          ],
+          "deliverable": "Capability uplift programme and adoption metrics"
         }
       ]
     }
