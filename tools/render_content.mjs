@@ -387,9 +387,22 @@ function renderServices(services, pricing, phases) {
     ].join('\n');
   };
 
+  // Within a phase, cheapest first, so the smaller price is always the
+  // left-hand card of a row. Sorted at render time rather than by hand-ordering
+  // the source, so a service added later cannot land out of order.
+  //
+  // 'scoped' has no figure and sorts last: it is the open-ended engagement, and
+  // an unpriced card between two priced ones breaks the reading of the row.
+  // Sequence is still carried by the phase grouping; only the order WITHIN a
+  // phase is by price.
+  const amount = (s) =>
+    s.price && typeof s.price.ex_gst === 'number' ? s.price.ex_gst : Infinity;
+
   return order
     .map((phase) => {
-      const inPhase = services.filter((s) => s.phase === phase);
+      const inPhase = services
+        .filter((s) => s.phase === phase)
+        .sort((a, b) => amount(a) - amount(b));
       if (!inPhase.length) return null;
       return [
         '      <div class="phase-heading">',
