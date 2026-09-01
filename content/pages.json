@@ -36,6 +36,10 @@
     "services.html": {
       "title": "Vestibular Agile Transformation – Services",
       "description": "Vestibular Agile Transformation helps tech teams declutter Agile tooling, rebuild morale, and scale with a modular, science-backed playbook."
+    },
+    "ai-proof.html": {
+      "title": "Vestibular AI Transformation – Proof",
+      "description": "We built and shipped a production AI system for regulated compliance documents. What it taught us about grounding, calibration, and where AI does not belong."
     }
   }
 }

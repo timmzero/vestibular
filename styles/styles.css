@@ -879,3 +879,49 @@ article.stage ul li strong { color: rgba(152,203,43,0.8); }
   section.services article { display: inline-block; width: calc(50% - 0.55rem); vertical-align: top; }
   section.services article:nth-child(odd) { margin-right: 0.9rem; }
 }
+
+/* ── AI Transformation — proof / case study ──────────────────────────────── */
+.proof-para {
+  color: rgba(224,224,224,0.78);
+  font-size: 0.98rem;
+  line-height: 1.7;
+  margin: 0 0 1rem;
+  max-width: 62ch;
+}
+.proof-heading {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  font-family: var(--font-heading);
+  margin: 2.25rem 0 1rem;
+}
+.proof-num {
+  color: var(--primary-color);
+  font-family: var(--font-heading);
+  opacity: 0.55;
+  margin-right: 0.5rem;
+}
+.proof-bridge {
+  border-left: 2px solid var(--primary-color);
+  border-radius: 0 6px 6px 0;
+  background: rgba(152,203,43,0.06);
+  padding: 1rem 1.25rem;
+  margin: 2rem 0 0;
+  color: rgba(224,224,224,0.8);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  max-width: 62ch;
+}
+.proof-bridge a { color: var(--primary-color); font-weight: 700; text-decoration: none; }
+.proof-bridge a:hover { text-decoration: underline; }
+
+.ba-proof-teaser ul { list-style: none; padding: 0; margin: 0 0 1rem; }
+.ba-proof-teaser ul li {
+  padding: 0.7rem 1rem;
+  border-left: 2px solid rgba(152,203,43,0.35);
+  border-radius: 0 6px 6px 0;
+  background: rgba(255,255,255,0.02);
+  margin-bottom: 0.5rem;
+  color: var(--hero-text-color);
+  font-size: 0.93rem;
+}

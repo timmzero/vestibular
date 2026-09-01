@@ -46,8 +46,8 @@ const escapeHtml = (s) =>
  *  so a forgotten entry fails loudly instead of rendering an empty <title>. */
 const CHROME_PAGES = [
   'index.html', 'agile.html', 'ai-transformation.html', 'ai-services.html',
-  'ai-playbook.html', 'services.html', 'diagnostic.html', 'playbook.html',
-  'contact.html',
+  'ai-playbook.html', 'ai-proof.html', 'services.html', 'diagnostic.html',
+  'playbook.html', 'contact.html',
 ];
 
 /**
@@ -89,6 +89,16 @@ const REGIONS = [
     name: 'ba_playbook_phases',
     file: 'ai-playbook.html',
     render: (data) => renderPhases(data.practices.ai_transformation.phases),
+  },
+  {
+    name: 'ba_proof',
+    file: 'ai-proof.html',
+    render: (data) => renderProof(data.practices.ai_transformation.proof),
+  },
+  {
+    name: 'ba_proof_teaser',
+    file: 'ai-transformation.html',
+    render: (data) => renderProofTeaser(data.practices.ai_transformation.proof),
   },
 ];
 
@@ -282,6 +292,53 @@ function renderPhases(phases) {
       ].join('\n');
     })
     .join('\n\n');
+}
+
+/** The case study. Rendered from the SSOT like everything else, so the claims
+ *  made about the platform live in one place and cannot drift between the
+ *  teaser on the hub and the full page. */
+function renderProof(proof) {
+  const para = (t) => `      <p class="proof-para">${escapeHtml(t)}</p>`;
+  const card = (item, i) => [
+    '      <article>',
+    '        <div>',
+    `        <h3><span class="proof-num">${String(i + 1).padStart(2, '0')}</span> ${escapeHtml(item.name)}</h3>`,
+    `        <p>${escapeHtml(item.detail)}</p>`,
+    '        </div>',
+    '      </article>',
+  ].join('\n');
+
+  return [
+    '      <p class="section-label">Proof</p>',
+    `      <h2 class="section-title">${escapeHtml(proof.headline)}</h2>`,
+    `      <p class="section-intro">${escapeHtml(proof.summary)}</p>`,
+    '',
+    ...proof.context.map(para),
+    '',
+    '      <h3 class="proof-heading">What we held to</h3>',
+    proof.principles.map(card).join('\n\n'),
+    '',
+    '      <h3 class="proof-heading">What it taught us</h3>',
+    proof.lessons.map(card).join('\n\n'),
+    '',
+    `      <p class="proof-bridge">${escapeHtml(proof.bridge)}</p>`,
+  ].join('\n');
+}
+
+/** Short version for the hub. Same source, so it cannot contradict the page. */
+function renderProofTeaser(proof) {
+  return [
+    '      <p class="section-label">Proof</p>',
+    `      <h2 class="section-title">${escapeHtml(proof.headline)}</h2>`,
+    `      <p class="section-intro">${escapeHtml(proof.summary)}</p>`,
+    '      <ul>',
+    proof.principles
+      .slice(0, 3)
+      .map((p) => `        <li><strong>${escapeHtml(p.name)}</strong></li>`)
+      .join('\n'),
+    '      </ul>',
+    '      <p class="proof-bridge"><a href="ai-proof.html">Read the full case study &rarr;</a></p>',
+  ].join('\n');
 }
 
 function markers(name) {

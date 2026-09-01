@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- GENERATED:page_head START · source content/practices.json · regen: node tools/render_content.mjs · DO NOT EDIT BELOW -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="We built and shipped a production AI system for regulated compliance documents. What it taught us about grounding, calibration, and where AI does not belong." />
+  <meta name="theme-color" content="#000000" />
+
+  <!-- Favicons -->
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+  <link rel="manifest" href="assets/site.webmanifest">
+
+  <title>Vestibular AI Transformation – Proof</title>
+  <link rel="canonical" href="https://vestibular.nexus/ai-proof" />
+
+  <!-- Open Graph / Twitter. Cards are 1200x630 PNGs generated from this
+       same metadata by tools/build_og_images.py, so a share card can never
+       advertise a different title from the page it links to. -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Vestibular" />
+  <meta property="og:url" content="https://vestibular.nexus/ai-proof" />
+  <meta property="og:title" content="Vestibular AI Transformation – Proof" />
+  <meta property="og:description" content="We built and shipped a production AI system for regulated compliance documents. What it taught us about grounding, calibration, and where AI does not belong." />
+  <meta property="og:image" content="https://vestibular.nexus/assets/og/ai-proof.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Vestibular AI Transformation – Proof" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Vestibular AI Transformation – Proof" />
+  <meta name="twitter:description" content="We built and shipped a production AI system for regulated compliance documents. What it taught us about grounding, calibration, and where AI does not belong." />
+  <meta name="twitter:image" content="https://vestibular.nexus/assets/og/ai-proof.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/styles.css" />
+<!-- GENERATED:page_head END -->
+</head>
+
+<body>
+  <!-- Hero Header -->
+  <header class="hero">
+    <!-- GENERATED:topbar START · source content/practices.json · regen: node tools/render_content.mjs · DO NOT EDIT BELOW -->
+    <div class="topbar" role="banner">
+      <div class="brand">
+        <a href="index.html" aria-label="Vestibular home">
+          <img src="assets/vestibular_logo.svg" alt="Vestibular logo" class="brand-logo" />
+        </a>
+        <button class="nav-toggle"
+                aria-label="Toggle navigation"
+                aria-controls="nav-placeholder"
+                aria-expanded="false">☰</button>
+      </div>
+
+      <!-- Shared nav include, injected by scripts/nav.js from nav.html -->
+      <div id="nav-placeholder"></div>
+      <div class="nav-backdrop"></div>
+    </div>
+<!-- GENERATED:topbar END -->
+
+    <!-- GENERATED:hero_logo START · source content/practices.json · regen: node tools/render_content.mjs · DO NOT EDIT BELOW -->
+    <div class="hero-logo-3d" aria-hidden="true">
+    <svg viewBox="-5 -5 350 350" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs><path id="bgm" d="m 183.62274,6.9488756 a 34.799689,79.634026 0.43288039 0 0 -33.9538,71.7338354 34.799689,79.634026 0.43288039 0 0 9.44435,63.512169 79.634026,34.799689 17.388063 0 0 -57.57522,-28.42789 79.634026,34.799689 17.388063 0 0 -79.742018,14.80685 79.634026,34.799689 17.388063 0 0 73.536274,55.84921 79.634026,34.799689 17.388063 0 0 52.449874,4.58778 54.622161,54.622161 0 0 0 9.2915,43.11618 54.622161,54.622161 0 0 0 76.31633,11.96354 54.622161,54.622161 0 0 0 11.96353,-76.31371 54.622161,54.622161 0 0 0 -38.3044,-22.05875 34.799689,79.634026 0.43288039 0 0 11.78697,-51.322027 34.799689,79.634026 0.43288039 0 0 -30.66511,-87.0993472 34.799689,79.634026 0.43288039 0 0 -4.54828,-0.3478402 z"/></defs>
+    <use href="#bgm" transform="translate(40,40)" fill="#0a1c01"/>
+    <use href="#bgm" transform="translate(36,36)" fill="#0e2402"/>
+    <use href="#bgm" transform="translate(32,32)" fill="#122c03"/>
+    <use href="#bgm" transform="translate(28,28)" fill="#163404"/>
+    <use href="#bgm" transform="translate(24,24)" fill="#1a3c05"/>
+    <use href="#bgm" transform="translate(20,20)" fill="#1e4406"/>
+    <use href="#bgm" transform="translate(16,16)" fill="#224c07"/>
+    <use href="#bgm" transform="translate(12,12)" fill="#265408"/>
+    <use href="#bgm" transform="translate(8,8)" fill="#2a5c09"/>
+    <use href="#bgm" transform="translate(4,4)" fill="#2e640a"/>
+    <use href="#bgm" fill="#98cb2b" stroke="#182904" stroke-width="6"/>
+    </svg>
+    </div>
+<!-- GENERATED:hero_logo END -->
+    <div class="hero-content">
+      <h1>
+        <span>We shipped it</span><br />
+        <span>before we sold it.</span>
+      </h1>
+
+      <p class="highlighted-intro">
+        Most AI advice comes from people who have never had to decide what a model must refuse to answer.<br />
+        We built a production system in a domain where being confidently wrong is a safety problem.
+      </p>
+
+      <div class="cta-buttons">
+        <a href="contact.html" class="btn">Book a Free Consult</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <section class="services ba-proof">
+<!-- GENERATED:ba_proof START · source content/practices.json · regen: node tools/render_content.mjs · DO NOT EDIT BELOW -->
+      <p class="section-label">Proof</p>
+      <h2 class="section-title">We ran this playbook on ourselves.</h2>
+      <p class="section-intro">Before advising anyone on AI transformation, we built and shipped one: a production system that drafts regulatory compliance documents for Australian road worksites, in a domain where a confident wrong answer is a safety problem rather than an embarrassment.</p>
+
+      <p class="proof-para">Traffic Management Plans and Traffic Guidance Schemes are the documents that govern how a road worksite is signed, staged and made safe. They are prepared by qualified people, audited by road authorities, and wrong details have physical consequences.</p>
+      <p class="proof-para">The rules are layered: a national baseline, then state and territory overlays that diverge from it. What is compliant in one jurisdiction is not automatically compliant in the next.</p>
+      <p class="proof-para">The work was slow, repetitive, and highly susceptible to transcription error — the profile that looks like an obvious AI candidate right up until you consider what happens when the model is confidently wrong.</p>
+
+      <h3 class="proof-heading">What we held to</h3>
+      <article>
+        <div>
+        <h3><span class="proof-num">01</span> Never invent a safety-relevant value</h3>
+        <p>When the system cannot find a value in the source document, it records it as absent. It does not estimate, interpolate, or fall back on what is usually true. A plausible-but-wrong number is worse than a blank field, because a blank field gets checked and a plausible number does not.</p>
+        </div>
+      </article>
+
+      <article>
+        <div>
+        <h3><span class="proof-num">02</span> Measure on two axes, never merge them</h3>
+        <p>How much the system found, and how compliant the document is, are scored separately and never combined into one flattering number. The compliance scorer never sees whether a field was found, so it cannot reward the system for its own coverage. One blended metric would have hidden exactly the failure we most needed to see.</p>
+        </div>
+      </article>
+
+      <article>
+        <div>
+        <h3><span class="proof-num">03</span> Corroborate to demote, never to overwrite</h3>
+        <p>When another data source agrees or disagrees with a value a qualified engineer confirmed, it adjusts our confidence in that value. It never silently replaces it. The human's judgement is the record; the machine annotates it.</p>
+        </div>
+      </article>
+
+      <article>
+        <div>
+        <h3><span class="proof-num">04</span> Calibration is the metric, not coverage</h3>
+        <p>The question is not how much the system extracts. It is whether the things it says confidently are actually right. A tool that is right 70% of the time and honest about which 70% is far more useful than one that is right 90% of the time and cannot tell you which 10% to check.</p>
+        </div>
+      </article>
+
+      <article>
+        <div>
+        <h3><span class="proof-num">05</span> The qualified human is a design feature</h3>
+        <p>The system is a drafting aid with a professional backstop, and it was designed that way from the start rather than retrofitted after a scare. That framing changes what you build, what you measure, and what you are willing to ship.</p>
+        </div>
+      </article>
+
+      <h3 class="proof-heading">What it taught us</h3>
+      <article>
+        <div>
+        <h3><span class="proof-num">01</span> The pilot is not the hard part</h3>
+        <p>Getting a model to produce a plausible draft took a fraction of the effort. Everything after that — grounding it in the actual regulations, handling jurisdictional divergence, deciding what the system must refuse to answer — was the real work, and it is the part most AI programmes never reach.</p>
+        </div>
+      </article>
+
+      <article>
+        <div>
+        <h3><span class="proof-num">02</span> Measure before you believe</h3>
+        <p>Every number we report is derived from a run we can point at, and every guard is driven over a known-bad input to prove it can actually fail. A check that has never failed is indistinguishable from a check that cannot.</p>
+        </div>
+      </article>
+
+      <article>
+        <div>
+        <h3><span class="proof-num">03</span> Regulated domains reward restraint</h3>
+        <p>The features we chose not to automate did more for adoption than the ones we did. Professionals trust a tool that visibly knows its own limits, and refuse one that has been caught guessing even once.</p>
+        </div>
+      </article>
+
+      <p class="proof-bridge">This is the same sequence the AI Transformation practice runs with clients: listen first, ground every claim in something measurable, design for the human who has to sign their name to the output, and be honest about where AI does not belong.</p>
+<!-- GENERATED:ba_proof END -->
+    </section>
+
+    <section class="ba-nav-cards">
+      <p class="section-label">The practice</p>
+      <h2 class="section-title">How we work.</h2>
+      <ul>
+        <li><a href="ai-services.html">Services</a> — the six ways we engage, and what each one delivers.</li>
+        <li><a href="ai-playbook.html">Playbook</a> — the twelve steps, from first interview to measured uplift.</li>
+      </ul>
+    </section>
+
+    <!-- CTA Repeat -->
+    <section class="cta-repeat">
+      <h2>Transformation you can measure.</h2>
+      <div class="cta-buttons">
+        <a href="contact.html" class="btn">Book a Free Consult</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- GENERATED:footer START · source content/practices.json · regen: node tools/render_content.mjs · DO NOT EDIT BELOW -->
+  <footer>
+    <p>&copy; 2026 Vestibular. Built for clarity, scale, and morale.</p>
+  </footer>
+<!-- GENERATED:footer END -->
+
+  <!-- Scripts -->
+<script src="scripts/nav.js"></script>
+</body>
+</html>
