@@ -44,6 +44,26 @@ const REGIONS = [
     file: 'playbook.html',
     render: (data) => renderPlaybookStages(data.practices.agile.stages),
   },
+  {
+    name: 'ba_ethos',
+    file: 'ai-transformation.html',
+    render: (data) => renderEthos(data.practices.ai_transformation.ethos),
+  },
+  {
+    name: 'ba_domains',
+    file: 'ai-transformation.html',
+    render: (data) => renderDomains(data.practices.ai_transformation.domains),
+  },
+  {
+    name: 'ba_services',
+    file: 'ai-services.html',
+    render: (data) => renderServices(data.practices.ai_transformation.services),
+  },
+  {
+    name: 'ba_playbook_phases',
+    file: 'ai-playbook.html',
+    render: (data) => renderPhases(data.practices.ai_transformation.phases),
+  },
 ];
 
 function renderStageCards(stages) {
@@ -93,6 +113,90 @@ function renderPlaybookStages(stages) {
         rows,
         '          </ul>',
         '        </li>',
+      ].join('\n');
+    })
+    .join('\n\n');
+}
+
+function renderEthos(ethos) {
+  const principles = ethos.principles
+    .map((p) => `        <li>${escapeHtml(p)}</li>`)
+    .join('\n');
+  return [
+    `      <p class="section-label">Our ethos</p>`,
+    `      <h2 class="section-title">${escapeHtml(ethos.name)}.</h2>`,
+    `      <p class="section-intro">${escapeHtml(ethos.statement)}</p>`,
+    '      <ul>',
+    principles,
+    '      </ul>',
+  ].join('\n');
+}
+
+function renderDomains(domains) {
+  return domains
+    .map((d) => {
+      const points = d.points
+        .map((p) => `          <li>${escapeHtml(p)}</li>`)
+        .join('\n');
+      return [
+        '      <article>',
+        '        <div>',
+        `        <h3>${escapeHtml(d.name)}</h3>`,
+        `        <p class="domain-purpose">${escapeHtml(d.purpose)}</p>`,
+        '        <ul>',
+        points,
+        '        </ul>',
+        '        </div>',
+        '      </article>',
+      ].join('\n');
+    })
+    .join('\n\n');
+}
+
+/** Services render with the same article/deliverable shape the Agile services
+ *  page uses, so the two practices are visually siblings rather than strangers. */
+function renderServices(services) {
+  return services
+    .map((s) => {
+      const bullets = s.bullets
+        .map((b) => `          <li>${escapeHtml(b)}</li>`)
+        .join('\n');
+      return [
+        '      <article>',
+        '        <div>',
+        `        <h3>${escapeHtml(s.name)}</h3>`,
+        '        <ul>',
+        bullets,
+        `          <li><strong>Deliverable:</strong> ${escapeHtml(s.deliverable)}</li>`,
+        '        </ul>',
+        '        </div>',
+        '      </article>',
+      ].join('\n');
+    })
+    .join('\n\n');
+}
+
+function renderPhases(phases) {
+  return phases
+    .map((ph) => {
+      const steps = ph.steps
+        .map((st) =>
+          [
+            '          <li>',
+            `            <h4>${st.number}. ${escapeHtml(st.name)}</h4>`,
+            `            <p>${escapeHtml(st.detail)}</p>`,
+            '          </li>',
+          ].join('\n')
+        )
+        .join('\n');
+      return [
+        '      <section class="ba-phase">',
+        `        <h3>${escapeHtml(ph.name)}</h3>`,
+        `        <p class="phase-blurb">${escapeHtml(ph.blurb)}</p>`,
+        '        <ol>',
+        steps,
+        '        </ol>',
+        '      </section>',
       ].join('\n');
     })
     .join('\n\n');
