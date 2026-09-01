@@ -46,6 +46,11 @@
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
+  <url>
+    <loc>https://vestibular.nexus/ai-health</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
 
   <url>
     <loc>https://vestibular.nexus/contact</loc>

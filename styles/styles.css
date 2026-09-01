@@ -1110,3 +1110,20 @@ article.stage .price { margin-top: 1rem; }
 @media (max-width: 480px) {
   .radar-label { font-size: 10px; }
 }
+
+/* --- BA team-health page --------------------------------------------------- */
+.ba-health-intro {
+  color: rgba(224, 224, 224, 0.85);
+  line-height: 1.7;
+  margin: 0 0 1.25rem;
+}
+
+/* The BA read has no total and no stage, so the caveat carries the weight the
+   Agile result carries with its stage line: this is one point of view, not a
+   measurement of the team. */
+.result-caveat {
+  margin: 0.75rem 0 0;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: rgba(224, 224, 224, 0.6);
+}

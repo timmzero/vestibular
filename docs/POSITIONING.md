@@ -95,8 +95,30 @@ Assumes GST registration. **Not legal or accounting advice — worth a review.**
 - **Team-health kite chart** for the BA practice (founder's idea). The Agile
   scorecard now has keyed dimensions and a per-dimension read, so a radar is a
   visual swap rather than a rebuild — copy that pattern.
-- **BA has no diagnostic**, by choice. Fine behind hubs; the obvious next
-  content piece if the practice gets traffic.
+- ~~**BA has no diagnostic**, by choice.~~ **Reversed.** `ai-health.html` now
+  publishes a six-axis team-health radar on the BA side. It is deliberately
+  *not* a maturity model: no total, no threshold, no stage, no package
+  recommendation. The reader gets the shape and the weakest axis. Collapsing
+  six axes to one number would both discard the reading and make the two
+  practices look like the same offering twice.
+- **The six BA axes** are wellbeing, psychological safety, clarity, cohesion,
+  role fit, change readiness. They decompose the Morale & Team Health domain
+  and reach into Roles & Alignment and AI Enablement; Company Goals, Systems
+  and Pain Points are measured with other instruments and are deliberately not
+  spokes here. `alignment` was renamed `cohesion` because the Agile diagnostic
+  already owns an axis of that name with a different meaning.
+- **Psychological safety is a caveat over the whole instrument**, not one
+  finding among six. Listen First depends on people saying what they think; if
+  that axis is low, every other reading is suspect — including the flattering
+  ones. Not yet reflected in the on-page copy.
+- **Team-health capture is self-serve only.** The facilitated mode works today
+  by a consultant filling the same page in a workshop. The *stored-per-email*
+  mode discussed is NOT built: it would collect personal information about
+  wellbeing and psychological safety at a named workplace, and the backend has
+  no datastore of any kind (express/cors/helmet/postmark, send-only).
+- **There is no privacy policy.** `/privacy` returns HTTP 200 but it is a
+  soft-404 — an arbitrary URL returns the same homepage. Pre-existing, and
+  not blocking while nothing is stored, but blocking before any stored mode.
 - **Declutter at $6,600 / 3 days** is the anchor everything else is judged
   against. If the tool audit plus written playbook is really 4 days it is
   $8,800 and the whole ladder shifts.
