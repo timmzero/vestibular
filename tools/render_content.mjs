@@ -27,6 +27,12 @@ const SOURCE = 'content/practices.json';
 const PAGES = 'content/pages.json';
 const PARTIALS = 'content/partials';
 
+// Absolute, apex host. Open Graph requires absolute URLs, and rel=canonical
+// must name ONE host: the site answers on both vestibular.nexus and
+// www.vestibular.nexus with a 200, so without this every page looks like two
+// pages to a crawler.
+const SITE = 'https://vestibular.nexus';
+
 /** Shared chrome lives in content/partials/ as plain files, so the markup is
  *  edited as markup rather than as escaped strings inside this generator. */
 const partial = (name) =>
@@ -88,6 +94,16 @@ const REGIONS = [
 
 /** The <head> is identical on every page except <title> and the description,
  *  so those two come from content/pages.json and the rest is fixed here. */
+/** index.html -> 'index'. Matches the filenames build_og_images.py writes. */
+const ogSlug = (file) => file.replace(/\.html$/, '');
+
+/** Cloudflare Pages serves this site extensionless: /agile.html 308-redirects
+ *  to /agile, and /index.html to /. A canonical or og:url naming a URL that
+ *  redirects is self-defeating — it tells the crawler the real address is one
+ *  it will immediately be bounced off. Measured against production, not
+ *  assumed. */
+const canonicalPath = (file) => (file === 'index.html' ? '' : file.replace(/\.html$/, ''));
+
 function renderHead(data, file) {
   const meta = data.pages[file];
   if (!meta) throw new Error(`no metadata in ${PAGES} for '${file}'`);
@@ -106,6 +122,25 @@ function renderHead(data, file) {
     '  <link rel="manifest" href="assets/site.webmanifest">',
     '',
     `  <title>${escapeHtml(meta.title)}</title>`,
+    `  <link rel="canonical" href="${SITE}/${canonicalPath(file)}" />`,
+    '',
+    '  <!-- Open Graph / Twitter. Cards are 1200x630 PNGs generated from this',
+    '       same metadata by tools/build_og_images.py, so a share card can never',
+    '       advertise a different title from the page it links to. -->',
+    '  <meta property="og:type" content="website" />',
+    '  <meta property="og:site_name" content="Vestibular" />',
+    `  <meta property="og:url" content="${SITE}/${canonicalPath(file)}" />`,
+    `  <meta property="og:title" content="${escapeHtml(meta.title)}" />`,
+    `  <meta property="og:description" content="${escapeHtml(meta.description)}" />`,
+    `  <meta property="og:image" content="${SITE}/assets/og/${ogSlug(file)}.png" />`,
+    '  <meta property="og:image:width" content="1200" />',
+    '  <meta property="og:image:height" content="630" />',
+    `  <meta property="og:image:alt" content="${escapeHtml(meta.title)}" />`,
+    '  <meta name="twitter:card" content="summary_large_image" />',
+    `  <meta name="twitter:title" content="${escapeHtml(meta.title)}" />`,
+    `  <meta name="twitter:description" content="${escapeHtml(meta.description)}" />`,
+    `  <meta name="twitter:image" content="${SITE}/assets/og/${ogSlug(file)}.png" />`,
+    '',
     '  <link rel="preconnect" href="https://fonts.googleapis.com">',
     '  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
     '  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">',
