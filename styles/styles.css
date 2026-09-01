@@ -371,7 +371,10 @@ button:hover, button:focus { background: #333; }
   border: 1px solid #cc6666;
   color: #660000;
 }
-#scorecard-form {
+/* Shared by every dimension form (Agile diagnostic, BA team health). Scoped to
+   a class, not an id: these rules were #scorecard-form only, so the BA form
+   rendered unstyled with full-width inputs and labels beneath them. */
+.dimension-form {
   display: grid;
   grid-template-columns: 80px 1fr;  /* left: input, right: long label text */
   gap: 0.75rem 1rem;
@@ -380,23 +383,23 @@ button:hover, button:focus { background: #333; }
   align-items: start;
 }
 
-#scorecard-form label {
+.dimension-form label {
   display: contents;                 /* children become grid items */
   font-weight: 600;
 }
 
-#scorecard-form input[type="number"] {
+.dimension-form input[type="number"] {
   grid-column: 1;                    /* left column */
   width: 60px;                       /* 60–80px as desired */
   text-align: center;
   align-self: center;                 /* vertically align with text */
 }
 
-#scorecard-form .label-text {
+.dimension-form .label-text {
   grid-column: 2;                    /* right column (takes remaining space) */
   line-height: 1.4;
 }
-#scorecard-form button.btn {
+.dimension-form button.btn {
   grid-column: 2;          /* place under label column */
   justify-self: center;    /* centre horizontally */
   margin-top: 1rem;
