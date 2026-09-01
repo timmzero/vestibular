@@ -10,9 +10,25 @@ dotenv.config();
 
 const app = express();
 
-// If frontend is served from another origin, set the allowed origin here or use cors() carefully.
-// Example: cors({ origin: 'https://vestibular.nexus' })
-app.use(cors({ origin: 'https://vestibular.nexus' }));
+// The static site answers on BOTH the apex and the www host (both return 200),
+// and sitemap.xml advertises the www URLs. Allowing only the apex silently
+// blocked every submission made from www. Both hosts must be listed.
+const ALLOWED_ORIGINS = [
+  'https://vestibular.nexus',
+  'https://www.vestibular.nexus',
+];
+
+app.use(cors({
+  origin(origin, callback) {
+    // Non-browser callers (curl, uptime pings) send no Origin header.
+    if (!origin || ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
+    // Omit the header rather than throwing: the browser blocks the response
+    // either way, and throwing turns every stray origin into a 500 that buries
+    // real errors in the log. Log it so the rejection is still visible.
+    console.warn('CORS: rejected origin', origin);
+    return callback(null, false);
+  },
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
@@ -27,9 +43,16 @@ const limiter = rateLimit({
 });
 app.use('/api/contact', limiter);
 
+// GET /api/health — pinged by contact.html on page load to wake the instance.
+// Render's free tier spins down when idle; a measured cold start took 22.7s,
+// which no reasonable client-side submit timeout can absorb. Warming on load
+// means the instance is already up by the time the visitor hits Send.
+// Deliberately outside the /api/contact rate limiter and does no work.
+app.get('/api/health', (req, res) => res.status(200).json({ ok: true }));
+
 // POST /api/contact — matches your front-end fetch('/api/contact')
 app.post('/api/contact', async (req, res) => {
-  const { name, email, message, website } = req.body || {};
+  const { name, email, message, website, scorecard_result } = req.body || {};
   console.log('Received contact form submission');
 
   // Honeypot check
@@ -53,6 +76,10 @@ app.post('/api/contact', async (req, res) => {
   const safeName = String(name).replace(/</g, '&lt;');
   const safeEmail = String(email).replace(/</g, '&lt;');
   const safeMessage = String(message).replace(/</g, '&lt;').replace(/\n/g, '<br>');
+  // Optional — only present when the visitor arrived from the diagnostic scorecard.
+  const safeScorecard = scorecard_result
+    ? String(scorecard_result).replace(/</g, '&lt;')
+    : '';
 
   const POSTMARK_TOKEN = process.env.POSTMARK_TOKEN;
   console.log('Postmark token loaded:', !!POSTMARK_TOKEN);
@@ -72,9 +99,12 @@ app.post('/api/contact', async (req, res) => {
           Subject: `Contact form submission from ${safeName}`,
           HtmlBody: `<p><strong>Name:</strong> ${safeName}</p>
                      <p><strong>Email:</strong> ${safeEmail}</p>
+                     ${safeScorecard ? `<p><strong>Scorecard:</strong> ${safeScorecard}</p>` : ''}
                      <p><strong>Message:</strong></p>
                      <p>${safeMessage}</p>`,
-          TextBody: `Name: ${safeName}\nEmail: ${safeEmail}\n\n${String(message)}`,
+          TextBody: `Name: ${safeName}\nEmail: ${safeEmail}\n`
+                  + (safeScorecard ? `Scorecard: ${String(scorecard_result)}\n` : '')
+                  + `\n${String(message)}`,
           ReplyTo: safeEmail,
           MessageStream: 'outbound'
         }),
@@ -90,7 +120,14 @@ app.post('/api/contact', async (req, res) => {
       return res.status(200).json({ success: true });
     } else {
       console.log('No POSTMARK_TOKEN found — using dev fallback');
-      console.log('Contact submission (DEV):', { name: safeName, email: safeEmail, message: safeMessage });
+      // Mirrors the fields the Postmark branch sends — if these two drift,
+      // local testing stops telling the truth about production.
+      console.log('Contact submission (DEV):', {
+        name: safeName,
+        email: safeEmail,
+        scorecard: safeScorecard || '(none)',
+        message: safeMessage,
+      });
       return res.status(200).json({ success: true, note: 'logged to server console (no provider configured)' });
     }
   } catch (err) {
