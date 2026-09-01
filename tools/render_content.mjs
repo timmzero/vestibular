@@ -24,16 +24,36 @@ import { dirname, resolve } from 'node:path';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const SOURCE = 'content/practices.json';
+const PAGES = 'content/pages.json';
+const PARTIALS = 'content/partials';
+
+/** Shared chrome lives in content/partials/ as plain files, so the markup is
+ *  edited as markup rather than as escaped strings inside this generator. */
+const partial = (name) =>
+  readFileSync(resolve(ROOT, PARTIALS, name), 'utf8').replace(/\n$/, '');
 
 const escapeHtml = (s) =>
   String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
+/** Every page carrying shared chrome. Adding a page means adding it here AND
+ *  to content/pages.json — the generator throws on a page with no metadata,
+ *  so a forgotten entry fails loudly instead of rendering an empty <title>. */
+const CHROME_PAGES = [
+  'index.html', 'agile.html', 'ai-transformation.html', 'ai-services.html',
+  'ai-playbook.html', 'services.html', 'diagnostic.html', 'playbook.html',
+  'contact.html',
+];
+
 /**
- * Each region names the file it lives in and the function that renders it.
+ * Each region names the file(s) it lives in and the function that renders it.
  * Adding a practice means adding entries here — the marker names carry the
  * practice, so two practices can never silently render into one region.
  */
 const REGIONS = [
+  { name: 'page_head', files: CHROME_PAGES, render: (d, f) => renderHead(d, f) },
+  { name: 'topbar',    files: CHROME_PAGES, render: () => partial('topbar.html') },
+  { name: 'hero_logo', files: CHROME_PAGES, render: () => partial('hero_logo.html') },
+  { name: 'footer',    files: CHROME_PAGES, render: () => partial('footer.html') },
   {
     name: 'agile_stage_cards',
     file: 'diagnostic.html',
@@ -65,6 +85,33 @@ const REGIONS = [
     render: (data) => renderPhases(data.practices.ai_transformation.phases),
   },
 ];
+
+/** The <head> is identical on every page except <title> and the description,
+ *  so those two come from content/pages.json and the rest is fixed here. */
+function renderHead(data, file) {
+  const meta = data.pages[file];
+  if (!meta) throw new Error(`no metadata in ${PAGES} for '${file}'`);
+  if (!meta.title || !meta.description) throw new Error(`${PAGES}: '${file}' needs both title and description`);
+
+  return [
+    '  <meta charset="utf-8" />',
+    '  <meta name="viewport" content="width=device-width,initial-scale=1" />',
+    `  <meta name="description" content="${escapeHtml(meta.description)}" />`,
+    '  <meta name="theme-color" content="#000000" />',
+    '',
+    '  <!-- Favicons -->',
+    '  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">',
+    '  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">',
+    '  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">',
+    '  <link rel="manifest" href="assets/site.webmanifest">',
+    '',
+    `  <title>${escapeHtml(meta.title)}</title>`,
+    '  <link rel="preconnect" href="https://fonts.googleapis.com">',
+    '  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
+    '  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">',
+    '  <link rel="stylesheet" href="styles/styles.css" />',
+  ].join('\n');
+}
 
 function renderStageCards(stages) {
   return stages
@@ -227,10 +274,16 @@ function spliceRegion(source, name, body) {
 function main() {
   const check = process.argv.includes('--check');
   const data = JSON.parse(readFileSync(resolve(ROOT, SOURCE), 'utf8'));
+  data.pages = JSON.parse(readFileSync(resolve(ROOT, PAGES), 'utf8')).pages;
+
+  // A region may target one file or many; flatten to one entry per file.
+  const flat = REGIONS.flatMap((r) =>
+    (r.files ?? [r.file]).map((file) => ({ name: r.name, file, render: r.render }))
+  );
 
   // Group by file so a file with two regions is read and written once.
   const byFile = new Map();
-  for (const region of REGIONS) {
+  for (const region of flat) {
     if (!byFile.has(region.file)) byFile.set(region.file, []);
     byFile.get(region.file).push(region);
   }
@@ -244,7 +297,7 @@ function main() {
     let after = before;
 
     for (const region of regions) {
-      after = spliceRegion(after, region.name, region.render(data));
+      after = spliceRegion(after, region.name, region.render(data, file));
     }
 
     if (after === before) {
@@ -264,7 +317,7 @@ function main() {
   // Name what matched, not only what failed — otherwise a run that never
   // executed is indistinguishable from a clean one.
   console.log(
-    `\n${check ? 'checked' : 'rendered'} ${REGIONS.length} region(s) across ${byFile.size} file(s)` +
+    `\n${check ? 'checked' : 'rendered'} ${flat.length} region instance(s) across ${byFile.size} file(s)` +
       (check ? '' : `, ${written} file(s) changed`)
   );
 
@@ -281,12 +334,14 @@ function main() {
 try {
   main();
 } catch (err) {
-  // A missing or reordered marker is a structural problem in the HTML, not a
-  // crash. Say what to do about it rather than printing a stack trace.
+  // These are structural problems, not crashes. Say what to do about the
+  // ACTUAL fault — a blanket "check your markers" sends you to the wrong file
+  // when the real problem is missing page metadata.
   console.error(`\nFAIL: ${err.message}`);
-  console.error(
-    'A GENERATED region marker is missing, renamed, or out of order.\n' +
+  const advice = /marker/i.test(err.message)
+    ? 'A GENERATED region marker is missing, renamed, or out of order.\n' +
       'Restore the START/END comment pair around the generated block, then re-run.'
-  );
+    : `Check ${PAGES} has an entry with a title and description for every page in CHROME_PAGES.`;
+  console.error(advice);
   process.exit(1);
 }
