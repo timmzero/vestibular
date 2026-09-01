@@ -37,11 +37,7 @@ function loadConfig() {
   }
 }
 
-function bandFor(score) {
-  if (score >= 4) return { label: 'Strong', className: 'band-strong' };
-  if (score === 3) return { label: 'Developing', className: 'band-developing' };
-  return { label: 'Needs work', className: 'band-weak' };
-}
+const shared = window.vestibular_dimension_read;
 
 function render(cfg, answers, total) {
   const stageName =
@@ -49,25 +45,8 @@ function render(cfg, answers, total) {
   const stage = cfg.stages.find((s) => s.stage === stageName);
 
   const max = cfg.dimensions.length * 5;
-
-  const rows = cfg.dimensions
-    .map((d) => {
-      const v = answers[d.key];
-      const band = bandFor(v);
-      return `
-        <li class="dim">
-          <span class="dim-label">${d.label}</span>
-          <span class="dim-meter" aria-hidden="true"><i style="width:${(v / 5) * 100}%"></i></span>
-          <span class="dim-band ${band.className}">${band.label}</span>
-        </li>`;
-    })
-    .join('');
-
-  // The weakest dimension is the honest place to start, and it is usually not
-  // the one a team expects.
-  const weakest = cfg.dimensions
-    .slice()
-    .sort((a, b) => answers[a.key] - answers[b.key])[0];
+  const dimList = shared.render_dimension_list(cfg.dimensions, answers, 5);
+  const weakest = shared.weakest_dimension(cfg.dimensions, answers);
 
   const next = stage
     ? `
@@ -83,7 +62,7 @@ function render(cfg, answers, total) {
 
   return `
     <p class="result-total">${total} / ${max} &mdash; ${stageName}</p>
-    <ul class="dim-list">${rows}</ul>
+    ${dimList}
     <p class="result-weakest">Weakest right now: <strong>${weakest.label}</strong>. That is where we would start.</p>
     ${next}`;
 }
@@ -120,23 +99,16 @@ if (formEl) {
       return;
     }
 
-    // Read by key rather than by position. The previous version summed
-    // FormData.values() in document order, which happened to total correctly
-    // but could not attribute any answer to any dimension.
-    const fd = new FormData(e.target);
-    const answers = {};
-    let total = 0;
-    for (const d of cfg.dimensions) {
-      const v = Number(fd.get(d.key));
-      if (!Number.isFinite(v) || v < 1 || v > 5) {
-        resultEl.textContent = 'Please answer every question with a number from 1 to 5.';
-        resultEl.classList.add('error');
-        resultEl.setAttribute('role', 'alert');
-        return;
-      }
-      answers[d.key] = v;
-      total += v;
+    // Reads by key, not by position — see scripts/dimension_read.js.
+    const read = shared.read_answers(e.target, cfg.dimensions, 5);
+    if (!read.ok) {
+      resultEl.textContent = read.message;
+      resultEl.classList.add('error');
+      resultEl.setAttribute('role', 'alert');
+      return;
     }
+    const answers = read.answers;
+    const total = read.total;
 
     resultEl.classList.remove('error');
     resultEl.removeAttribute('role');

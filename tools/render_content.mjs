@@ -108,7 +108,7 @@ const escapeHtml = (s) =>
  *  so a forgotten entry fails loudly instead of rendering an empty <title>. */
 const CHROME_PAGES = [
   'index.html', 'agile.html', 'ai-transformation.html', 'ai-services.html',
-  'ai-playbook.html', 'ai-proof.html', 'services.html', 'diagnostic.html',
+  'ai-playbook.html', 'ai-proof.html', 'ai-health.html', 'services.html', 'diagnostic.html',
   'playbook.html', 'contact.html',
 ];
 
@@ -156,6 +156,24 @@ const REGIONS = [
     name: 'ba_proof',
     file: 'ai-proof.html',
     render: (data) => renderProof(data.practices.ai_transformation.proof),
+  },
+  {
+    name: 'ba_health_intro',
+    file: 'ai-health.html',
+    render: (data) => renderBaHealthIntro(data.practices.ai_transformation.team_health),
+  },
+  {
+    // Reuses renderScorecardFields: it reads only dimensions[].key/.question
+    // and has no idea which practice it is serving. One field renderer, two
+    // practices, rather than a second copy that can drift.
+    name: 'ba_health_fields',
+    file: 'ai-health.html',
+    render: (data) => renderScorecardFields(data.practices.ai_transformation.team_health),
+  },
+  {
+    name: 'ba_health_data',
+    file: 'ai-health.html',
+    render: (data) => renderBaHealthData(data.practices.ai_transformation.team_health),
   },
   {
     name: 'scorecard_fields',
@@ -418,6 +436,22 @@ function renderProofTeaser(proof) {
 /** The form fields. Generated so a question cannot exist without a unique key
  *  — two questions previously shared name="alignment", which silently collapsed
  *  the sixth dimension and made any keyed read of the answers wrong. */
+function renderBaHealthIntro(team_health) {
+  return `  <p class="ba-health-intro">${escapeHtml(team_health.intro)}</p>`;
+}
+
+/** No stages, no thresholds — see content/practices.json for why. */
+function renderBaHealthData(team_health) {
+  const payload = {
+    dimensions: team_health.dimensions.map((d) => ({ key: d.key, label: d.label })),
+  };
+  return [
+    '<script id="ba-health-data" type="application/json">',
+    JSON.stringify(payload, null, 2),
+    '</' + 'script>',
+  ].join('\n');
+}
+
 function renderScorecardFields(diag) {
   return diag.dimensions
     .map((d) =>

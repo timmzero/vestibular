@@ -36,3 +36,9 @@ jobs:
       # at the centre, both render happily and lie.
       - name: Radar geometry checks
         run: node tools/test_radar.cjs
+
+      # dimension_read.js is shared by BOTH practices, so a silent change here
+      # changes the Agile diagnostic and the BA team-health page at once. Band
+      # boundaries and the weakest-axis tie-break are pinned rather than assumed.
+      - name: Shared dimension-read checks
+        run: node tools/test_dimension_read.cjs

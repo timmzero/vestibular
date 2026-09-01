@@ -197,7 +197,7 @@
           "name": "Morale & Team Health",
           "purpose": "Treat team health as a measurable input to the redesign, not a soft afterthought.",
           "points": [
-            "Team Health Reports measuring wellbeing, clarity, alignment, and psychological safety",
+            "Team Health Reports measuring wellbeing, psychological safety, clarity, cohesion, role fit, and readiness for change",
             "Identify role misalignment — where responsibility and job description have parted ways",
             "Surface the cultural blockers to transformation: fear, fatigue, confusion, siloing"
           ]
@@ -222,6 +222,42 @@
           ]
         }
       ],
+      "team_health": {
+        "_comment": "SSOT for the BA team-health radar. Same keyed shape as the Agile diagnostic so one field renderer and one radar module serve both. Deliberately has NO stages and NO thresholds: team health here is a measured input to an operating-model redesign, not a maturity ladder. Collapsing six axes to one stage is the Agile practice's shape and reusing it would make the two practices indistinguishable.",
+        "intro": "Six axes, about two minutes. There is no score and no stage — you get the shape, and the axis we would start listening on.",
+        "dimensions": [
+          {
+            "key": "wellbeing",
+            "label": "Wellbeing",
+            "question": "The workload is sustainable, and people are not running on reserves."
+          },
+          {
+            "key": "psychological_safety",
+            "label": "Psychological safety",
+            "question": "Someone can say \"this will not work\" to the person sponsoring it, without it costing them."
+          },
+          {
+            "key": "clarity",
+            "label": "Clarity",
+            "question": "People know what is expected of them, and why it matters."
+          },
+          {
+            "key": "cohesion",
+            "label": "Cohesion",
+            "question": "The team pulls in one direction rather than defending territory."
+          },
+          {
+            "key": "role_fit",
+            "label": "Role fit",
+            "question": "Responsibility matches job description, and it is clear who decides what."
+          },
+          {
+            "key": "change_readiness",
+            "label": "Change readiness",
+            "question": "The team has the capacity and the appetite to take on the change ahead."
+          }
+        ]
+      },
       "phases": [
         {
           "name": "Listen",
