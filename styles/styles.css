@@ -1256,11 +1256,19 @@ article.stage .price { margin-top: 1rem; }
 .radar-spoke.is-incomplete { stroke: rgba(224, 224, 224, 0.07); }
 .radar-label.is-incomplete { fill: rgba(224, 224, 224, 0.35); }
 
-/* The chart sits above the questions, so on a tall enough viewport it follows
-   the form down rather than scrolling away while the last areas are answered. */
-@media (min-width: 900px) and (min-height: 720px) {
-  .radar { position: sticky; top: calc(var(--topbar-height) + 12px); z-index: 1; }
-}
+/* NOT sticky. The chart was pinned so it stayed visible while the lower
+   questions were answered, and it broke the form: `figure.radar` is a
+   full-width flex container, so its box is the whole 868px content column and
+   393px tall even though the chart inside is only 360px wide. Everything that
+   scrolled underneath it — six of the twelve inputs at 1440x900 — kept its
+   pixels but lost its clicks, because the transparent figure was on top and
+   received them.
+
+   A 393px-tall pinned element on a 900px viewport also eats 44% of the screen
+   above the form the reader is working in, so the pattern was wrong here even
+   before the click-swallowing. A side-by-side column would keep the chart
+   visible without ever overlapping the questions; that is a layout change, not
+   a CSS tweak, and is not made here. */
 
 
 /* ── Services: engagement phase headings ─────────────────────────────────────
