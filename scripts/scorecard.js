@@ -83,6 +83,13 @@ if (formEl) {
         dimensions: cfg.dimensions,
         max: 5,
         values_source: window.vestibular_dimension_read.axis_values,
+        on_render: function (geometry) {
+          const caption = radarEl.querySelector('.radar-caption');
+          if (!caption) return;
+          caption.textContent = geometry.complete
+            ? 'All six answered.'
+            : geometry.plotted + ' of ' + geometry.total + ' answered.';
+        },
       });
     } catch (err) {
       console.error('scorecard: radar failed to initialise', err);

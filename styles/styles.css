@@ -1130,3 +1130,63 @@ article.stage .price { margin-top: 1rem; }
   line-height: 1.6;
   color: rgba(224, 224, 224, 0.6);
 }
+
+/* An axis with no plotted point yet. Drawn dimmer so a keystroke that does not
+   complete an area still changes something on screen — on the readiness form
+   two questions feed one axis, and without this the chart looks dead until the
+   second is answered. */
+.radar-spoke.is-incomplete { stroke: rgba(224, 224, 224, 0.07); }
+.radar-label.is-incomplete { fill: rgba(224, 224, 224, 0.35); }
+
+/* The chart sits above the questions, so on a tall enough viewport it follows
+   the form down rather than scrolling away while the last areas are answered. */
+@media (min-width: 900px) and (min-height: 720px) {
+  .radar { position: sticky; top: calc(var(--topbar-height) + 12px); z-index: 1; }
+}
+
+/* --- Nav submenus ----------------------------------------------------------
+   Opens on hover AND :focus-within, so it is reachable by keyboard without
+   any JavaScript. On the mobile slide-in panel the submenu is always shown,
+   because a hover-only disclosure is unusable on touch. */
+.main-nav .has-submenu { position: relative; }
+
+.main-nav .submenu {
+  list-style: none;
+  margin: 0;
+  padding: 0.35rem 0;
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 190px;
+  background: #0b0b0b;
+  border: 1px solid rgba(224, 224, 224, 0.14);
+  border-radius: 6px;
+  z-index: 20;
+}
+
+.main-nav .has-submenu:hover > .submenu,
+.main-nav .has-submenu:focus-within > .submenu { display: block; }
+
+.main-nav .submenu a {
+  display: block;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.main-nav .submenu a:hover,
+.main-nav .submenu a:focus { color: var(--primary-color); }
+
+/* Mobile panel: no hover, so nest the items inline and always show them. */
+@media (max-width: 900px) {
+  .main-nav .submenu {
+    display: block;
+    position: static;
+    border: 0;
+    background: transparent;
+    padding: 0 0 0.4rem 0.9rem;
+    min-width: 0;
+  }
+  .main-nav .submenu a { padding: 0.3rem 0; }
+}

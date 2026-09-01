@@ -74,7 +74,11 @@
       ? points.map(function (p) { return p.x.toFixed(2) + ',' + p.y.toFixed(2); }).join(' ')
       : null;
 
-    return { axes: axes, points: points, polygon: polygon, complete: complete };
+    const plotted = points.filter(function (p) { return p !== null; }).length;
+    return {
+      axes: axes, points: points, polygon: polygon,
+      complete: complete, plotted: plotted, total: dimensions.length,
+    };
   }
 
   /** Ring radii for the background grid, outermost first. */
@@ -104,9 +108,14 @@
     ring_radii(max, radius).forEach(function (r) {
       grid.appendChild(el('circle', { cx: cx, cy: cy, r: r.toFixed(2), class: 'radar-ring' }));
     });
-    geometry.axes.forEach(function (axis) {
+    geometry.axes.forEach(function (axis, i) {
+      // An axis with no plotted point is drawn dimmer. Without this, a form
+      // where two questions feed one axis appears completely dead until the
+      // second is answered, which reads as a broken chart.
+      const state = geometry.points[i] ? '' : ' is-incomplete';
       grid.appendChild(el('line', {
-        x1: cx, y1: cy, x2: axis.x.toFixed(2), y2: axis.y.toFixed(2), class: 'radar-spoke',
+        x1: cx, y1: cy, x2: axis.x.toFixed(2), y2: axis.y.toFixed(2),
+        class: 'radar-spoke' + state,
       }));
     });
     svg.appendChild(grid);
@@ -123,7 +132,7 @@
     });
 
     const labels = el('g', { class: 'radar-labels' });
-    geometry.axes.forEach(function (axis) {
+    geometry.axes.forEach(function (axis, i) {
       const lx = cx + (radius + config.label_gap) * Math.cos(axis.angle);
       const ly = cy + (radius + config.label_gap) * Math.sin(axis.angle);
       // Anchor by side so the two near-horizontal labels on a six-axis chart
@@ -131,7 +140,8 @@
       const cos = Math.cos(axis.angle);
       const anchor = Math.abs(cos) < 0.1 ? 'middle' : cos > 0 ? 'start' : 'end';
       const text = el('text', {
-        x: lx.toFixed(2), y: ly.toFixed(2), class: 'radar-label',
+        x: lx.toFixed(2), y: ly.toFixed(2),
+        class: 'radar-label' + (geometry.points[i] ? '' : ' is-incomplete'),
         'text-anchor': anchor, 'dominant-baseline': 'middle',
       });
       text.textContent = axis.label;
@@ -193,6 +203,7 @@
       });
       render_radar(svg, geometry, config);
       container.classList.toggle('is-complete', geometry.complete);
+      if (typeof options.on_render === 'function') options.on_render(geometry);
       return geometry;
     }
 

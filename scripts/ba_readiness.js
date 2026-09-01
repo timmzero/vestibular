@@ -53,6 +53,14 @@ if (formEl) {
         dimensions: cfg.dimensions,
         max: 5,
         values_source: window.vestibular_dimension_read.axis_values,
+        on_render: function (geometry) {
+          const caption = radarEl.querySelector('.radar-caption');
+          if (!caption) return;
+          caption.textContent = geometry.complete
+            ? 'All six areas plotted.'
+            : geometry.plotted + ' of ' + geometry.total +
+              ' areas plotted \u2014 an area needs both of its questions answered.';
+        },
       });
     } catch (err) {
       console.error('ba_readiness: radar failed to initialise', err);
