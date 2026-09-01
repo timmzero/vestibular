@@ -1,0 +1,157 @@
+#!/usr/bin/env python3
+"""
+Generates the 1200x630 Open Graph share card for every page.
+
+    python3 tools/build_og_images.py
+
+Titles come from content/pages.json, the same file that feeds <title>, so a
+card can never advertise something different from the page it links to.
+
+Why generated rather than hand-made in a design tool: there are nine pages and
+there will be more. A hand-made set goes stale the first time a title changes,
+silently, because nobody re-exports a PNG when they edit a heading.
+
+Why NOT wired into the --check drift guard: PNG encoding is not byte-stable
+across Pillow and libpng versions, so a regenerated file can differ without any
+content change. CI would fail on an upgrade rather than on a real problem. Run
+this by hand when a title changes; the cards are committed artifacts.
+
+The existing favicons are unsuitable as share images: every one is square
+(ratio 1.0, largest 512x512) against Open Graph's 1.91 target, so platforms
+either pillarbox them with grey bars or centre-crop the logo, and below 1200px
+wide LinkedIn falls back to a small thumbnail card instead of the large one.
+"""
+
+import json
+import os
+import re
+import sys
+from pathlib import Path
+
+import cairosvg
+from PIL import Image, ImageDraw, ImageFont
+
+ROOT = Path(__file__).resolve().parent.parent
+PAGES = ROOT / "content" / "pages.json"
+LOGO = ROOT / "assets" / "vestibular_logo.svg"
+OUT_DIR = ROOT / "assets" / "og"
+FONT_DIR = Path(os.environ.get("VN_FONT_DIR", "/tmp"))
+
+W, H = 1200, 630                 # Open Graph large-card canvas
+BG = (0, 0, 0)                   # --background-color
+LIME = (152, 203, 43)            # --primary-color  hsla(79,65%,48%,1)
+TEXT = (255, 255, 255)           # --hero-text-color
+MUTED = (224, 224, 224)          # --body-text-color
+
+
+def load_font(name: str, size: int) -> ImageFont.FreeTypeFont:
+    path = FONT_DIR / name
+    if not path.exists():
+        sys.exit(
+            f"FAIL: font not found at {path}\n"
+            f"Fetch IBM Plex Sans (Bold + Regular) into {FONT_DIR}, or set "
+            f"VN_FONT_DIR to where they live."
+        )
+    return ImageFont.truetype(str(path), size)
+
+
+def wrap(draw: ImageDraw.ImageDraw, text: str, font, max_w: int) -> list[str]:
+    """Greedy wrap measured against the real font, not an estimated char count."""
+    words, lines, cur = text.split(), [], ""
+    for word in words:
+        trial = f"{cur} {word}".strip()
+        if draw.textlength(trial, font=font) <= max_w:
+            cur = trial
+        else:
+            if cur:
+                lines.append(cur)
+            cur = word
+    if cur:
+        lines.append(cur)
+    return lines
+
+
+def split_title(title: str) -> tuple[str, str]:
+    """Titles read 'Vestibular AI Transformation - Playbook'. The part after the
+    dash is the page; the part before is the brand line above it."""
+    if "\u2013" in title:
+        brand, page = title.split("\u2013", 1)
+        return brand.strip(), page.strip()
+    return "Vestibular", title.replace("Vestibular", "").strip() or title.strip()
+
+
+def build_card(page_file: str, title: str, description: str, logo: Image.Image) -> Image.Image:
+    card = Image.new("RGB", (W, H), BG)
+    draw = ImageDraw.Draw(card)
+
+    # Lime rule along the top, echoing the hero band.
+    draw.rectangle([0, 0, W, 10], fill=LIME)
+
+    logo_size = 230
+    x = 72 + logo_size + 60
+    max_w = W - x - 72
+
+    f_brand = load_font("IBMPlexSans-Regular.ttf", 30)
+    f_title = load_font("IBMPlexSans-Bold.ttf", 62)
+    f_desc = load_font("IBMPlexSans-Regular.ttf", 27)
+
+    brand, page = split_title(title)
+    title_lines = wrap(draw, page, f_title, max_w)[:2]
+    desc_lines = wrap(draw, description, f_desc, max_w)[:3]
+
+    # Measure the block, then centre it. Cards have between one and two title
+    # lines and one to three description lines, so a fixed offset leaves the
+    # short ones hanging off the top of a mostly empty canvas.
+    block_h = 44 + len(title_lines) * 74 + 18 + len(desc_lines) * 40
+    y = (H - block_h) // 2
+
+    draw.text((x, y), brand.upper(), font=f_brand, fill=LIME)
+    y += 52
+    for line in title_lines:
+        draw.text((x, y), line, font=f_title, fill=TEXT)
+        y += 74
+    y += 14
+    for line in desc_lines:
+        draw.text((x, y), line, font=f_desc, fill=MUTED)
+        y += 40
+
+    lg = logo.resize((logo_size, logo_size), Image.LANCZOS)
+    card.paste(lg, (72, (H - logo_size) // 2 - 10), lg)
+
+    draw.text((72, H - 68), "vestibular.nexus", font=f_desc, fill=LIME)
+    return card
+
+
+def main() -> None:
+    if not PAGES.exists():
+        sys.exit(f"FAIL: {PAGES} not found")
+    pages = json.loads(PAGES.read_text())["pages"]
+
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+
+    # Strip the wordmark <text> elements before rasterising: they are filled
+    # #182a04 on a #182904 stroke, which vanishes against this card's black
+    # background. The mark alone carries the brand, and the footer wordmark
+    # below states the domain in lime.
+    svg = LOGO.read_text()
+    mark_only = re.sub(r"<text\b.*?</text>", "", svg, flags=re.S)
+    png = cairosvg.svg2png(bytestring=mark_only.encode(), output_width=420, output_height=420)
+    logo = Image.open(__import__("io").BytesIO(png)).convert("RGBA")
+
+    for page_file, meta in pages.items():
+        title, desc = meta["title"], meta["description"]
+        # The description is written for search results and runs long. Trim at
+        # a WORD boundary, never at punctuation: these descriptions lead with a
+        # label ending in a colon, so splitting on punctuation left a fragment.
+        short = desc if len(desc) <= 155 else desc[:155].rsplit(" ", 1)[0].rstrip(" ,;:") + "\u2026"
+
+        card = build_card(page_file, title, short, logo)
+        out = OUT_DIR / f"{Path(page_file).stem}.png"
+        card.save(out, "PNG", optimize=True)
+        print(f"  {out.relative_to(ROOT)}  {out.stat().st_size:,} B")
+
+    print(f"\nrendered {len(pages)} card(s) at {W}x{H}")
+
+
+if __name__ == "__main__":
+    main()

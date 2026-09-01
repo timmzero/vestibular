@@ -2,47 +2,47 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <url>
-    <loc>https://vestibular.nexus/index.html</loc>
+    <loc>https://vestibular.nexus/</loc>
     <priority>1.0</priority>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://vestibular.nexus/agile.html</loc>
+    <loc>https://vestibular.nexus/agile</loc>
     <priority>0.9</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://vestibular.nexus/ai-transformation.html</loc>
+    <loc>https://vestibular.nexus/ai-transformation</loc>
     <priority>0.9</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://vestibular.nexus/services.html</loc>
+    <loc>https://vestibular.nexus/services</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://vestibular.nexus/diagnostic.html</loc>
+    <loc>https://vestibular.nexus/diagnostic</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://vestibular.nexus/playbook.html</loc>
+    <loc>https://vestibular.nexus/playbook</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://vestibular.nexus/ai-services.html</loc>
+    <loc>https://vestibular.nexus/ai-services</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://vestibular.nexus/ai-playbook.html</loc>
+    <loc>https://vestibular.nexus/ai-playbook</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://vestibular.nexus/contact.html</loc>
+    <loc>https://vestibular.nexus/contact</loc>
     <priority>0.6</priority>
     <changefreq>monthly</changefreq>
   </url>
