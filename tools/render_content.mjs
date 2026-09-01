@@ -391,8 +391,12 @@ function renderServices(services, pricing, phases) {
   // left-hand card of a row. Sorted at render time rather than by hand-ordering
   // the source, so a service added later cannot land out of order.
   //
-  // 'scoped' has no figure and sorts last: it is the open-ended engagement, and
-  // an unpriced card between two priced ones breaks the reading of the row.
+  // 'scoped' sorts LAST because it is the top of the range, not merely because
+  // it has no figure to sort on. A scoped engagement is open-ended, so it is
+  // always the potentially higher-value item in its phase — it belongs at the
+  // expensive end of the row whatever the priced cards beside it cost. Infinity
+  // is the mechanism; this is the reason.
+  //
   // Sequence is still carried by the phase grouping; only the order WITHIN a
   // phase is by price.
   const amount = (s) =>
