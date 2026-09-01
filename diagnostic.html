@@ -137,6 +137,14 @@
 
   <p class="ladder-note">This is the free rung. <a href="services.html">Everything above it</a> is a fixed-fee package, priced on this page.</p>
 
+  <!-- Above the form on purpose: the shape is the point of the page.
+       The inputs below remain the source of truth for these values; this
+       is a view over them and is aria-hidden so assistive tech reads the
+       fields rather than a worse copy of the same numbers. -->
+  <figure id="radar" class="radar">
+    <figcaption class="radar-caption">Your shape so far &mdash; it fills in as you answer.</figcaption>
+  </figure>
+
   <p class="scale-legend">
     How well does each of the following describe your team?<br />
     <strong>1</strong> Strongly disagree &nbsp; <strong>2</strong> Somewhat disagree &nbsp; <strong>3</strong> Neutral &nbsp; <strong>4</strong> Somewhat agree &nbsp; <strong>5</strong> Strongly agree
@@ -172,12 +180,6 @@
     <button type="submit" class="btn">See my result</button>
   </form>
 
-  <!-- The inputs above are the source of truth for these values; the chart is a
-       view over them and is aria-hidden so assistive tech reads the fields, not
-       a worse copy of the same numbers. -->
-  <figure id="radar" class="radar">
-    <figcaption class="radar-caption">Your shape so far &mdash; it fills in as you answer.</figcaption>
-  </figure>
 
   <div id="scorecard-result" class="result"></div>
   <button id="contact-cta" class="btn" style="display:none">Send Result to Vestibular</button>
