@@ -265,7 +265,54 @@
           ],
           "deliverable": "Capability uplift programme and adoption metrics"
         }
-      ]
+      ],
+      "proof": {
+        "_comment": "The case-study content. No customer names, no revenue figures — per founder direction. Claims here must stay true to what the platform actually does; this page is the practice's credibility and an overstatement here costs more than it wins.",
+        "headline": "We ran this playbook on ourselves.",
+        "summary": "Before advising anyone on AI transformation, we built and shipped one: a production system that drafts regulatory compliance documents for Australian road worksites, in a domain where a confident wrong answer is a safety problem rather than an embarrassment.",
+        "context": [
+          "Traffic Management Plans and Traffic Guidance Schemes are the documents that govern how a road worksite is signed, staged and made safe. They are prepared by qualified people, audited by road authorities, and wrong details have physical consequences.",
+          "The rules are layered: a national baseline, then state and territory overlays that diverge from it. What is compliant in one jurisdiction is not automatically compliant in the next.",
+          "The work was slow, repetitive, and highly susceptible to transcription error — the profile that looks like an obvious AI candidate right up until you consider what happens when the model is confidently wrong."
+        ],
+        "principles": [
+          {
+            "name": "Never invent a safety-relevant value",
+            "detail": "When the system cannot find a value in the source document, it records it as absent. It does not estimate, interpolate, or fall back on what is usually true. A plausible-but-wrong number is worse than a blank field, because a blank field gets checked and a plausible number does not."
+          },
+          {
+            "name": "Measure on two axes, never merge them",
+            "detail": "How much the system found, and how compliant the document is, are scored separately and never combined into one flattering number. The compliance scorer never sees whether a field was found, so it cannot reward the system for its own coverage. One blended metric would have hidden exactly the failure we most needed to see."
+          },
+          {
+            "name": "Corroborate to demote, never to overwrite",
+            "detail": "When another data source agrees or disagrees with a value a qualified engineer confirmed, it adjusts our confidence in that value. It never silently replaces it. The human's judgement is the record; the machine annotates it."
+          },
+          {
+            "name": "Calibration is the metric, not coverage",
+            "detail": "The question is not how much the system extracts. It is whether the things it says confidently are actually right. A tool that is right 70% of the time and honest about which 70% is far more useful than one that is right 90% of the time and cannot tell you which 10% to check."
+          },
+          {
+            "name": "The qualified human is a design feature",
+            "detail": "The system is a drafting aid with a professional backstop, and it was designed that way from the start rather than retrofitted after a scare. That framing changes what you build, what you measure, and what you are willing to ship."
+          }
+        ],
+        "lessons": [
+          {
+            "name": "The pilot is not the hard part",
+            "detail": "Getting a model to produce a plausible draft took a fraction of the effort. Everything after that — grounding it in the actual regulations, handling jurisdictional divergence, deciding what the system must refuse to answer — was the real work, and it is the part most AI programmes never reach."
+          },
+          {
+            "name": "Measure before you believe",
+            "detail": "Every number we report is derived from a run we can point at, and every guard is driven over a known-bad input to prove it can actually fail. A check that has never failed is indistinguishable from a check that cannot."
+          },
+          {
+            "name": "Regulated domains reward restraint",
+            "detail": "The features we chose not to automate did more for adoption than the ones we did. Professionals trust a tool that visibly knows its own limits, and refuse one that has been caught guessing even once."
+          }
+        ],
+        "bridge": "This is the same sequence the AI Transformation practice runs with clients: listen first, ground every claim in something measurable, design for the human who has to sign their name to the output, and be honest about where AI does not belong."
+      }
     }
   }
 }
