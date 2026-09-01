@@ -925,3 +925,48 @@ article.stage ul li strong { color: rgba(152,203,43,0.8); }
   color: var(--hero-text-color);
   font-size: 0.93rem;
 }
+
+/* ── Pricing ─────────────────────────────────────────────────────────────── */
+/* The GST-inclusive figure is the prominent one and the ex-GST component sits
+   beside it at lower prominence — ACL s48 component pricing. Do not restyle so
+   the ex-GST figure reads larger or bolder than the inclusive one. */
+.price { margin: 0 0 0.9rem; line-height: 1.3; }
+.price-main {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+.price-note {
+  display: block;
+  font-size: 0.78rem;
+  color: rgba(224,224,224,0.55);
+  margin-top: 0.15rem;
+}
+.price-scoped {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: rgba(224,224,224,0.7);
+}
+article.stage .price { margin-top: 1rem; }
+.pricing-note {
+  font-size: 0.85rem;
+  color: rgba(224,224,224,0.6);
+  line-height: 1.65;
+  max-width: 62ch;
+  margin: 0 0 1.75rem;
+  padding: 0.75rem 1rem;
+  border-left: 2px solid rgba(152,203,43,0.3);
+  border-radius: 0 4px 4px 0;
+  background: rgba(255,255,255,0.02);
+}
+.price-shape {
+  display: block;
+  font-size: 0.82rem;
+  color: rgba(224,224,224,0.7);
+  margin-top: 0.4rem;
+  line-height: 1.5;
+}

@@ -38,6 +38,68 @@ const SITE = 'https://vestibular.nexus';
 const partial = (name) =>
   readFileSync(resolve(ROOT, PARTIALS, name), 'utf8').replace(/\n$/, '');
 
+/** Renders a price block. The GST-INCLUSIVE figure is derived from the ex-GST
+ *  number in the source and rendered as the prominent price, with the ex-GST
+ *  component beside it and never given greater prominence — ACL s48 component
+ *  pricing. The threshold matters here: a business acquiring services under
+ *  $100,000 can still be a "consumer" in law, and these engagements sit well
+ *  under it, so the B2B ex-GST exemption cannot be relied on.
+ *
+ *  Only the ex-GST integer is stored. The inclusive figure is never typed, so
+ *  the two cannot drift apart. */
+function renderPrice(price, pricing) {
+  if (!price) return '';
+  const money = (n) =>
+    '$' + Math.round(n).toLocaleString('en-AU');
+
+  // Duration and proximity are not optional decoration. A fee with no stated
+  // time commitment cannot be judged for value, and it is the gap that scope
+  // disputes grow in. Elapsed time and billed effort are shown separately
+  // because "1 week" reads as five billed days and here it is not.
+  // A stated on-site commitment cannot exceed the billed effort. It read
+  // "3 consulting days / 2-3 days on-site", leaving no time to write anything
+  // up — the kind of incoherence a reader notices before you do.
+  const onSite = /(\d+)(?:\s*[-\u2013]\s*(\d+))?\s*days?\s+on-site/i.exec(price.proximity || '');
+  if (onSite && price.effort_days) {
+    const most = Number(onSite[2] ?? onSite[1]);
+    if (most > price.effort_days) {
+      throw new Error(
+        `price: ${most} days on-site exceeds ${price.effort_days} consulting days`
+      );
+    }
+  }
+
+  const shape = [
+    price.duration,
+    price.effort_days ? `${price.effort_days} consulting days` : null,
+    price.proximity,
+  ]
+    .filter(Boolean)
+    .map(escapeHtml)
+    .join(' &middot; ');
+
+  if (price.basis === 'scoped') {
+    return [
+      '<p class="price">',
+      '<span class="price-scoped">Scoped per engagement</span>',
+      shape ? `<span class="price-shape">${shape}</span>` : '',
+      '</p>',
+    ].join('');
+  }
+
+  const inc = price.ex_gst * (1 + pricing.gst_rate);
+  const prefix = price.basis === 'from' ? 'From ' : '';
+  const suffix = price.basis === 'retainer' ? ' per month' : '';
+
+  return [
+    '<p class="price">',
+    `<span class="price-main">${prefix}${money(inc)}${suffix}</span>`,
+    `<span class="price-note">incl. GST &middot; ${money(price.ex_gst)} + GST</span>`,
+    shape ? `<span class="price-shape">${shape}</span>` : '',
+    '</p>',
+  ].join('');
+}
+
 const escapeHtml = (s) =>
   String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
@@ -63,7 +125,7 @@ const REGIONS = [
   {
     name: 'agile_stage_cards',
     file: 'diagnostic.html',
-    render: (data) => renderStageCards(data.practices.agile.stages),
+    render: (data) => renderStageCards(data.practices.agile.stages, data._pricing),
   },
   {
     name: 'agile_playbook_stages',
@@ -83,7 +145,7 @@ const REGIONS = [
   {
     name: 'ba_services',
     file: 'ai-services.html',
-    render: (data) => renderServices(data.practices.ai_transformation.services),
+    render: (data) => renderServices(data.practices.ai_transformation.services, data._pricing),
   },
   {
     name: 'ba_playbook_phases',
@@ -158,7 +220,7 @@ function renderHead(data, file) {
   ].join('\n');
 }
 
-function renderStageCards(stages) {
+function renderStageCards(stages, pricing) {
   return stages
     .map((s) => {
       const rows = [
@@ -178,6 +240,7 @@ function renderStageCards(stages) {
         '      <ul>',
         rows,
         '      </ul>',
+        `      ${renderPrice(s.price, pricing)}`,
         '    </article>',
       ].join('\n');
     })
@@ -247,7 +310,7 @@ function renderDomains(domains) {
 
 /** Services render with the same article/deliverable shape the Agile services
  *  page uses, so the two practices are visually siblings rather than strangers. */
-function renderServices(services) {
+function renderServices(services, pricing) {
   return services
     .map((s) => {
       const bullets = s.bullets
@@ -257,6 +320,7 @@ function renderServices(services) {
         '      <article>',
         '        <div>',
         `        <h3>${escapeHtml(s.name)}</h3>`,
+        `        ${renderPrice(s.price, pricing)}`,
         '        <ul>',
         bullets,
         `          <li><strong>Deliverable:</strong> ${escapeHtml(s.deliverable)}</li>`,
@@ -426,14 +490,21 @@ function main() {
 try {
   main();
 } catch (err) {
-  // These are structural problems, not crashes. Say what to do about the
-  // ACTUAL fault — a blanket "check your markers" sends you to the wrong file
-  // when the real problem is missing page metadata.
+  // Structural problems, not crashes. Route the advice to the ACTUAL fault —
+  // a blanket message sends you to the wrong file, and this handler has now
+  // been wrong twice by defaulting instead of matching.
+  const ADVICE = [
+    [/marker/i,
+     'A GENERATED region marker is missing, renamed, or out of order.\n' +
+     'Restore the START/END comment pair around the generated block, then re-run.'],
+    [/^price:/i,
+     `Fix the price entry in ${SOURCE}: on-site days cannot exceed the billed\n` +
+     'consulting days for the same engagement.'],
+    [/metadata|title and description/i,
+     `Check ${PAGES} has an entry with a title and description for every page in CHROME_PAGES.`],
+  ];
   console.error(`\nFAIL: ${err.message}`);
-  const advice = /marker/i.test(err.message)
-    ? 'A GENERATED region marker is missing, renamed, or out of order.\n' +
-      'Restore the START/END comment pair around the generated block, then re-run.'
-    : `Check ${PAGES} has an entry with a title and description for every page in CHROME_PAGES.`;
-  console.error(advice);
+  const hit = ADVICE.find(([re]) => re.test(err.message));
+  console.error(hit ? hit[1] : 'Unrecognised failure — read the message above and fix at the source.');
   process.exit(1);
 }
