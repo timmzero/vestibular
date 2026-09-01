@@ -130,50 +130,142 @@
       </ul>
     </section>
 
-<section>
-  <p class="section-label">Self-assessment</p>
+<section class="scorecard">
+  <p class="section-label">Start here &middot; free</p>
   <h2 class="section-title">Agile diagnostic scorecard.</h2>
-   <section>How well does each of the following describe your team?</br>
-    1= Strongly disagree &nbsp;&nbsp;&nbsp; 2= Somewhat disagree &nbsp;&nbsp;&nbsp; 3= Neutral/Slightly Agree &nbsp;&nbsp;&nbsp; 4= Somewhat agree &nbsp;&nbsp;&nbsp; 5= Strongly agree
-   </section>
-<form id="scorecard-form">
+  <p class="section-intro">Six questions, about two minutes. You get a read on each dimension, not just one number &mdash; and the package that matches where you land.</p>
+
+  <p class="ladder-note">This is the free rung. <a href="services.html">Everything above it</a> is a fixed-fee package, priced on this page.</p>
+
+  <p class="scale-legend">
+    How well does each of the following describe your team?<br />
+    <strong>1</strong> Strongly disagree &nbsp; <strong>2</strong> Somewhat disagree &nbsp; <strong>3</strong> Neutral &nbsp; <strong>4</strong> Somewhat agree &nbsp; <strong>5</strong> Strongly agree
+  </p>
+
+  <form id="scorecard-form">
+<!-- GENERATED:scorecard_fields START · source content/practices.json · regen: node tools/render_content.mjs · DO NOT EDIT BELOW -->
   <label>
     <input type="number" name="tool_hygiene" min="1" max="5" required>
-    <span class="label-text">Our tools and stack are consistently maintained and reliable. (1–5)</span>
+    <span class="label-text">Our tools and stack are consistently maintained and reliable. (1&ndash;5)</span>
   </label>
-
   <label>
     <input type="number" name="team_health" min="1" max="5" required>
-    <span class="label-text">Every team member contributes meaningfully during feedback opportunities. (1–5)</span>
+    <span class="label-text">Every team member contributes meaningfully during feedback opportunities. (1&ndash;5)</span>
   </label>
-
   <label>
     <input type="number" name="enablement" min="1" max="5" required>
-    <span class="label-text">Our team has established routines that sustain flow and reduce friction. (1–5)</span>
+    <span class="label-text">Our team has established routines that sustain flow and reduce friction. (1&ndash;5)</span>
   </label>
-
   <label>
     <input type="number" name="governance" min="1" max="5" required>
-    <span class="label-text">Our team’s cadence and conventions are aligned with other teams, enabling collaboration (1–5)</span>
+    <span class="label-text">Our team's cadence and conventions are aligned with other teams, enabling collaboration. (1&ndash;5)</span>
   </label>
-
   <label>
     <input type="number" name="alignment" min="1" max="5" required>
-    <span class="label-text">Our work aligns with organizational goals, and outcomes are predictable. (1–5)</span>
+    <span class="label-text">Our work aligns with organisational goals, and outcomes are predictable. (1&ndash;5)</span>
   </label>
-
-<label>
-    <input type="number" name="alignment" min="1" max="5" required>
-    <span class="label-text">We regularly reflect and adapt our practices to improve outcomes. (1–5)</span>
+  <label>
+    <input type="number" name="adaptation" min="1" max="5" required>
+    <span class="label-text">We regularly reflect and adapt our practices to improve outcomes. (1&ndash;5)</span>
   </label>
-
-
-  <button type="submit" class="btn">Calculate Result</button>
+<!-- GENERATED:scorecard_fields END -->
+    <button type="submit" class="btn">See my result</button>
   </form>
-
 
   <div id="scorecard-result" class="result"></div>
   <button id="contact-cta" class="btn" style="display:none">Send Result to Vestibular</button>
+
+<!-- GENERATED:scorecard_data START · source content/practices.json · regen: node tools/render_content.mjs · DO NOT EDIT BELOW -->
+<script id="scorecard-data" type="application/json">
+{
+  "dimensions": [
+    {
+      "key": "tool_hygiene",
+      "label": "Tool hygiene"
+    },
+    {
+      "key": "team_health",
+      "label": "Team health"
+    },
+    {
+      "key": "enablement",
+      "label": "Enablement"
+    },
+    {
+      "key": "governance",
+      "label": "Governance"
+    },
+    {
+      "key": "alignment",
+      "label": "Alignment"
+    },
+    {
+      "key": "adaptation",
+      "label": "Adaptation"
+    }
+  ],
+  "thresholds": [
+    {
+      "min": 27,
+      "stage": "Optimizing"
+    },
+    {
+      "min": 22,
+      "stage": "Scaling"
+    },
+    {
+      "min": 17,
+      "stage": "Enabled"
+    },
+    {
+      "min": 12,
+      "stage": "Emerging"
+    },
+    {
+      "min": 0,
+      "stage": "Foundational"
+    }
+  ],
+  "stages": [
+    {
+      "stage": "Foundational",
+      "package": "Declutter",
+      "focus": "Restore clarity, reduce cognitive load, establish hygiene.",
+      "price": "$6,600",
+      "duration": "1 week"
+    },
+    {
+      "stage": "Emerging",
+      "package": "Reboot",
+      "focus": "Team health, morale, ceremony clarity.",
+      "price": "From $17,600",
+      "duration": "3–4 weeks"
+    },
+    {
+      "stage": "Enabled",
+      "package": "Enable",
+      "focus": "Pilot modular Agile practices with one team, refine cadence, prepare for scale.",
+      "price": "From $35,200",
+      "duration": "6–8 weeks"
+    },
+    {
+      "stage": "Scaling",
+      "package": "Scale",
+      "focus": "Replicate modular practices across teams, align governance.",
+      "price": "Scoped per engagement",
+      "duration": "3–6 months"
+    },
+    {
+      "stage": "Optimizing",
+      "package": "Optimize",
+      "focus": "Strategic agility, continuous improvement, business alignment.",
+      "price": "$4,400 per month",
+      "duration": "Ongoing"
+    }
+  ]
+}
+</script>
+<!-- GENERATED:scorecard_data END -->
 </section>
 
 <script src="scripts/scorecard.js"></script>
