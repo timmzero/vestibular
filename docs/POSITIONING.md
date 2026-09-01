@@ -95,22 +95,27 @@ Assumes GST registration. **Not legal or accounting advice — worth a review.**
 - **Team-health kite chart** for the BA practice (founder's idea). The Agile
   scorecard now has keyed dimensions and a per-dimension read, so a radar is a
   visual swap rather than a rebuild — copy that pattern.
-- ~~**BA has no diagnostic**, by choice.~~ **Reversed.** `ai-health.html` now
-  publishes a six-axis team-health radar on the BA side. It is deliberately
-  *not* a maturity model: no total, no threshold, no stage, no package
-  recommendation. The reader gets the shape and the weakest axis. Collapsing
-  six axes to one number would both discard the reading and make the two
-  practices look like the same offering twice.
-- **The six BA axes** are wellbeing, psychological safety, clarity, cohesion,
-  role fit, change readiness. They decompose the Morale & Team Health domain
-  and reach into Roles & Alignment and AI Enablement; Company Goals, Systems
-  and Pain Points are measured with other instruments and are deliberately not
-  spokes here. `alignment` was renamed `cohesion` because the Agile diagnostic
-  already owns an axis of that name with a different meaning.
-- **Psychological safety is a caveat over the whole instrument**, not one
-  finding among six. Listen First depends on people saying what they think; if
-  that axis is low, every other reading is suspect — including the flattering
-  ones. Not yet reflected in the on-page copy.
+- ~~**BA has no diagnostic**, by choice.~~ **Reversed, then reframed.**
+  `ai-readiness.html` publishes a twelve-question readiness check. It first
+  shipped as a *team-health* radar; the founder's call is that this is an AI
+  transformation initiative, not a team-health one, so the axes are now the six
+  discovery domains and the page was renamed. `/ai-health` 301s to
+  `/ai-readiness` via `_redirects`, because the old URL was live and in the
+  sitemap.
+- **Six axes = the six domains**, in the same order as `domains` in
+  practices.json: company goals, systems, pain points, morale, roles, AI
+  enablement. The chart is a map of the engagement rather than a slice of one
+  domain. Two questions per axis, averaged; a single item carries whatever
+  idiosyncratic reading one person has of one sentence.
+- **Still no stages and no thresholds.** The Agile practice owns the maturity
+  shape. Collapsing six axes into one number would discard the reading and make
+  the two practices look like the same offering twice.
+- **The self-assessment limit is real and unaddressed.** One respondent can
+  answer morale and roles honestly. "Are our systems used to their potential"
+  and "which systems should integrate" are things most individuals cannot
+  answer, so four of six axes are partly guesses on the free page. Fine for a
+  facilitated session where the room has the right people; a known weakness of
+  the public one. The page carries a caveat line but does not say this.
 - **Team-health capture is self-serve only.** The facilitated mode works today
   by a consultant filling the same page in a workshop. The *stored-per-email*
   mode discussed is NOT built: it would collect personal information about

@@ -172,14 +172,19 @@
     });
     container.appendChild(svg);
 
-    function read_values() {
-      const values = {};
-      dimensions.forEach(function (d) {
-        const input = form ? form.elements[d.key] : null;
-        values[d.key] = input ? input.value : undefined;
-      });
-      return values;
-    }
+    // An axis may be fed by one input or several. The caller supplies the
+    // reader so this module never duplicates the averaging rule; the default
+    // is the simple one-input-per-axis case.
+    const read_values = options.values_source
+      ? function () { return options.values_source(form, dimensions, max); }
+      : function () {
+          const values = {};
+          dimensions.forEach(function (d) {
+            const input = form ? form.elements[d.key] : null;
+            values[d.key] = input ? input.value : undefined;
+          });
+          return values;
+        };
 
     function update() {
       const geometry = radar_geometry({

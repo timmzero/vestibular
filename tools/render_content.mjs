@@ -108,7 +108,7 @@ const escapeHtml = (s) =>
  *  so a forgotten entry fails loudly instead of rendering an empty <title>. */
 const CHROME_PAGES = [
   'index.html', 'agile.html', 'ai-transformation.html', 'ai-services.html',
-  'ai-playbook.html', 'ai-proof.html', 'ai-health.html', 'services.html', 'diagnostic.html',
+  'ai-playbook.html', 'ai-proof.html', 'ai-readiness.html', 'services.html', 'diagnostic.html',
   'playbook.html', 'contact.html',
 ];
 
@@ -158,22 +158,22 @@ const REGIONS = [
     render: (data) => renderProof(data.practices.ai_transformation.proof),
   },
   {
-    name: 'ba_health_intro',
-    file: 'ai-health.html',
-    render: (data) => renderBaHealthIntro(data.practices.ai_transformation.team_health),
+    name: 'ba_readiness_intro',
+    file: 'ai-readiness.html',
+    render: (data) => renderBaReadinessIntro(data.practices.ai_transformation.readiness),
   },
   {
     // Reuses renderScorecardFields: it reads only dimensions[].key/.question
     // and has no idea which practice it is serving. One field renderer, two
     // practices, rather than a second copy that can drift.
-    name: 'ba_health_fields',
-    file: 'ai-health.html',
-    render: (data) => renderScorecardFields(data.practices.ai_transformation.team_health),
+    name: 'ba_readiness_fields',
+    file: 'ai-readiness.html',
+    render: (data) => renderScorecardFields(data.practices.ai_transformation.readiness),
   },
   {
-    name: 'ba_health_data',
-    file: 'ai-health.html',
-    render: (data) => renderBaHealthData(data.practices.ai_transformation.team_health),
+    name: 'ba_readiness_data',
+    file: 'ai-readiness.html',
+    render: (data) => renderBaReadinessData(data.practices.ai_transformation.readiness),
   },
   {
     name: 'scorecard_fields',
@@ -436,31 +436,50 @@ function renderProofTeaser(proof) {
 /** The form fields. Generated so a question cannot exist without a unique key
  *  — two questions previously shared name="alignment", which silently collapsed
  *  the sixth dimension and made any keyed read of the answers wrong. */
-function renderBaHealthIntro(team_health) {
-  return `  <p class="ba-health-intro">${escapeHtml(team_health.intro)}</p>`;
+function renderBaReadinessIntro(readiness) {
+  return `  <p class="ba-readiness-intro">${escapeHtml(readiness.intro)}</p>`;
 }
 
 /** No stages, no thresholds — see content/practices.json for why. */
-function renderBaHealthData(team_health) {
+function renderBaReadinessData(readiness) {
+  // The question keys MUST travel with each dimension: they are the input
+  // names the client reads and averages. Emitting key+label only left the
+  // client looking for an input named after the axis, which does not exist
+  // once an axis is asked as two questions.
   const payload = {
-    dimensions: team_health.dimensions.map((d) => ({ key: d.key, label: d.label })),
+    dimensions: readiness.dimensions.map((d) => ({
+      key: d.key,
+      label: d.label,
+      questions: (d.questions || [{ key: d.key }]).map((q) => ({ key: q.key })),
+    })),
   };
   return [
-    '<script id="ba-health-data" type="application/json">',
+    '<script id="ba-readiness-data" type="application/json">',
     JSON.stringify(payload, null, 2),
     '</' + 'script>',
   ].join('\n');
 }
 
+/**
+ * One <label> per QUESTION, not per dimension. An axis may be asked once
+ * (`question`) or several times (`questions[]`); both shapes render here so the
+ * Agile diagnostic and the AI readiness radar share one field renderer rather
+ * than a second copy that can drift.
+ */
 function renderScorecardFields(diag) {
   return diag.dimensions
-    .map((d) =>
-      [
-        '  <label>',
-        `    <input type="number" name="${escapeHtml(d.key)}" min="1" max="5" required>`,
-        `    <span class="label-text">${escapeHtml(d.question)} (1&ndash;5)</span>`,
-        '  </label>',
-      ].join('\n')
+    .flatMap((d) =>
+      (Array.isArray(d.questions) && d.questions.length
+        ? d.questions
+        : [{ key: d.key, text: d.question }]
+      ).map((q) =>
+        [
+          '  <label>',
+          `    <input type="number" name="${escapeHtml(q.key)}" min="1" max="5" required>`,
+          `    <span class="label-text">${escapeHtml(q.text)} (1&ndash;5)</span>`,
+          '  </label>',
+        ].join('\n')
+      )
     )
     .join('\n');
 }

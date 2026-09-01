@@ -41,9 +41,9 @@
       "title": "Vestibular AI Transformation – Proof",
       "description": "We built and shipped a production AI system for regulated compliance documents. What it taught us about grounding, calibration, and where AI does not belong."
     },
-    "ai-health.html": {
-      "title": "Vestibular AI Transformation – Team Health",
-      "description": "Six axes, no score and no stage: wellbeing, psychological safety, clarity, cohesion, role fit and readiness for change."
+    "ai-readiness.html": {
+      "title": "Vestibular AI Transformation – Readiness",
+      "description": "A twelve-question readiness check across six areas: goals, systems, pain points, morale, roles and AI enablement."
     }
   }
 }

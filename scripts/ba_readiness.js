@@ -1,7 +1,7 @@
 /**
- * BA team-health radar.
+ * AI transformation readiness radar.
  *
- * Reads its dimensions from the #ba-health-data block, which the generator
+ * Reads its dimensions from the #ba-readiness-data block, which the generator
  * emits from content/practices.json.
  *
  * There is deliberately NO total, NO threshold and NO stage. On the Agile side
@@ -14,27 +14,27 @@
  * would start listening.
  */
 
-const formEl = document.getElementById('ba-health-form');
-const resultEl = document.getElementById('ba-health-result');
-const ctaEl = document.getElementById('ba-health-cta');
-const dataEl = document.getElementById('ba-health-data');
-const radarEl = document.getElementById('ba-health-radar');
+const formEl = document.getElementById('ba-readiness-form');
+const resultEl = document.getElementById('ba-readiness-result');
+const ctaEl = document.getElementById('ba-readiness-cta');
+const dataEl = document.getElementById('ba-readiness-data');
+const radarEl = document.getElementById('ba-readiness-radar');
 
 /** Fail loudly in the console rather than silently rendering against nothing. */
 function load_config() {
   if (!dataEl) {
-    console.error('ba_health: #ba-health-data not found — has the page been regenerated?');
+    console.error('ba_readiness: #ba-readiness-data not found — has the page been regenerated?');
     return null;
   }
   try {
     const cfg = JSON.parse(dataEl.textContent);
     if (!cfg.dimensions?.length) {
-      console.error('ba_health: config is missing dimensions');
+      console.error('ba_readiness: config is missing dimensions');
       return null;
     }
     return cfg;
   } catch (err) {
-    console.error('ba_health: could not parse config', err);
+    console.error('ba_readiness: could not parse config', err);
     return null;
   }
 }
@@ -52,9 +52,10 @@ if (formEl) {
         form: formEl,
         dimensions: cfg.dimensions,
         max: 5,
+        values_source: window.vestibular_dimension_read.axis_values,
       });
     } catch (err) {
-      console.error('ba_health: radar failed to initialise', err);
+      console.error('ba_readiness: radar failed to initialise', err);
     }
   }
 
@@ -84,24 +85,24 @@ if (formEl) {
     resultEl.removeAttribute('role');
     resultEl.innerHTML = `
       ${shared.render_dimension_list(cfg.dimensions, answers, 5)}
-      <p class="result-weakest">Weakest right now: <strong>${weakest.label}</strong>. That is where we would start listening.</p>
+      <p class="result-weakest">Weakest right now: <strong>${weakest.label}</strong>. That is where we would start.</p>
       <p class="result-caveat">This is a self-assessment from one point of view. It is a prompt for a conversation, not a measurement of your team.</p>`;
 
     if (ctaEl) ctaEl.style.display = 'block';
 
     // Plain-text summary for the contact form handoff. No total, by design.
     const detail = cfg.dimensions.map((d) => `${d.label} ${answers[d.key]}/5`).join(', ');
-    const resultText = `Team health (BA): ${detail}. Weakest: ${weakest.label}.`;
+    const resultText = `AI readiness: ${detail}. Weakest: ${weakest.label}.`;
 
-    const hiddenField = document.getElementById('ba-health-hidden');
+    const hiddenField = document.getElementById('ba-readiness-hidden');
     if (hiddenField) hiddenField.value = resultText;
 
     // localStorage THROWS rather than returning null when storage is blocked
     // (Safari private browsing, blocked cookies).
     try {
-      localStorage.setItem('baHealthResult', resultText);
+      localStorage.setItem('baReadinessResult', resultText);
     } catch (err) {
-      console.warn('ba_health: could not persist result locally', err);
+      console.warn('ba_readiness: could not persist result locally', err);
     }
   });
 }

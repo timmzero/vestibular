@@ -4,7 +4,7 @@
 <!-- GENERATED:page_head START · source content/practices.json · regen: node tools/render_content.mjs · DO NOT EDIT BELOW -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="Six axes, no score and no stage: wellbeing, psychological safety, clarity, cohesion, role fit and readiness for change." />
+  <meta name="description" content="A twelve-question readiness check across six areas: goals, systems, pain points, morale, roles and AI enablement." />
   <meta name="theme-color" content="#000000" />
 
   <!-- Favicons -->
@@ -13,25 +13,25 @@
   <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
   <link rel="manifest" href="assets/site.webmanifest">
 
-  <title>Vestibular AI Transformation – Team Health</title>
-  <link rel="canonical" href="https://vestibular.nexus/ai-health" />
+  <title>Vestibular AI Transformation – Readiness</title>
+  <link rel="canonical" href="https://vestibular.nexus/ai-readiness" />
 
   <!-- Open Graph / Twitter. Cards are 1200x630 PNGs generated from this
        same metadata by tools/build_og_images.py, so a share card can never
        advertise a different title from the page it links to. -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Vestibular" />
-  <meta property="og:url" content="https://vestibular.nexus/ai-health" />
-  <meta property="og:title" content="Vestibular AI Transformation – Team Health" />
-  <meta property="og:description" content="Six axes, no score and no stage: wellbeing, psychological safety, clarity, cohesion, role fit and readiness for change." />
-  <meta property="og:image" content="https://vestibular.nexus/assets/og/ai-health.png" />
+  <meta property="og:url" content="https://vestibular.nexus/ai-readiness" />
+  <meta property="og:title" content="Vestibular AI Transformation – Readiness" />
+  <meta property="og:description" content="A twelve-question readiness check across six areas: goals, systems, pain points, morale, roles and AI enablement." />
+  <meta property="og:image" content="https://vestibular.nexus/assets/og/ai-readiness.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Vestibular AI Transformation – Team Health" />
+  <meta property="og:image:alt" content="Vestibular AI Transformation – Readiness" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Vestibular AI Transformation – Team Health" />
-  <meta name="twitter:description" content="Six axes, no score and no stage: wellbeing, psychological safety, clarity, cohesion, role fit and readiness for change." />
-  <meta name="twitter:image" content="https://vestibular.nexus/assets/og/ai-health.png" />
+  <meta name="twitter:title" content="Vestibular AI Transformation – Readiness" />
+  <meta name="twitter:description" content="A twelve-question readiness check across six areas: goals, systems, pain points, morale, roles and AI enablement." />
+  <meta name="twitter:image" content="https://vestibular.nexus/assets/og/ai-readiness.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -81,13 +81,13 @@
 
     <div class="hero-content">
       <h1>
-        <span>Six axes.</span><br />
+        <span>Six areas.</span><br />
         <span>No score.</span>
       </h1>
 
       <p class="highlighted-intro">
-        Team health is an input to the redesign, not a soft afterthought.<br />
-        Here is the shape we look for before we change how anyone works.
+        Before we redesign how anyone works, we look at six areas.<br />
+        This is the shape we are reading, and you can read it yourself.
       </p>
 
       <div class="cta-buttons">
@@ -98,18 +98,18 @@
 
   <main>
 
-    <section class="ba-health">
-      <h2>Where is your team, right now?</h2>
+    <section class="ba-readiness">
+      <h2>Where is your organisation, right now?</h2>
 
-<!-- GENERATED:ba_health_intro START · source content/practices.json · regen: node tools/render_content.mjs · DO NOT EDIT BELOW -->
-  <p class="ba-health-intro">Six axes, about two minutes. There is no score and no stage — you get the shape, and the axis we would start listening on.</p>
-<!-- GENERATED:ba_health_intro END -->
+<!-- GENERATED:ba_readiness_intro START · source content/practices.json · regen: node tools/render_content.mjs · DO NOT EDIT BELOW -->
+  <p class="ba-readiness-intro">Twelve questions, about three minutes. There is no score and no stage — you get the shape across the six areas we look at, and the one we would start with.</p>
+<!-- GENERATED:ba_readiness_intro END -->
 
       <!-- Above the form on purpose: the shape is the point of the page.
            The inputs below remain the source of truth for these values; this
            is a view over them and is aria-hidden so assistive tech reads the
            fields rather than a worse copy of the same numbers. -->
-      <figure id="ba-health-radar" class="radar">
+      <figure id="ba-readiness-radar" class="radar">
         <figcaption class="radar-caption">Your shape so far &mdash; it fills in as you answer.</figcaption>
       </figure>
 
@@ -118,72 +118,144 @@
         <strong>1</strong> Strongly disagree &nbsp; <strong>2</strong> Somewhat disagree &nbsp; <strong>3</strong> Neutral &nbsp; <strong>4</strong> Somewhat agree &nbsp; <strong>5</strong> Strongly agree
       </p>
 
-      <form id="ba-health-form" class="dimension-form">
-<!-- GENERATED:ba_health_fields START · source content/practices.json · regen: node tools/render_content.mjs · DO NOT EDIT BELOW -->
+      <form id="ba-readiness-form" class="dimension-form">
+<!-- GENERATED:ba_readiness_fields START · source content/practices.json · regen: node tools/render_content.mjs · DO NOT EDIT BELOW -->
   <label>
-    <input type="number" name="wellbeing" min="1" max="5" required>
+    <input type="number" name="company_goals_1" min="1" max="5" required>
+    <span class="label-text">Our goals are clear and agreed across leadership and the people doing the work. (1&ndash;5)</span>
+  </label>
+  <label>
+    <input type="number" name="company_goals_2" min="1" max="5" required>
+    <span class="label-text">Our goals are measurable and sequenced, not merely stated. (1&ndash;5)</span>
+  </label>
+  <label>
+    <input type="number" name="systems_1" min="1" max="5" required>
+    <span class="label-text">We can name every system in use, including the ones that were never officially approved. (1&ndash;5)</span>
+  </label>
+  <label>
+    <input type="number" name="systems_2" min="1" max="5" required>
+    <span class="label-text">The systems we already own are used to their potential, and connect where they should. (1&ndash;5)</span>
+  </label>
+  <label>
+    <input type="number" name="pain_points_1" min="1" max="5" required>
+    <span class="label-text">We know where the pressure is greatest, and can put numbers on it. (1&ndash;5)</span>
+  </label>
+  <label>
+    <input type="number" name="pain_points_2" min="1" max="5" required>
+    <span class="label-text">We know who and what is exposed when it goes wrong — roles, customers, revenue, safety. (1&ndash;5)</span>
+  </label>
+  <label>
+    <input type="number" name="morale_1" min="1" max="5" required>
     <span class="label-text">The workload is sustainable, and people are not running on reserves. (1&ndash;5)</span>
   </label>
   <label>
-    <input type="number" name="psychological_safety" min="1" max="5" required>
+    <input type="number" name="morale_2" min="1" max="5" required>
     <span class="label-text">Someone can say "this will not work" to the person sponsoring it, without it costing them. (1&ndash;5)</span>
   </label>
   <label>
-    <input type="number" name="clarity" min="1" max="5" required>
-    <span class="label-text">People know what is expected of them, and why it matters. (1&ndash;5)</span>
-  </label>
-  <label>
-    <input type="number" name="cohesion" min="1" max="5" required>
-    <span class="label-text">The team pulls in one direction rather than defending territory. (1&ndash;5)</span>
-  </label>
-  <label>
-    <input type="number" name="role_fit" min="1" max="5" required>
+    <input type="number" name="roles_1" min="1" max="5" required>
     <span class="label-text">Responsibility matches job description, and it is clear who decides what. (1&ndash;5)</span>
   </label>
   <label>
-    <input type="number" name="change_readiness" min="1" max="5" required>
-    <span class="label-text">The team has the capacity and the appetite to take on the change ahead. (1&ndash;5)</span>
+    <input type="number" name="roles_2" min="1" max="5" required>
+    <span class="label-text">Capability and workload are matched to role — the right people are in the right places. (1&ndash;5)</span>
   </label>
-<!-- GENERATED:ba_health_fields END -->
+  <label>
+    <input type="number" name="ai_enablement_1" min="1" max="5" required>
+    <span class="label-text">We can name specific places AI would meet a real need, not just where it is fashionable. (1&ndash;5)</span>
+  </label>
+  <label>
+    <input type="number" name="ai_enablement_2" min="1" max="5" required>
+    <span class="label-text">Our data is accessible, and good enough for a system to rely on. (1&ndash;5)</span>
+  </label>
+<!-- GENERATED:ba_readiness_fields END -->
         <button type="submit" class="btn">See our shape</button>
       </form>
 
 
-      <div id="ba-health-result" class="result"></div>
-      <button id="ba-health-cta" class="btn" style="display:none">Send Result to Vestibular</button>
+      <div id="ba-readiness-result" class="result"></div>
+      <button id="ba-readiness-cta" class="btn" style="display:none">Send Result to Vestibular</button>
 
-<!-- GENERATED:ba_health_data START · source content/practices.json · regen: node tools/render_content.mjs · DO NOT EDIT BELOW -->
-<script id="ba-health-data" type="application/json">
+<!-- GENERATED:ba_readiness_data START · source content/practices.json · regen: node tools/render_content.mjs · DO NOT EDIT BELOW -->
+<script id="ba-readiness-data" type="application/json">
 {
   "dimensions": [
     {
-      "key": "wellbeing",
-      "label": "Wellbeing"
+      "key": "company_goals",
+      "label": "Company goals",
+      "questions": [
+        {
+          "key": "company_goals_1"
+        },
+        {
+          "key": "company_goals_2"
+        }
+      ]
     },
     {
-      "key": "psychological_safety",
-      "label": "Psychological safety"
+      "key": "systems",
+      "label": "Systems",
+      "questions": [
+        {
+          "key": "systems_1"
+        },
+        {
+          "key": "systems_2"
+        }
+      ]
     },
     {
-      "key": "clarity",
-      "label": "Clarity"
+      "key": "pain_points",
+      "label": "Pain points",
+      "questions": [
+        {
+          "key": "pain_points_1"
+        },
+        {
+          "key": "pain_points_2"
+        }
+      ]
     },
     {
-      "key": "cohesion",
-      "label": "Cohesion"
+      "key": "morale",
+      "label": "Morale",
+      "questions": [
+        {
+          "key": "morale_1"
+        },
+        {
+          "key": "morale_2"
+        }
+      ]
     },
     {
-      "key": "role_fit",
-      "label": "Role fit"
+      "key": "roles",
+      "label": "Roles",
+      "questions": [
+        {
+          "key": "roles_1"
+        },
+        {
+          "key": "roles_2"
+        }
+      ]
     },
     {
-      "key": "change_readiness",
-      "label": "Change readiness"
+      "key": "ai_enablement",
+      "label": "AI enablement",
+      "questions": [
+        {
+          "key": "ai_enablement_1"
+        },
+        {
+          "key": "ai_enablement_2"
+        }
+      ]
     }
   ]
 }
 </script>
-<!-- GENERATED:ba_health_data END -->
+<!-- GENERATED:ba_readiness_data END -->
     </section>
 
     <section class="cta-repeat">
@@ -203,7 +275,7 @@
   <!-- Scripts -->
 <script src="scripts/dimension_read.js"></script>
 <script src="scripts/radar.js"></script>
-<script src="scripts/ba_health.js"></script>
+<script src="scripts/ba_readiness.js"></script>
 <script src="scripts/nav.js"></script>
 </body>
 </html>

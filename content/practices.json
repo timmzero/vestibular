@@ -197,7 +197,7 @@
           "name": "Morale & Team Health",
           "purpose": "Treat team health as a measurable input to the redesign, not a soft afterthought.",
           "points": [
-            "Team Health Reports measuring wellbeing, psychological safety, clarity, cohesion, role fit, and readiness for change",
+            "Team Health Reports measuring wellbeing, clarity, alignment, and psychological safety",
             "Identify role misalignment — where responsibility and job description have parted ways",
             "Surface the cultural blockers to transformation: fear, fatigue, confusion, siloing"
           ]
@@ -222,39 +222,93 @@
           ]
         }
       ],
-      "team_health": {
-        "_comment": "SSOT for the BA team-health radar. Same keyed shape as the Agile diagnostic so one field renderer and one radar module serve both. Deliberately has NO stages and NO thresholds: team health here is a measured input to an operating-model redesign, not a maturity ladder. Collapsing six axes to one stage is the Agile practice's shape and reusing it would make the two practices indistinguishable.",
-        "intro": "Six axes, about two minutes. There is no score and no stage — you get the shape, and the axis we would start listening on.",
+      "readiness": {
+        "_comment": "SSOT for the AI transformation readiness radar. One axis per discovery domain, in the same order as domains above, so the chart is a map of the engagement rather than a slice of it. Two questions per axis: a single item carries whatever idiosyncratic reading one person has of one sentence. Deliberately NO stages and NO thresholds — the Agile practice owns the maturity shape, and collapsing six axes to one number would both discard the reading and make the two practices look alike.",
+        "intro": "Twelve questions, about three minutes. There is no score and no stage — you get the shape across the six areas we look at, and the one we would start with.",
         "dimensions": [
           {
-            "key": "wellbeing",
-            "label": "Wellbeing",
-            "question": "The workload is sustainable, and people are not running on reserves."
+            "key": "company_goals",
+            "label": "Company goals",
+            "questions": [
+              {
+                "key": "company_goals_1",
+                "text": "Our goals are clear and agreed across leadership and the people doing the work."
+              },
+              {
+                "key": "company_goals_2",
+                "text": "Our goals are measurable and sequenced, not merely stated."
+              }
+            ]
           },
           {
-            "key": "psychological_safety",
-            "label": "Psychological safety",
-            "question": "Someone can say \"this will not work\" to the person sponsoring it, without it costing them."
+            "key": "systems",
+            "label": "Systems",
+            "questions": [
+              {
+                "key": "systems_1",
+                "text": "We can name every system in use, including the ones that were never officially approved."
+              },
+              {
+                "key": "systems_2",
+                "text": "The systems we already own are used to their potential, and connect where they should."
+              }
+            ]
           },
           {
-            "key": "clarity",
-            "label": "Clarity",
-            "question": "People know what is expected of them, and why it matters."
+            "key": "pain_points",
+            "label": "Pain points",
+            "questions": [
+              {
+                "key": "pain_points_1",
+                "text": "We know where the pressure is greatest, and can put numbers on it."
+              },
+              {
+                "key": "pain_points_2",
+                "text": "We know who and what is exposed when it goes wrong — roles, customers, revenue, safety."
+              }
+            ]
           },
           {
-            "key": "cohesion",
-            "label": "Cohesion",
-            "question": "The team pulls in one direction rather than defending territory."
+            "key": "morale",
+            "label": "Morale",
+            "questions": [
+              {
+                "key": "morale_1",
+                "text": "The workload is sustainable, and people are not running on reserves."
+              },
+              {
+                "key": "morale_2",
+                "text": "Someone can say \"this will not work\" to the person sponsoring it, without it costing them."
+              }
+            ]
           },
           {
-            "key": "role_fit",
-            "label": "Role fit",
-            "question": "Responsibility matches job description, and it is clear who decides what."
+            "key": "roles",
+            "label": "Roles",
+            "questions": [
+              {
+                "key": "roles_1",
+                "text": "Responsibility matches job description, and it is clear who decides what."
+              },
+              {
+                "key": "roles_2",
+                "text": "Capability and workload are matched to role — the right people are in the right places."
+              }
+            ]
           },
           {
-            "key": "change_readiness",
-            "label": "Change readiness",
-            "question": "The team has the capacity and the appetite to take on the change ahead."
+            "key": "ai_enablement",
+            "label": "AI enablement",
+            "questions": [
+              {
+                "key": "ai_enablement_1",
+                "text": "We can name specific places AI would meet a real need, not just where it is fashionable."
+              },
+              {
+                "key": "ai_enablement_2",
+                "text": "Our data is accessible, and good enough for a system to rely on."
+              }
+            ]
           }
         ]
       },

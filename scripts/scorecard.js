@@ -82,6 +82,7 @@ if (formEl) {
         form: formEl,
         dimensions: cfg.dimensions,
         max: 5,
+        values_source: window.vestibular_dimension_read.axis_values,
       });
     } catch (err) {
       console.error('scorecard: radar failed to initialise', err);

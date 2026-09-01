@@ -14,10 +14,30 @@
 (function (root) {
   'use strict';
 
+  /**
+   * Banding is by RANGE, not exact match. `value === 3` worked while every
+   * answer was an integer, but an axis averaged over two questions produces
+   * 3.5, which matched neither branch and fell through to 'Needs work' — a
+   * team above the midpoint told it was their problem area, on a page that
+   * looked entirely plausible. Integer behaviour is unchanged: 4 and 5 Strong,
+   * 3 Developing, 1 and 2 Needs work.
+   */
   function band_for(value) {
     if (value >= 4) return { label: 'Strong', className: 'band-strong' };
-    if (value === 3) return { label: 'Developing', className: 'band-developing' };
+    if (value >= 3) return { label: 'Developing', className: 'band-developing' };
     return { label: 'Needs work', className: 'band-weak' };
+  }
+
+  /**
+   * An axis may be asked as one question or several. Returns the input keys
+   * that feed it, so the single-question and multi-question shapes are read by
+   * the same code rather than forking the caller.
+   */
+  function question_keys(dimension) {
+    if (Array.isArray(dimension.questions) && dimension.questions.length) {
+      return dimension.questions.map(function (q) { return q.key; });
+    }
+    return [dimension.key];
   }
 
   /**
@@ -25,22 +45,27 @@
    * correctly while being unable to attribute any answer to any dimension, so
    * the key is the contract.
    */
+  /**
+   * Validated read of every axis, for scoring. Delegates to axis_values so the
+   * chart and the result can never disagree about what an answer is: this used
+   * to read through FormData while axis_values read form.elements, which is two
+   * readers for one job and two places for a validation rule to drift.
+   */
   function read_answers(form, dimensions, max) {
     const limit = max || 5;
-    const fd = new FormData(form);
+    const values = axis_values(form, dimensions, limit);
     const answers = {};
     let total = 0;
     for (let i = 0; i < dimensions.length; i++) {
-      const d = dimensions[i];
-      const v = Number(fd.get(d.key));
-      if (!Number.isFinite(v) || v < 1 || v > limit) {
+      const key = dimensions[i].key;
+      if (values[key] === undefined) {
         return {
           ok: false,
           message: 'Please answer every question with a number from 1 to ' + limit + '.',
         };
       }
-      answers[d.key] = v;
-      total += v;
+      answers[key] = values[key];
+      total += values[key];
     }
     return { ok: true, answers: answers, total: total };
   }
@@ -53,6 +78,37 @@
       .sort(function (a, b) { return answers[a.key] - answers[b.key]; })[0];
   }
 
+  /**
+   * Live per-axis values for the chart, read straight off the form elements.
+   *
+   * An axis is the MEAN of its questions, and is undefined unless EVERY one of
+   * them holds a valid answer. Averaging a half-answered axis would plot a
+   * value derived from half the evidence, which is the same fabrication as
+   * plotting a blank at the centre.
+   */
+  function axis_values(form, dimensions, max) {
+    const limit = max || 5;
+    const values = {};
+    dimensions.forEach(function (d) {
+      const keys = question_keys(d);
+      let sum = 0;
+      let complete = true;
+      for (let i = 0; i < keys.length; i++) {
+        const el = form ? form.elements[keys[i]] : null;
+        const raw = el ? el.value : undefined;
+        const v = Number(raw);
+        if (raw === undefined || raw === null || raw === '' ||
+            !Number.isFinite(v) || v < 1 || v > limit) {
+          complete = false;
+          break;
+        }
+        sum += v;
+      }
+      values[d.key] = complete ? sum / keys.length : undefined;
+    });
+    return values;
+  }
+
   function render_dimension_list(dimensions, answers, max) {
     const limit = max || 5;
     const rows = dimensions
@@ -62,7 +118,7 @@
         return `
         <li class="dim">
           <span class="dim-label">${d.label}</span>
-          <span class="dim-meter" aria-hidden="true"><i style="width:${(v / limit) * 100}%"></i></span>
+          <span class="dim-meter" aria-hidden="true"><i style="width:${Math.round((v / limit) * 1000) / 10}%"></i></span>
           <span class="dim-band ${band.className}">${band.label}</span>
         </li>`;
       })
@@ -72,6 +128,8 @@
 
   const api = {
     band_for: band_for,
+    question_keys: question_keys,
+    axis_values: axis_values,
     read_answers: read_answers,
     weakest_dimension: weakest_dimension,
     render_dimension_list: render_dimension_list,
