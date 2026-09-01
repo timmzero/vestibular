@@ -395,6 +395,7 @@
       "services": [
         {
           "name": "AI Readiness Assessment",
+          "phase": "Listen",
           "bullets": [
             "Inventory systems, data quality, and integration potential",
             "Surface pain points and quantify what they cost",
@@ -411,6 +412,7 @@
         },
         {
           "name": "AI Opportunity & Value Case",
+          "phase": "Listen",
           "bullets": [
             "Locate leverage points where AI moves margin, throughput, or risk",
             "Prioritise by value, feasibility, and risk — and say no where the case is weak",
@@ -427,6 +429,7 @@
         },
         {
           "name": "Operating Model & Process Redesign",
+          "phase": "Design",
           "bullets": [
             "Rebuild processes end to end around AI-enabled workflows",
             "Design decision systems, not just automations",
@@ -443,6 +446,7 @@
         },
         {
           "name": "AI-Ready Requirements & Governance",
+          "phase": "Design",
           "bullets": [
             "Translate business need into requirements a build team can act on",
             "Specify data, model behaviour, and integration points",
@@ -459,6 +463,7 @@
         },
         {
           "name": "Transformation Roadmap & Orchestration",
+          "phase": "Land",
           "bullets": [
             "Sequence phases, dependencies, quick wins, and long-term uplift",
             "Coordinate execs, product, engineering, ops, and compliance",
@@ -473,6 +478,7 @@
         },
         {
           "name": "Adoption & AI Capability Uplift",
+          "phase": "Land",
           "bullets": [
             "Build AI literacy: fundamentals, real limits, and practical use",
             "Manage resistance and build confidence in new workflows",
@@ -534,7 +540,8 @@
           }
         ],
         "bridge": "This is the same sequence the AI Transformation practice runs with clients: listen first, ground every claim in something measurable, design for the human who has to sign their name to the output, and be honest about where AI does not belong."
-      }
+      },
+      "_services_comment": "Each service names the engagement phase it belongs to, and ai-services.html renders them under that heading. The order was already Listen -> Design -> Land; without the label it read as arbitrary next to prominent prices, because the prices do not ascend monotonically and nothing on the page said why. The generator FAILS if a service names a phase that does not exist in phases[] above, or names no phase at all."
     }
   },
   "_pricing": {

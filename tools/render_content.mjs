@@ -145,7 +145,11 @@ const REGIONS = [
   {
     name: 'ba_services',
     file: 'ai-services.html',
-    render: (data) => renderServices(data.practices.ai_transformation.services, data._pricing),
+    render: (data) => renderServices(
+      data.practices.ai_transformation.services,
+      data._pricing,
+      data.practices.ai_transformation.phases
+    ),
   },
   {
     name: 'ba_playbook_phases',
@@ -343,25 +347,60 @@ function renderDomains(domains) {
 
 /** Services render with the same article/deliverable shape the Agile services
  *  page uses, so the two practices are visually siblings rather than strangers. */
-function renderServices(services, pricing) {
-  return services
-    .map((s) => {
-      const bullets = s.bullets
-        .map((b) => `          <li>${escapeHtml(b)}</li>`)
-        .join('\n');
+/**
+ * Services grouped under the engagement phase they belong to.
+ *
+ * The order was already Listen -> Design -> Land, but nothing on the page said
+ * so, and the prices do not ascend monotonically (8,250 / 19,250 / 49,500 /
+ * 33,000 / scoped / 22,000), so it read as arbitrary. The heading is the whole
+ * fix: it makes the existing reason visible rather than reordering the work.
+ *
+ * Fails loudly on a service with no phase, or a phase not defined in phases[],
+ * so a service added later cannot silently fall out of every group.
+ */
+function renderServices(services, pricing, phases) {
+  const order = phases.map((p) => p.name);
+  const blurbs = new Map(phases.map((p) => [p.name, p.blurb]));
+
+  for (const s of services) {
+    if (!s.phase) throw new Error(`service '${s.name}' has no phase`);
+    if (!order.includes(s.phase)) {
+      throw new Error(
+        `service '${s.name}' names phase '${s.phase}', which is not one of: ${order.join(', ')}`
+      );
+    }
+  }
+
+  const card = (s) => {
+    const bullets = s.bullets.map((b) => `          <li>${escapeHtml(b)}</li>`).join('\n');
+    return [
+      '      <article>',
+      '        <div>',
+      `        <h3>${escapeHtml(s.name)}</h3>`,
+      `        ${renderPrice(s.price, pricing)}`,
+      '        <ul>',
+      bullets,
+      `          <li><strong>Deliverable:</strong> ${escapeHtml(s.deliverable)}</li>`,
+      '        </ul>',
+      '        </div>',
+      '      </article>',
+    ].join('\n');
+  };
+
+  return order
+    .map((phase) => {
+      const inPhase = services.filter((s) => s.phase === phase);
+      if (!inPhase.length) return null;
       return [
-        '      <article>',
-        '        <div>',
-        `        <h3>${escapeHtml(s.name)}</h3>`,
-        `        ${renderPrice(s.price, pricing)}`,
-        '        <ul>',
-        bullets,
-        `          <li><strong>Deliverable:</strong> ${escapeHtml(s.deliverable)}</li>`,
-        '        </ul>',
-        '        </div>',
-        '      </article>',
+        '      <div class="phase-heading">',
+        `        <h3>${escapeHtml(phase)}</h3>`,
+        `        <p>${escapeHtml(blurbs.get(phase) || '')}</p>`,
+        '      </div>',
+        '',
+        inPhase.map(card).join('\n\n'),
       ].join('\n');
     })
+    .filter(Boolean)
     .join('\n\n');
 }
 
