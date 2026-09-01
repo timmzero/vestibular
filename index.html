@@ -47,6 +47,11 @@
       <div class="brand">
         <a href="index.html" aria-label="Vestibular home">
           <img src="assets/vestibular_logo.svg" alt="Vestibular logo" class="brand-logo" />
+          <!-- The mark overhangs the topbar by design, and its box was eating
+               clicks on the page beneath. This span is the link's hit area,
+               covering only the part inside the bar. Absolutely positioned, so
+               it adds nothing to layout. -->
+          <span class="brand-hit" aria-hidden="true"></span>
         </a>
         <button class="nav-toggle"
                 aria-label="Toggle navigation"
