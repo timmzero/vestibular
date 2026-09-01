@@ -81,14 +81,39 @@ Attaching effort is what revealed the first pricing pass implied day rates
 
 ### GST
 
-Prices render **GST-inclusive and prominent**. The B2B ex-GST exemption from the
-ACL single-price rule cannot be relied on: a business acquiring services under
-$100,000 can still be a "consumer", and every engagement sits under that. The
-ACCC requires components in close proximity to, and not more prominent than, the
-inclusive price. Only the ex-GST integer is stored; the inclusive figure is
+**Vestibular is registered for GST** — confirmed by the founder, no longer an
+assumption.
+
+Prices render **GST-inclusive and prominent**, with the ex-GST figure as a
+smaller note beneath. Only the ex-GST integer is stored; the inclusive figure is
 derived, never typed.
 
-Assumes GST registration. **Not legal or accounting advice — worth a review.**
+**Leading with ex-GST was built, briefly merged, and reverted.** It is worth
+recording properly, because it was a reasonable option and a later session will
+think of it again.
+
+ACL s 48 requires the single (inclusive) price to be *at least as prominent* as
+any component price — it does not require it to come first. So ex-GST can lead,
+provided the inclusive figure sits beside it at equal size, weight and colour.
+That version was built and measured (equal computed font-size, weight and colour
+on all nine priced cards) and it complied. It was rejected on design grounds:
+two figures at equal prominence means two things competing to be the price, and
+one prominent number reads better than two. Founder's call, 2 Sep 2026. It went
+in as PR #24 by accident and was reverted the same day.
+
+The constraint that follows: **the ex-GST figure must stay less prominent than
+the inclusive one.** There is no arrangement where ex-GST is the bigger number,
+because that is precisely what s 48 forbids without the exemption below.
+
+**Why the business-to-business exemption does not apply here.** The ACCC's
+guidance is that where a representation is made *exclusively to a business* you
+need not include a single price. The operative test is the CHANNEL being
+business-only, not who the intended reader is — and a public marketing site is
+not such a channel. (The $100,000 consumer threshold points the same way but is
+not the test.) If prices ever moved behind a login or into a trade-only channel,
+ex-GST alone would become defensible; on vestibular.nexus it is not.
+
+**Not legal or accounting advice — worth a review.**
 
 ## Open work
 
