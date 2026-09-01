@@ -1,0 +1,6 @@
+# Cloudflare Pages redirects.
+# /ai-health shipped and was live before the page was reframed from a
+# team-health check to an AI transformation readiness check. 301 so the old
+# URL, which was published in sitemap.xml, does not become a dead end.
+/ai-health      /ai-readiness   301
+/ai-health.html /ai-readiness   301
