@@ -225,6 +225,36 @@ button {
 }
 button:hover, button:focus { background: #333; }
 
+/* ── Horizontal overflow ────────────────────────────────────────────────────
+   Every page scrolled sideways: 97px at 1280, 180px at 640. Two causes, both
+   by design and neither wanted as a scrollbar:
+
+     .hero-logo-3d  absolutely positioned at right:-6% (right:-25% on mobile),
+                    deliberately bleeding off the right edge.
+     .main-nav      the slide-in panel, parked off-canvas with
+                    translateX(100%) until it is opened.
+
+   `clip`, not `hidden`. Hidden would turn the root into a scroll container and
+   break `position: sticky`, which the radar on the diagnostic and readiness
+   pages relies on. Clip does not create a scroll container, so sticky survives
+   — verified in a browser, not assumed.
+
+   BOTH elements, and that is not belt-and-braces — measured, because every
+   shorter spelling fails:
+     html { overflow-x: clip }        no effect — still scrolls 97px
+     html { overflow-x: hidden }      no effect — still scrolls 97px
+     body { overflow-x: clip }        no effect on its own
+     body { overflow-x: hidden }      stops the sideways scroll and takes
+                                      vertical scrolling with it
+     html, body { overflow-x: clip }  stops the sideways scroll, with vertical
+                                      scrolling and sticky both intact
+   Browsers without `overflow: clip` (Safari below 16) keep today's behaviour,
+   so this degrades to the status quo rather than to something worse. The bleed
+   itself is untouched: the logo is still cut at the viewport edge, exactly
+   where it was cut before, just without the scrollbar. */
+html,
+body { overflow-x: clip; }
+
 /* Nav */
 /* Mobile overlay nav (default) */
 .main-nav {
