@@ -89,7 +89,66 @@
             "effort_days": 2
           }
         }
-      ]
+      ],
+      "diagnostic": {
+        "_comment": "SSOT for the free self-assessment. The form fields AND the scoring script are both generated from this, so a question can never exist without a unique key.",
+        "intro": "Six questions, about two minutes. You get a read on each dimension, not just one number.",
+        "dimensions": [
+          {
+            "key": "tool_hygiene",
+            "label": "Tool hygiene",
+            "question": "Our tools and stack are consistently maintained and reliable."
+          },
+          {
+            "key": "team_health",
+            "label": "Team health",
+            "question": "Every team member contributes meaningfully during feedback opportunities."
+          },
+          {
+            "key": "enablement",
+            "label": "Enablement",
+            "question": "Our team has established routines that sustain flow and reduce friction."
+          },
+          {
+            "key": "governance",
+            "label": "Governance",
+            "question": "Our team's cadence and conventions are aligned with other teams, enabling collaboration."
+          },
+          {
+            "key": "alignment",
+            "label": "Alignment",
+            "question": "Our work aligns with organisational goals, and outcomes are predictable."
+          },
+          {
+            "key": "adaptation",
+            "label": "Adaptation",
+            "question": "We regularly reflect and adapt our practices to improve outcomes."
+          }
+        ],
+        "_thresholds_comment": "Cumulative score to stage. Six questions scored 1-5 gives a 6-30 range.",
+        "thresholds": [
+          {
+            "min": 27,
+            "stage": "Optimizing"
+          },
+          {
+            "min": 22,
+            "stage": "Scaling"
+          },
+          {
+            "min": 17,
+            "stage": "Enabled"
+          },
+          {
+            "min": 12,
+            "stage": "Emerging"
+          },
+          {
+            "min": 0,
+            "stage": "Foundational"
+          }
+        ]
+      }
     },
     "ai_transformation": {
       "label": "AI Transformation",

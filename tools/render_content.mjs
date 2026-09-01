@@ -158,6 +158,16 @@ const REGIONS = [
     render: (data) => renderProof(data.practices.ai_transformation.proof),
   },
   {
+    name: 'scorecard_fields',
+    file: 'diagnostic.html',
+    render: (data) => renderScorecardFields(data.practices.agile.diagnostic),
+  },
+  {
+    name: 'scorecard_data',
+    file: 'diagnostic.html',
+    render: (data) => renderScorecardData(data.practices.agile, data._pricing),
+  },
+  {
     name: 'ba_proof_teaser',
     file: 'ai-transformation.html',
     render: (data) => renderProofTeaser(data.practices.ai_transformation.proof),
@@ -402,6 +412,55 @@ function renderProofTeaser(proof) {
       .join('\n'),
     '      </ul>',
     '      <p class="proof-bridge"><a href="ai-proof.html">Read the full case study &rarr;</a></p>',
+  ].join('\n');
+}
+
+/** The form fields. Generated so a question cannot exist without a unique key
+ *  — two questions previously shared name="alignment", which silently collapsed
+ *  the sixth dimension and made any keyed read of the answers wrong. */
+function renderScorecardFields(diag) {
+  return diag.dimensions
+    .map((d) =>
+      [
+        '  <label>',
+        `    <input type="number" name="${escapeHtml(d.key)}" min="1" max="5" required>`,
+        `    <span class="label-text">${escapeHtml(d.question)} (1&ndash;5)</span>`,
+        '  </label>',
+      ].join('\n')
+    )
+    .join('\n');
+}
+
+/** Scoring data for scripts/scorecard.js. Emitted rather than duplicated in the
+ *  script so the labels, thresholds, stage names AND PRICES the result quotes
+ *  are the same ones rendered on the cards above it. A result that recommends a
+ *  package at a price the page contradicts is worse than no recommendation. */
+function renderScorecardData(agile, pricing) {
+  const money = (n) => '$' + Math.round(n).toLocaleString('en-AU');
+  const stages = agile.stages.map((s) => {
+    const p = s.price || {};
+    const priced = p.basis && p.basis !== 'scoped' && p.ex_gst;
+    return {
+      stage: s.name,
+      package: s.package,
+      focus: s.focus,
+      price: priced
+        ? `${p.basis === 'from' ? 'From ' : ''}${money(p.ex_gst * (1 + pricing.gst_rate))}${p.basis === 'retainer' ? ' per month' : ''}`
+        : 'Scoped per engagement',
+      duration: p.duration || null,
+    };
+  });
+
+  const payload = {
+    dimensions: agile.diagnostic.dimensions.map((d) => ({ key: d.key, label: d.label })),
+    thresholds: agile.diagnostic.thresholds,
+    stages,
+  };
+
+  return [
+    '<script id="scorecard-data" type="application/json">',
+    JSON.stringify(payload, null, 2),
+    '</' + 'script>',
   ].join('\n');
 }
 

@@ -970,3 +970,81 @@ article.stage .price { margin-top: 1rem; }
   margin-top: 0.4rem;
   line-height: 1.5;
 }
+
+/* ── Scorecard: the free rung of the ladder ──────────────────────────────── */
+.ladder-note {
+  font-size: 0.9rem;
+  color: rgba(224,224,224,0.7);
+  padding: 0.75rem 1rem;
+  border-left: 2px solid var(--primary-color);
+  border-radius: 0 4px 4px 0;
+  background: rgba(152,203,43,0.06);
+  margin: 0 0 1.5rem;
+  max-width: 62ch;
+}
+.ladder-note a { color: var(--primary-color); font-weight: 700; text-decoration: none; }
+.ladder-note a:hover { text-decoration: underline; }
+.scale-legend {
+  font-size: 0.85rem;
+  color: rgba(224,224,224,0.6);
+  line-height: 1.8;
+  margin: 0 0 1.25rem;
+}
+.scale-legend strong { color: var(--primary-color); }
+
+.result-total {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin: 0 0 1rem;
+}
+.dim-list { list-style: none; padding: 0; margin: 0 0 1rem; }
+.dim {
+  display: grid;
+  grid-template-columns: 8rem 1fr 6rem;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.4rem 0;
+  font-size: 0.9rem;
+}
+@media (max-width: 520px) {
+  .dim { grid-template-columns: 1fr auto; }
+  .dim-meter { grid-column: 1 / -1; }
+}
+.dim-label { color: var(--hero-text-color); }
+.dim-meter {
+  display: block;
+  height: 6px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.dim-meter i { display: block; height: 100%; background: var(--primary-color); }
+.dim-band { font-size: 0.78rem; text-align: right; }
+.band-strong { color: var(--primary-color); }
+.band-developing { color: rgba(224,224,224,0.7); }
+.band-weak { color: #d98b5f; }
+
+.result-weakest {
+  font-size: 0.92rem;
+  color: rgba(224,224,224,0.78);
+  margin: 0 0 1.25rem;
+}
+.result-next {
+  border: 1px solid rgba(152,203,43,0.28);
+  border-radius: 8px;
+  background: rgba(152,203,43,0.05);
+  padding: 1rem 1.25rem;
+}
+.result-next-head {
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--primary-color);
+  margin: 0 0 0.5rem;
+}
+.result-next p { font-size: 0.92rem; color: rgba(224,224,224,0.8); margin: 0 0 0.6rem; line-height: 1.6; }
+.result-next-pkg { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; align-items: baseline; }
+.result-pkg-name { font-weight: 700; color: var(--hero-text-color); }
+.result-pkg-price { color: var(--primary-color); font-family: var(--font-heading); font-weight: 700; }
