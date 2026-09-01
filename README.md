@@ -36,7 +36,8 @@ python3 tools/build_og_images.py        # 1200x630 cards into assets/og/
    `hero_logo`, `footer`) — copy an existing page.
 2. Add a `title` and `description` entry to `content/pages.json`.
 3. Add the filename to `CHROME_PAGES` in `tools/render_content.mjs`.
-4. Add it to `nav.html`, or to the relevant hub page.
+4. Add it to the `nav` list in `content/pages.json`. `nav.html` is generated
+   from it, and the generator fails if a page with chrome is unreachable.
 5. Add it to `sitemap.xml`, extensionless — Pages 308-redirects `.html` URLs.
 6. Run both generators above.
 
