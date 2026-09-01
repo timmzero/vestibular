@@ -91,23 +91,10 @@ function renderPrice(price, pricing) {
   const prefix = price.basis === 'from' ? 'From ' : '';
   const suffix = price.basis === 'retainer' ? ' per month' : '';
 
-  // Ex-GST leads, and the GST-inclusive figure follows at EQUAL prominence —
-  // same element size, weight and colour, differing only in its label.
-  //
-  // ACL s 48 requires the single (inclusive) price to be "at least as
-  // prominent" as any component. It does not require it to come first. The
-  // exemption for representations made exclusively to businesses is not relied
-  // on here: it turns on the CHANNEL being business-only, and a public
-  // marketing site is not. Equal prominence satisfies the rule whether or not
-  // the exemption would apply, so the ordering is a presentation choice rather
-  // than a compliance bet.
-  //
-  // Only the ex-GST integer is stored; `inc` is derived. Never hand-write an
-  // inclusive figure — the two would drift on the next price change.
   return [
     '<p class="price">',
-    `<span class="price-main">${prefix}${money(price.ex_gst)}${suffix} <span class="price-basis">+ GST</span></span>`,
-    `<span class="price-inc">${prefix}${money(inc)}${suffix} <span class="price-basis">incl. GST</span></span>`,
+    `<span class="price-main">${prefix}${money(inc)}${suffix}</span>`,
+    `<span class="price-note">incl. GST &middot; ${money(price.ex_gst)} + GST</span>`,
     shape ? `<span class="price-shape">${shape}</span>` : '',
     '</p>',
   ].join('');
@@ -595,8 +582,7 @@ function renderScorecardData(agile, pricing) {
       package: s.package,
       focus: s.focus,
       price: priced
-        ? `${p.basis === 'from' ? 'From ' : ''}${money(p.ex_gst)}${p.basis === 'retainer' ? ' per month' : ''} + GST` +
-          ` (${money(p.ex_gst * (1 + pricing.gst_rate))} incl. GST)`
+        ? `${p.basis === 'from' ? 'From ' : ''}${money(p.ex_gst * (1 + pricing.gst_rate))}${p.basis === 'retainer' ? ' per month' : ''}`
         : 'Scoped per engagement',
       duration: p.duration || null,
     };

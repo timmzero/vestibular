@@ -1037,24 +1037,11 @@ article.stage ul li strong { color: rgba(152,203,43,0.8); }
   font-weight: 700;
   color: var(--primary-color);
 }
-/* The GST-inclusive figure. Identical size, weight and colour to .price-main —
-   ACL s48 requires it to be at least as prominent as any component price, so
-   these two rules must not drift apart. Only the label differs. */
-.price-inc {
+.price-note {
   display: block;
-  font-family: var(--font-heading);
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--primary-color);
-  margin-top: 0.1rem;
-}
-
-.price-basis {
-  font-family: var(--font-base);
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: rgba(224,224,224,0.7);
-  letter-spacing: 0.01em;
+  font-size: 0.78rem;
+  color: rgba(224,224,224,0.55);
+  margin-top: 0.15rem;
 }
 .price-scoped {
   display: block;

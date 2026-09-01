@@ -81,39 +81,14 @@ Attaching effort is what revealed the first pricing pass implied day rates
 
 ### GST
 
-**Vestibular is registered for GST** — confirmed by the founder, no longer an
-assumption.
+Prices render **GST-inclusive and prominent**. The B2B ex-GST exemption from the
+ACL single-price rule cannot be relied on: a business acquiring services under
+$100,000 can still be a "consumer", and every engagement sits under that. The
+ACCC requires components in close proximity to, and not more prominent than, the
+inclusive price. Only the ex-GST integer is stored; the inclusive figure is
+derived, never typed.
 
-Prices render **ex-GST first, with the GST-inclusive figure immediately below
-at equal prominence**: same font, same size, same weight, same colour, differing
-only in the trailing label.
-
-The ordering is a presentation choice, not a compliance bet. ACL s 48 requires
-the single (inclusive) price to be *at least as prominent* as any component
-price — it does not require it to come first. Equal prominence satisfies that
-whichever way the figures are ordered.
-
-The exemption for representations made **exclusively to businesses** is real —
-the ACCC's own guidance states that where a representation is made exclusively
-to a business you do not need to include a single price — but it turns on the
-CHANNEL being business-only, and a public marketing website is not one. So the
-site does not lean on it. If prices were ever moved behind a login or into a
-trade-only channel, ex-GST alone would become defensible; on vestibular.nexus
-it is not.
-
-What this means in practice: **do not make the ex-GST figure larger, bolder or
-more colourful than the inclusive one.** `.price-main` and `.price-inc` are
-deliberately identical rules and must not drift apart. A browser check asserts
-equal computed size, weight and colour on every price on both priced pages.
-
-Only the ex-GST integer is stored; the inclusive figure is derived and never
-typed. Verified: every rendered inclusive figure equals its ex-GST value times
-1.1, and no inclusive figure exists in the source.
-
-**Not legal advice — worth a review.** The equal-prominence approach is chosen
-because it is correct under s 48 whether or not the business-to-business
-exemption applies, which makes it the low-risk option rather than a judgement
-call about who reads the site.
+Assumes GST registration. **Not legal or accounting advice — worth a review.**
 
 ## Open work
 
