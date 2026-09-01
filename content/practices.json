@@ -545,9 +545,9 @@
     }
   },
   "_pricing": {
-    "_comment": "Prices are EX-GST integers in AUD. tools/render_content.mjs derives the GST-inclusive figure. Ex-GST leads and the inclusive figure follows at EQUAL prominence (same size, weight and colour), because ACL s48 requires the inclusive price to be at least as prominent as any component — it does not require it to come first. Change a number here and BOTH figures update; never hand-write an inclusive price.",
+    "_comment": "Prices are EX-GST integers in AUD. tools/render_content.mjs derives the GST-inclusive figure and renders it as the prominent price. Change a number here and BOTH figures update; never hand-write an inclusive price.",
     "currency": "AUD",
     "gst_rate": 0.1,
-    "note": "Prices are shown excluding GST, with the GST-inclusive figure beside them. Vestibular is registered for GST. Fixed-fee engagements — nothing is billed hourly. Sydney metro included; travel beyond quoted separately. Scope, deliverables and exclusions agreed in writing before work starts."
+    "note": "Prices shown include GST. Fixed-fee engagements — nothing is billed hourly. Sydney metro included; travel beyond quoted separately. Scope, deliverables and exclusions agreed in writing before work starts."
   }
 }

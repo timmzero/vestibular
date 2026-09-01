@@ -84,36 +84,36 @@ Attaching effort is what revealed the first pricing pass implied day rates
 **Vestibular is registered for GST** — confirmed by the founder, no longer an
 assumption.
 
-Prices render **ex-GST first, with the GST-inclusive figure immediately below
-at equal prominence**: same font, same size, same weight, same colour, differing
-only in the trailing label.
+Prices render **GST-inclusive and prominent**, with the ex-GST figure as a
+smaller note beneath. Only the ex-GST integer is stored; the inclusive figure is
+derived, never typed.
 
-The ordering is a presentation choice, not a compliance bet. ACL s 48 requires
-the single (inclusive) price to be *at least as prominent* as any component
-price — it does not require it to come first. Equal prominence satisfies that
-whichever way the figures are ordered.
+**Leading with ex-GST was built, briefly merged, and reverted.** It is worth
+recording properly, because it was a reasonable option and a later session will
+think of it again.
 
-The exemption for representations made **exclusively to businesses** is real —
-the ACCC's own guidance states that where a representation is made exclusively
-to a business you do not need to include a single price — but it turns on the
-CHANNEL being business-only, and a public marketing website is not one. So the
-site does not lean on it. If prices were ever moved behind a login or into a
-trade-only channel, ex-GST alone would become defensible; on vestibular.nexus
-it is not.
+ACL s 48 requires the single (inclusive) price to be *at least as prominent* as
+any component price — it does not require it to come first. So ex-GST can lead,
+provided the inclusive figure sits beside it at equal size, weight and colour.
+That version was built and measured (equal computed font-size, weight and colour
+on all nine priced cards) and it complied. It was rejected on design grounds:
+two figures at equal prominence means two things competing to be the price, and
+one prominent number reads better than two. Founder's call, 2 Sep 2026. It went
+in as PR #24 by accident and was reverted the same day.
 
-What this means in practice: **do not make the ex-GST figure larger, bolder or
-more colourful than the inclusive one.** `.price-main` and `.price-inc` are
-deliberately identical rules and must not drift apart. A browser check asserts
-equal computed size, weight and colour on every price on both priced pages.
+The constraint that follows: **the ex-GST figure must stay less prominent than
+the inclusive one.** There is no arrangement where ex-GST is the bigger number,
+because that is precisely what s 48 forbids without the exemption below.
 
-Only the ex-GST integer is stored; the inclusive figure is derived and never
-typed. Verified: every rendered inclusive figure equals its ex-GST value times
-1.1, and no inclusive figure exists in the source.
+**Why the business-to-business exemption does not apply here.** The ACCC's
+guidance is that where a representation is made *exclusively to a business* you
+need not include a single price. The operative test is the CHANNEL being
+business-only, not who the intended reader is — and a public marketing site is
+not such a channel. (The $100,000 consumer threshold points the same way but is
+not the test.) If prices ever moved behind a login or into a trade-only channel,
+ex-GST alone would become defensible; on vestibular.nexus it is not.
 
-**Not legal advice — worth a review.** The equal-prominence approach is chosen
-because it is correct under s 48 whether or not the business-to-business
-exemption applies, which makes it the low-risk option rather than a judgement
-call about who reads the site.
+**Not legal or accounting advice — worth a review.**
 
 ## Open work
 
