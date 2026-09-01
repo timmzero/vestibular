@@ -926,11 +926,27 @@ article.stage ul li strong { color: rgba(152,203,43,0.8); }
 
 /* ── Two-column card grid on wide screens (accepted design call) ─────────── */
 /* Services and playbook lists ran as one long single-column ribbon on desktop.
-   Applies to both practices, so the BA pages inherit it automatically. */
+   Applies to both practices, so the BA pages inherit it automatically.
+
+   Uses grid, not inline-block. The inline-block version silently collapsed
+   back to ONE column: two cards at calc(50% - 0.55rem) plus a 0.9rem
+   margin-right plus the whitespace between inline-block elements came to
+   roughly a pixel more than the 868px content box, so the second card wrapped
+   every time. Every card rendered 425px wide with 459px of dead space beside
+   it. Grid has no whitespace sensitivity and no arithmetic to get wrong. */
 @media (min-width: 1000px) {
-  section.services { max-width: var(--max-content-width); }
-  section.services article { display: inline-block; width: calc(50% - 0.55rem); vertical-align: top; }
-  section.services article:nth-child(odd) { margin-right: 0.9rem; }
+  section.services {
+    max-width: var(--max-content-width);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.9rem;
+    align-items: start;
+  }
+
+  /* Headings and intro copy span the full width; only the cards sit in columns. */
+  section.services > :not(article) { grid-column: 1 / -1; }
+
+  section.services article { margin-bottom: 0; }
 }
 
 /* ── AI Transformation — proof / case study ──────────────────────────────── */
