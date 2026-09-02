@@ -146,7 +146,7 @@
     geometry.axes.forEach(function (axis, i) {
       const lx = cx + (radius + config.label_gap) * Math.cos(axis.angle);
       const ly = cy + (radius + config.label_gap) * Math.sin(axis.angle);
-      // Anchor by side so the two near-horizontal labels on a six-axis chart
+      // Anchor by side so the two near-horizontal labels on an even-spoked chart
       // sit clear of the shape instead of overlapping it.
       const cos = Math.cos(axis.angle);
       const anchor = Math.abs(cos) < 0.1 ? 'middle' : cos > 0 ? 'start' : 'end';

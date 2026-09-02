@@ -261,7 +261,7 @@
         }
       ],
       "readiness": {
-        "_comment": "SSOT for the AI transformation readiness radar. One axis per discovery domain, in the same order as domains above, so the chart is a map of the engagement rather than a slice of it. Two questions per axis: a single item carries whatever idiosyncratic reading one person has of one sentence. Deliberately NO stages and NO thresholds — the Agile practice owns the maturity shape, and collapsing six axes to one number would both discard the reading and make the two practices look alike.",
+        "_comment": "SSOT for the AI transformation readiness radar. One axis per discovery domain, in the same order as domains above, so the chart is a map of the engagement rather than a slice of it. Two questions per axis: a single item carries whatever idiosyncratic reading one person has of one sentence. Deliberately NO stages and NO thresholds — the Agile practice owns the maturity shape, and collapsing the axes to one number would both discard the reading and make the two practices look alike.",
         "intro": "Fourteen questions, about three minutes. There is no score and no stage — you get the shape across the seven areas we look at, and the one we would start with.",
         "dimensions": [
           {

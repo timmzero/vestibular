@@ -43,6 +43,14 @@ jobs:
       - name: Shared dimension-read checks
         run: node tools/test_dimension_read.cjs
 
+      # Counts asserted in PROSE cannot be seen by the drift check above: it
+      # compares generated regions against the source, so a hand-written
+      # heading sitting outside the markers, or a wrong number inside the
+      # source's own copy, both pass it. Two such claims were live on main when
+      # this check was added, and this check is what found them.
+      - name: Content count claims match the SSOT
+        run: node tools/test_content_counts.cjs
+
       # radar_image parses a payload that arrives from a public form, so its
       # validator is an input boundary. Needs backend deps for the rasteriser.
       - name: Readiness radar image checks

@@ -121,9 +121,11 @@ ex-GST alone would become defensible; on vestibular.nexus it is not.
   scorecard now has keyed dimensions and a per-dimension read, so a radar is a
   visual swap rather than a rebuild — copy that pattern.
 - ~~**BA has no diagnostic**, by choice.~~ **Reversed, then reframed.**
-  `ai-readiness.html` publishes a twelve-question readiness check. It first
-  shipped as a *team-health* radar; the founder's call is that this is an AI
-  transformation initiative, not a team-health one, so the axes are now the six
+  `ai-readiness.html` publishes a readiness check — see
+  `docs/READINESS_INSTRUMENT.md` for its current shape and the counts, which
+  have moved three times and should be read there rather than restated here. It
+  first shipped as a *team-health* radar; the founder's call is that this is an
+  AI transformation initiative, not a team-health one, so the axes are now the
   discovery domains and the page was renamed. `/ai-health` 301s to
   `/ai-readiness` via `_redirects`, because the old URL was live and in the
   sitemap.

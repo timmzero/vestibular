@@ -6,7 +6,7 @@
  *
  * There is deliberately NO total, NO threshold and NO stage. On the Agile side
  * a cumulative score maps to a maturity stage and a priced package; here team
- * health is a measured input to an operating-model redesign, and collapsing six
+ * health is a measured input to an operating-model redesign, and collapsing the
  * axes into one number would both discard the reading and make the two
  * practices look like the same offering twice.
  *
@@ -57,7 +57,14 @@ if (formEl) {
           const caption = radarEl.querySelector('.radar-caption');
           if (!caption) return;
           if (geometry.settled) {
-            caption.textContent = 'All twelve answered \u2014 this is your shape.';
+            // The count comes from the geometry, never from a literal. This
+            // string read "All twelve answered" for a day after the instrument
+            // went to fourteen questions — at the exact moment a visitor
+            // finished, in a file cached for four hours with no version in its
+            // URL. The number is already in hand here; restating it is what
+            // made it capable of being wrong.
+            caption.textContent = 'All ' + geometry.questions +
+              ' answered \u2014 this is your shape.';
           } else if (geometry.answered === 0) {
             caption.textContent = 'The shape builds as you answer.';
           } else {
