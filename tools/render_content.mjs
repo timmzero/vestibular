@@ -103,6 +103,35 @@ function renderPrice(price, pricing) {
 const escapeHtml = (s) =>
   String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
+/**
+ * The three pillars, each naming the two domains it owns.
+ *
+ * Why the domain names are rendered here rather than written into the pillar
+ * copy: the mapping lives once, on each domain's `pillar` key. A pillar that
+ * listed its areas as prose would be a second copy of that mapping, and the
+ * two would drift the first time a domain was renamed — the exact failure that
+ * put this generator here in the first place.
+ */
+function renderPillars(pillars, domains) {
+  return pillars
+    .map((p) => {
+      const owned = domains.filter((d) => d.pillar === p.key);
+      if (owned.length === 0) {
+        throw new Error(`pillar "${p.key}" owns no domains — check domain.pillar keys`);
+      }
+      const areas = owned.map((d) => escapeHtml(d.name)).join(' &middot; ');
+      return [
+        '          <div class="pillar">',
+        `            <span class="pillar-word">${escapeHtml(p.word)}</span>`,
+        `            <span class="pillar-tagline">${escapeHtml(p.tagline)}</span>`,
+        `            <p>${escapeHtml(p.body)}</p>`,
+        `            <p class="pillar-areas"><span>We read</span> ${areas}</p>`,
+        '          </div>',
+      ].join('\n');
+    })
+    .join('\n');
+}
+
 /** Every page carrying shared chrome. Adding a page means adding it here AND
  *  to content/pages.json — the generator throws on a page with no metadata,
  *  so a forgotten entry fails loudly instead of rendering an empty <title>. */
@@ -138,9 +167,17 @@ const REGIONS = [
     render: (data) => renderEthos(data.practices.ai_transformation.ethos),
   },
   {
+    name: 'home_pillars',
+    file: 'index.html',
+    render: (data) => renderPillars(data.brand.pillars, data.practices.ai_transformation.domains),
+  },
+  {
     name: 'ba_domains',
     file: 'ai-transformation.html',
-    render: (data) => renderDomains(data.practices.ai_transformation.domains),
+    render: (data) => renderDomains(
+      data.practices.ai_transformation.domains,
+      data.brand.pillars,
+    ),
   },
   {
     name: 'ba_services',
@@ -169,7 +206,11 @@ const REGIONS = [
   {
     name: 'ba_readiness_intro',
     file: 'ai-readiness.html',
-    render: (data) => renderBaReadinessIntro(data.practices.ai_transformation.readiness),
+    render: (data) => renderBaReadinessIntro(
+      data.practices.ai_transformation.readiness,
+      data.brand.pillars,
+      data.practices.ai_transformation.domains,
+    ),
   },
   {
     // Reuses renderScorecardFields: it reads only dimensions[].key/.question
@@ -324,22 +365,34 @@ function renderEthos(ethos) {
   ].join('\n');
 }
 
-function renderDomains(domains) {
-  return domains
-    .map((d) => {
-      const points = d.points
-        .map((p) => `          <li>${escapeHtml(p)}</li>`)
-        .join('\n');
+function renderDomains(domains, pillars) {
+  return pillars
+    .map((p) => {
+      const owned = domains.filter((d) => d.pillar === p.key);
+      const cards = owned
+        .map((d) => {
+          const points = d.points
+            .map((pt) => `            <li>${escapeHtml(pt)}</li>`)
+            .join('\n');
+          return [
+            '        <article>',
+            '          <div>',
+            `          <h3>${escapeHtml(d.name)}</h3>`,
+            `          <p class="domain-purpose">${escapeHtml(d.purpose)}</p>`,
+            '          <ul>',
+            points,
+            '          </ul>',
+            '          </div>',
+            '        </article>',
+          ].join('\n');
+        })
+        .join('\n\n');
       return [
-        '      <article>',
-        '        <div>',
-        `        <h3>${escapeHtml(d.name)}</h3>`,
-        `        <p class="domain-purpose">${escapeHtml(d.purpose)}</p>`,
-        '        <ul>',
-        points,
-        '        </ul>',
-        '        </div>',
-        '      </article>',
+        '      <div class="domain-group">',
+        `        <p class="domain-group-pillar">${escapeHtml(p.word)}</p>`,
+        `        <p class="domain-group-tagline">${escapeHtml(p.tagline)}</p>`,
+        cards,
+        '      </div>',
       ].join('\n');
     })
     .join('\n\n');
@@ -537,8 +590,32 @@ function renderNav(nav) {
   ].join('\n');
 }
 
-function renderBaReadinessIntro(readiness) {
-  return `  <p class="ba-readiness-intro">${escapeHtml(readiness.intro)}</p>`;
+function renderBaReadinessIntro(readiness, pillars, domains) {
+  // The intro promised "you can read it yourself" while never naming the six
+  // areas — they existed only in the page's meta description, visible to
+  // crawlers and not to readers. Naming them here, grouped by the pillar that
+  // owns them, makes the promise self-evidencing and ties the readiness page
+  // back to the pillars on the home page.
+  const groups = pillars
+    .map((p) => {
+      const areas = domains
+        .filter((d) => d.pillar === p.key)
+        .map((d) => escapeHtml(d.name))
+        .join(' &middot; ');
+      return [
+        '      <li>',
+        `        <span class="ba-area-pillar">${escapeHtml(p.word)}</span>`,
+        `        <span class="ba-area-names">${areas}</span>`,
+        '      </li>',
+      ].join('\n');
+    })
+    .join('\n');
+  return [
+    `  <p class="ba-readiness-intro">${escapeHtml(readiness.intro)}</p>`,
+    '  <ul class="ba-area-map">',
+    groups,
+    '  </ul>',
+  ].join('\n');
 }
 
 /** No stages, no thresholds — see content/practices.json for why. */
