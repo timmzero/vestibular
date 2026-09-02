@@ -109,10 +109,23 @@ if (formEl) {
     const hiddenField = document.getElementById('ba-readiness-hidden');
     if (hiddenField) hiddenField.value = resultText;
 
+    // Structured companion to the prose summary. The server draws the radar
+    // from these numbers rather than parsing the sentence above — prose is for
+    // the reader, data is for the renderer, and a parser over the sentence
+    // would break the first time its wording changed.
+    const shapeText = JSON.stringify({
+      axes: cfg.dimensions.map((d) => ({
+        key: d.key,
+        label: d.label,
+        value: answers[d.key],
+      })),
+    });
+
     // localStorage THROWS rather than returning null when storage is blocked
     // (Safari private browsing, blocked cookies).
     try {
       localStorage.setItem('baReadinessResult', resultText);
+      localStorage.setItem('baReadinessShape', shapeText);
     } catch (err) {
       console.warn('ba_readiness: could not persist result locally', err);
     }

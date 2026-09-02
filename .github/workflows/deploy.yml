@@ -42,3 +42,8 @@ jobs:
       # boundaries and the weakest-axis tie-break are pinned rather than assumed.
       - name: Shared dimension-read checks
         run: node tools/test_dimension_read.cjs
+
+      # radar_image parses a payload that arrives from a public form, so its
+      # validator is an input boundary. Needs backend deps for the rasteriser.
+      - name: Readiness radar image checks
+        run: npm ci --prefix backend && node tools/test_radar_image.mjs

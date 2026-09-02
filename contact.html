@@ -113,6 +113,8 @@
         <input type="text" name="website" id="website" autocomplete="off" tabindex="-1" aria-hidden="true" class="sr-hidden" />
 
         <input type="hidden" id="scorecard-hidden" name="scorecard_result">
+        <input type="hidden" id="ba-readiness-hidden" name="ba_readiness_result">
+        <input type="hidden" id="ba-readiness-shape-hidden" name="ba_readiness_shape">
 
         <div class="form-group">
           <label for="name">Name:</label>
@@ -309,19 +311,47 @@
       </script> 
 
 <script>
+      // Two quizzes hand off here: the agile scorecard (diagnostic.html) and the
+      // AI readiness check (ai-readiness.html). Each writes its summary to its
+      // own localStorage key on submit; this reads whichever are present into
+      // the matching hidden field so the result travels with the enquiry.
+      // A visitor can have taken both, so this is a list, not an if/else.
       document.addEventListener('DOMContentLoaded', () => {
-        const hiddenField = document.getElementById('scorecard-hidden');
-        const result = localStorage.getItem('scorecardResult');
-        if (hiddenField && result) {
-          hiddenField.value = result;
-          const statusEl = document.getElementById('formStatus');
-          if (statusEl) {
-            statusEl.textContent = `You’re sending us your scorecard result: ${result}`;
-            statusEl.classList.add('info');
-      }
+        const HANDOFFS = [
+          { storageKey: 'scorecardResult',    fieldId: 'scorecard-hidden',    label: 'scorecard result' },
+          { storageKey: 'baReadinessResult',  fieldId: 'ba-readiness-hidden', label: 'readiness result' },
+          // Machine-readable companion to the line above — the server draws the
+          // radar from it. `silent` keeps a JSON blob out of the status message
+          // the visitor reads.
+          { storageKey: 'baReadinessShape',   fieldId: 'ba-readiness-shape-hidden', silent: true },
+        ];
+        const statusEl = document.getElementById('formStatus');
+        const carried = [];
 
-          // Clear it so it doesn’t persist forever
-          localStorage.removeItem('scorecardResult');
+        HANDOFFS.forEach(({ storageKey, fieldId, label, silent }) => {
+          const field = document.getElementById(fieldId);
+          // localStorage THROWS rather than returning null when storage is
+          // blocked (Safari private browsing), so a read must be guarded too.
+          let result = null;
+          try {
+            result = localStorage.getItem(storageKey);
+          } catch (err) {
+            console.warn(`contact: could not read ${storageKey}`, err);
+            return;
+          }
+          if (!field || !result) return;
+          field.value = result;
+          if (!silent) carried.push(`${label}: ${result}`);
+          try {
+            localStorage.removeItem(storageKey);
+          } catch (err) {
+            console.warn(`contact: could not clear ${storageKey}`, err);
+          }
+        });
+
+        if (statusEl && carried.length) {
+          statusEl.textContent = `You’re sending us your ${carried.join(' — and your ')}`;
+          statusEl.classList.add('info');
         }
       });
     </script>
