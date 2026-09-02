@@ -103,6 +103,24 @@
     return node;
   }
 
+  /**
+   * The band fill. A hatch rather than a solid tint: the band is the DIFFERENCE
+   * between two readings, and a solid fill of the same family as the shapes
+   * reads as a third value rather than as the space between two.
+   */
+  function hatch_defs() {
+    const defs = el('defs', {});
+    const pattern = el('pattern', {
+      id: 'radar-hatch', width: 6, height: 6,
+      patternUnits: 'userSpaceOnUse', patternTransform: 'rotate(45)',
+    });
+    pattern.appendChild(el('line', {
+      x1: 0, y1: 0, x2: 0, y2: 6, class: 'radar-hatch-line',
+    }));
+    defs.appendChild(pattern);
+    return defs;
+  }
+
   function render_radar(svg, geometry, config) {
     const max = config.max;
     const radius = config.radius;
@@ -127,19 +145,42 @@
     });
     svg.appendChild(grid);
 
-    if (geometry.polygon) {
-      svg.appendChild(el('polygon', {
-        points: geometry.polygon,
-        class: 'radar-shape' + (geometry.settled ? '' : ' is-provisional'),
-      }));
-    }
+    // One series or several. `geometry.series` is additive: the single-shape
+    // path below is what the Agile scorecard takes, unchanged, because it
+    // supplies no series.
+    //
+    // ⭐ DRAW ORDER IS THE READING. The LIVED shape is drawn LAST and filled,
+    // so a dent in it — a low witnessed reading — carries the visual weight
+    // whether or not it diverges. The STATED shape is an outline over a hatch,
+    // so where a claim exceeds experience the hatch shows through as a band.
+    // Both-low was invisible in a pure divergence rendering: two polygons
+    // touching deep in the middle draw no band at all, while being the most
+    // alarming answer on the page.
+    const series = geometry.series || [{
+      polygon: geometry.polygon,
+      points: geometry.points,
+      settled: geometry.settled,
+      className: 'radar-shape',
+    }];
 
-    geometry.points.forEach(function (p) {
-      if (!p) return;
-      svg.appendChild(el('circle', {
-        cx: p.x.toFixed(2), cy: p.y.toFixed(2), r: 4,
-        class: 'radar-point' + (p.provisional ? ' is-provisional' : ''),
+    if (geometry.series) svg.appendChild(hatch_defs());
+
+    series.forEach(function (s) {
+      if (!s.polygon) return;
+      svg.appendChild(el('polygon', {
+        points: s.polygon,
+        class: s.className + (s.settled ? '' : ' is-provisional'),
       }));
+    });
+
+    series.forEach(function (s) {
+      s.points.forEach(function (p) {
+        if (!p) return;
+        svg.appendChild(el('circle', {
+          cx: p.x.toFixed(2), cy: p.y.toFixed(2), r: 4,
+          class: (s.pointClassName || 'radar-point') + (p.provisional ? ' is-provisional' : ''),
+        }));
+      });
     });
 
     const labels = el('g', { class: 'radar-labels' });
@@ -209,14 +250,55 @@
           return { values: values, provisional: {} };
         };
 
-    function update() {
-      const state = read_state();
-      const geometry = radar_geometry({
+    // Drawn back to front. Stated first so the lived shape sits over it.
+    const SERIES_ORDER = [
+      { vantage: 'stated', className: 'radar-shape is-stated', pointClassName: 'radar-point is-stated' },
+      { vantage: 'lived', className: 'radar-shape is-lived', pointClassName: 'radar-point is-lived' },
+    ];
+
+    function geometry_for(values, provisional) {
+      return radar_geometry({
         dimensions: dimensions,
-        values: state.values,
-        provisional: state.provisional,
+        values: values,
+        provisional: provisional || {},
         max: max, radius: radius, cx: cx, cy: cy,
       });
+    }
+
+    function update() {
+      const state = read_state();
+      let geometry;
+
+      if (state.series) {
+        const drawn = SERIES_ORDER
+          .filter(function (s) { return state.series[s.vantage]; })
+          .map(function (s) {
+            const g = geometry_for(
+              state.series[s.vantage].values,
+              state.series[s.vantage].provisional
+            );
+            g.className = s.className;
+            g.pointClassName = s.pointClassName;
+            g.vantage = s.vantage;
+            return g;
+          });
+        if (!drawn.length) throw new Error('create_radar: values_source returned no known vantage');
+
+        // The grid, the labels and the incompleteness dimming read from the
+        // LIVED geometry where there is one — an axis is only dead if nothing
+        // has been said about it from either vantage, so points are merged for
+        // that purpose alone.
+        geometry = drawn[drawn.length - 1];
+        geometry.series = drawn;
+        geometry.points = geometry.points.map(function (p, i) {
+          return p || drawn.map(function (g) { return g.points[i]; }).find(Boolean) || null;
+        });
+        geometry.settled = drawn.every(function (g) { return g.settled; });
+        geometry.complete = drawn.every(function (g) { return g.complete; });
+      } else {
+        geometry = geometry_for(state.values, state.provisional);
+      }
+
       geometry.answered = state.answered;
       geometry.questions = state.questions;
       render_radar(svg, geometry, config);

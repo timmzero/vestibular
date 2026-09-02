@@ -1269,6 +1269,53 @@ article.stage .price { margin-top: 1rem; }
 }
 .dim-meter i { display: block; height: 100%; background: var(--primary-color); }
 .dim-band { font-size: 0.78rem; text-align: right; }
+
+/* ── The readiness result: two readings per axis, never their mean ──────
+   Deliberately NOT .dim-list. That bands a single value, and there is no
+   single value here to band — "Strong" over the average of a claim and an
+   experience would describe neither, and a band invites the cross-axis
+   comparison these axes are not equated to support. */
+.vantage-list { list-style: none; padding: 0; margin: 0 0 1rem; }
+.vantage-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 0.4rem 1rem;
+  align-items: baseline;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid rgba(224, 224, 224, 0.08);
+}
+@media (max-width: 560px) {
+  .vantage-row { grid-template-columns: 1fr auto; }
+  .vantage-label { grid-column: 1 / -1; }
+}
+.vantage-label { color: var(--hero-text-color); font-weight: 600; }
+.vantage-stated, .vantage-lived { font-size: 0.85rem; opacity: 0.8; white-space: nowrap; }
+.vantage-of { opacity: 0.5; }
+/* Absent is a dash, never a zero. Drawing an absence as a number would state a
+   value the person did not give — the same rule the radar already follows. */
+.vantage-absent { opacity: 0.45; }
+/* The claim exceeding the experience is the interesting direction, so it is the
+   one marked. Not styled as an error: it is a finding, not a fault. */
+.vantage-row.is-claimed-higher .vantage-lived { opacity: 1; color: var(--primary-color); }
+.vantage-row.is-lived-higher .vantage-stated { opacity: 1; color: var(--primary-color); }
+
+.result-widest { margin-top: 1rem; }
+.result-tied { opacity: 0.75; }
+.result-quote {
+  margin: 0.75rem 0;
+  padding: 0.6rem 0 0.6rem 1rem;
+  border-left: 3px solid var(--primary-color);
+}
+.result-quote p { margin: 0.35rem 0; }
+.quote-vantage {
+  display: inline-block;
+  min-width: 5.5rem;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  opacity: 0.65;
+}
+.result-widest-note { font-size: 0.9rem; opacity: 0.8; }
 .band-strong { color: var(--primary-color); }
 .band-developing { color: rgba(224,224,224,0.7); }
 .band-weak { color: #d98b5f; }
@@ -1369,6 +1416,40 @@ article.stage .price { margin-top: 1rem; }
   stroke: var(--primary-color);
   stroke-width: 2;
 }
+
+/* ── The two vantages ─────────────────────────────────────────────────
+   ⭐ THE LIVED SHAPE CARRIES THE VISUAL WEIGHT. It is filled, so a dent in it
+   reads as a dent whether or not it diverges from the claim. The stated shape
+   is a dashed outline over a hatch, so where a claim exceeds experience the
+   hatch shows through as a band.
+
+   The alternative — both shapes as equals, with the band as the only news —
+   makes the most alarming answer on the page invisible: a respondent who
+   believes the claim is bleak AND lives it as bleak draws two polygons
+   touching deep in the middle, with no band at all. Level and divergence both
+   have to be readable, and they are different questions.
+
+   Hatch rather than a solid tint, because the band is the SPACE between two
+   readings; a solid fill in the same family reads as a third value.          */
+.radar-shape.is-stated {
+  fill: url(#radar-hatch);
+  stroke: hsla(79, 65%, 48%, 0.55);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 3;
+}
+
+.radar-shape.is-lived {
+  fill: hsla(79, 65%, 48%, 0.22);
+  stroke: var(--primary-color);
+  stroke-width: 2;
+}
+
+.radar-hatch-line {
+  stroke: hsla(79, 65%, 48%, 0.30);
+  stroke-width: 1.5;
+}
+
+.radar-point.is-stated { fill: hsla(79, 65%, 48%, 0.55); }
 
 .radar-label {
   fill: var(--body-text-color);

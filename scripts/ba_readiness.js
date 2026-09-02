@@ -39,6 +39,68 @@ function load_config() {
   }
 }
 
+/**
+ * The result sentence.
+ *
+ * ⛔ THIS REPLACES "Weakest right now: X. That is where we would start." That
+ * line was the only claim on the page that went beyond describing the answers
+ * back, and it was the least defensible thing on it: the axes are not equated,
+ * so the "weakest" could be naming the axis phrased most severely rather than
+ * anything about the respondent. Two of the eight axes made it worse still — a
+ * dent on Load or AI fit is opportunity, not weakness, so ranking them against
+ * Roles compares different quantities.
+ *
+ * ⭐ THE GAP IS COMPARABLE WHERE THE LEVELS ARE NOT. Both readings come from
+ * one person, one scale, one sitting, so severity and scale-use habits push
+ * both the same way and cancel in the difference. So this names a distance and
+ * quotes the two sentences that produced it, and asserts nothing about which
+ * axis is worst.
+ */
+function question_text(dimension, vantage) {
+  const q = (dimension.questions || []).find(function (item) { return item.vantage === vantage; });
+  return q ? q.text : '';
+}
+
+function describe_widest(dimensions, ranked) {
+  if (!ranked.length) {
+    return '<p class="result-widest">Not enough of the paired questions were answered to read a ' +
+      'distance between what is claimed here and what you have seen.</p>';
+  }
+
+  const top = ranked[0];
+  if (top.gap === 0) {
+    return '<p class="result-widest">On every area, what you understand this organisation to ' +
+      'claim and what you have seen line up. That is worth saying — and it is also the point ' +
+      'at which the levels themselves become the conversation rather than the distance ' +
+      'between them.</p>';
+  }
+
+  // Ties are exact here: one item per vantage means gaps are whole numbers. The
+  // weakest-axis line used to flip on a single click and name one of two axes
+  // that were level; naming both is the honest form.
+  const tied = ranked.filter(function (r) { return Math.abs(r.gap) === Math.abs(top.gap); });
+  const dimension = dimensions.find(function (d) { return d.key === top.key; });
+  const alsoText = tied.length > 1
+    ? ` <span class="result-tied">${tied.slice(1).map(function (r) { return r.label; }).join(' and ')} ` +
+      `${tied.length > 2 ? 'sit' : 'sits'} at the same distance.</span>`
+    : '';
+
+  const claimedHigher = top.gap > 0;
+  const lead = claimedHigher
+    ? `The widest distance is <strong>${top.label}</strong> — what you understand this ` +
+      'organisation to claim is not what you have seen.'
+    : `The widest distance is <strong>${top.label}</strong> — something is working better than ` +
+      'this organisation appears to claim.';
+
+  return `
+    <p class="result-widest">${lead}${alsoText}</p>
+    <blockquote class="result-quote">
+      <p><span class="quote-vantage">On paper</span> &ldquo;${question_text(dimension, 'stated')}&rdquo; &mdash; you said ${top.stated}/5.</p>
+      <p><span class="quote-vantage">In practice</span> &ldquo;${question_text(dimension, 'lived')}&rdquo; &mdash; you said ${top.lived}/5.</p>
+    </blockquote>
+    <p class="result-widest-note">That distance is the conversation we would start with.</p>`;
+}
+
 if (formEl) {
   const cfg = load_config();
   const shared = window.vestibular_dimension_read;
@@ -52,7 +114,9 @@ if (formEl) {
         form: formEl,
         dimensions: cfg.dimensions,
         max: 5,
-        values_source: window.vestibular_dimension_read.axis_progress,
+        // ⛔ NOT axis_progress. That means over an axis's questions, which here
+        // would average an espoused claim with a witnessed one.
+        values_source: window.vestibular_dimension_read.vantage_progress,
         on_render: function (geometry) {
           const caption = radarEl.querySelector('.radar-caption');
           if (!caption) return;
@@ -103,33 +167,43 @@ if (formEl) {
       return;
     }
 
-    const read = shared.read_answers(e.target, cfg.dimensions, 5);
-    if (!read.ok) {
-      resultEl.textContent = read.message;
+    const state = shared.vantage_progress(e.target, cfg.dimensions, 5);
+    const unanswered = cfg.dimensions.filter(function (d) {
+      return state.series.stated && state.series.stated.values[d.key] === undefined;
+    });
+    if (unanswered.length) {
+      resultEl.textContent =
+        'Please answer every question with a number from 1 to 5, or tick the option where ' +
+        'the question does not apply to you.';
       resultEl.classList.add('error');
       resultEl.setAttribute('role', 'alert');
       return;
     }
 
-    const answers = read.answers;
-    const weakest = shared.weakest_dimension(cfg.dimensions, answers);
+    const ranked = shared.gap_ranking(cfg.dimensions, state.series);
 
     resultEl.classList.remove('error');
     resultEl.removeAttribute('role');
     resultEl.innerHTML = `
-      ${shared.render_dimension_list(cfg.dimensions, answers, 5)}
-      <p class="result-weakest">Weakest right now: <strong>${weakest.label}</strong>. That is where we would start.</p>
+      ${shared.render_vantage_list(cfg.dimensions, state.series, 5)}
+      ${describe_widest(cfg.dimensions, ranked)}
       <p class="result-caveat">This is a self-assessment from one point of view. It is a prompt for a conversation, not a measurement of your team.</p>`;
 
     if (ctaEl) ctaEl.style.display = 'block';
 
     // Plain-text summary for the contact form handoff. No total, by design.
-    const detail = cfg.dimensions.map((d) => `${d.label} ${answers[d.key]}/5`).join(', ');
+    const detail = cfg.dimensions.map(function (d) {
+      const s = state.series.stated.values[d.key];
+      const l = state.series.lived.values[d.key];
+      return `${d.label} ${s === undefined ? '-' : s}/${l === undefined ? '-' : l}`;
+    }).join(', ');
+    const widest = ranked[0];
     // No "AI readiness:" prefix here — the contact email and the on-page
     // status line both label this value themselves, so carrying the label in
     // the value renders it twice. scorecard.js is the pattern: its summary is
     // bare and the email supplies "Scorecard:".
-    const resultText = `${detail}. Weakest: ${weakest.label}.`;
+    const resultText = `${detail} (on paper/in practice). ` +
+      (widest ? `Widest gap: ${widest.label} ${widest.stated} vs ${widest.lived}.` : 'No gap could be read.');
 
     const hiddenField = document.getElementById('ba-readiness-hidden');
     if (hiddenField) hiddenField.value = resultText;
@@ -142,7 +216,8 @@ if (formEl) {
       axes: cfg.dimensions.map((d) => ({
         key: d.key,
         label: d.label,
-        value: answers[d.key],
+        stated: state.series.stated.values[d.key],
+        lived: state.series.lived.values[d.key],
       })),
     });
 

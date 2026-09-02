@@ -167,7 +167,7 @@ const CLAIMS = [
     file: 'content/practices.json',
     text: () => ai.readiness.intro,
     where: 'SSOT — readiness.intro, area count',
-    pattern: /the shape across the ([a-z]+) areas we look at/,
+    pattern: /each of the ([a-z]+) areas we look at/,
     expected: () => axis_count,
   },
   {

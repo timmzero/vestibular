@@ -50,6 +50,86 @@
   }
 
   /**
+   * Per-VANTAGE reading, for an instrument whose axes carry a stated item and a
+   * lived one.
+   *
+   * ⛔ DO NOT USE axis_progress FOR THIS. It means over an axis's questions,
+   * which here would average an espoused claim with a witnessed one — two
+   * things that are NOT expected to agree, blended into a number describing
+   * neither. That is the exact fault the axis mean was reshaped to avoid, and
+   * it would arrive back silently in the chart rather than loudly in the copy.
+   *
+   * Returns one series per vantage, each shaped like axis_progress's output so
+   * the radar can consume either without knowing which it has.
+   */
+  function vantage_progress(form, dimensions, max) {
+    const limit = max || 5;
+    const series = {};
+    let answered = 0;
+    let questions = 0;
+
+    dimensions.forEach(function (d) {
+      const items = Array.isArray(d.questions) && d.questions.length ? d.questions : [];
+      items.forEach(function (q) {
+        const vantage = q.vantage;
+        if (!vantage) return;
+        if (!series[vantage]) series[vantage] = { values: {}, provisional: {} };
+        questions += 1;
+
+        const read = read_question(form, q.key, limit);
+        if (read.state === 'absent') {
+          answered += 1;
+          // Absent leaves no value. The axis is drawn with this vantage
+          // missing rather than with a number the person did not give.
+          return;
+        }
+        if (read.state !== 'answered') return;
+        answered += 1;
+        series[vantage].values[d.key] = read.value;
+      });
+    });
+
+    return { series: series, answered: answered, questions: questions };
+  }
+
+  /**
+   * Axes ranked by the DISTANCE between what is claimed and what is lived.
+   *
+   * Signed, because the direction is the finding: a positive gap is a claim the
+   * respondent has not seen borne out; a negative one is something working that
+   * the organisation cannot articulate. An axis missing either vantage is
+   * omitted — there is no gap between a number and an absence.
+   *
+   * ⚠️ Both vantages come from ONE person, on one scale, in one sitting, so
+   * wording severity and scale-use habits push both the same way and cancel in
+   * the difference. That is what makes this comparable across axes when the
+   * levels are not.
+   */
+  function gap_ranking(dimensions, series) {
+    const stated = (series.stated && series.stated.values) || {};
+    const lived = (series.lived && series.lived.values) || {};
+    return dimensions
+      .filter(function (d) {
+        return stated[d.key] !== undefined && lived[d.key] !== undefined;
+      })
+      .map(function (d) {
+        return {
+          key: d.key,
+          label: d.label,
+          stated: stated[d.key],
+          lived: lived[d.key],
+          gap: stated[d.key] - lived[d.key],
+        };
+      })
+      .sort(function (a, b) {
+        const byGap = Math.abs(b.gap) - Math.abs(a.gap);
+        // Ties resolve to SSOT order, not at random — the same rule
+        // weakest_dimension already follows.
+        return byGap !== 0 ? byGap : 0;
+      });
+  }
+
+  /**
    * Banding is by RANGE, not exact match. `value === 3` worked while every
    * answer was an integer, but an axis averaged over two questions produces
    * 3.5, which matched neither branch and fell through to 'Needs work' — a
@@ -200,9 +280,47 @@
     return `<ul class="dim-list">${rows}</ul>`;
   }
 
+  /**
+   * The readiness result: each axis showing BOTH readings and the distance
+   * between them. Deliberately not render_dimension_list — that bands a single
+   * value, and there is no single value here to band.
+   *
+   * ⛔ NO MEAN, AND NO BAND OVER THE PAIR. "Strong" over the average of a
+   * claim and an experience would describe neither, and banding invites the
+   * cross-axis comparison the axes are not equated to support.
+   */
+  function render_vantage_list(dimensions, series, max) {
+    const limit = max || 5;
+    const stated = (series.stated && series.stated.values) || {};
+    const lived = (series.lived && series.lived.values) || {};
+    const cell = function (v) {
+      return v === undefined
+        ? '<span class="vantage-absent" title="not answered">&mdash;</span>'
+        : String(v) + '<span class="vantage-of">/' + limit + '</span>';
+    };
+    const rows = dimensions.map(function (d) {
+      const s = stated[d.key];
+      const l = lived[d.key];
+      const gap = (s !== undefined && l !== undefined) ? s - l : undefined;
+      const gapClass = gap === undefined ? 'is-absent'
+        : gap > 0 ? 'is-claimed-higher'
+        : gap < 0 ? 'is-lived-higher' : 'is-aligned';
+      return `
+        <li class="vantage-row ${gapClass}">
+          <span class="vantage-label">${d.label}</span>
+          <span class="vantage-stated">on paper ${cell(s)}</span>
+          <span class="vantage-lived">in practice ${cell(l)}</span>
+        </li>`;
+    }).join('');
+    return `<ul class="vantage-list">${rows}</ul>`;
+  }
+
   const api = {
     band_for: band_for,
     read_question: read_question,
+    vantage_progress: vantage_progress,
+    gap_ranking: gap_ranking,
+    render_vantage_list: render_vantage_list,
     question_keys: question_keys,
     axis_values: axis_values,
     axis_progress: axis_progress,

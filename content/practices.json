@@ -272,7 +272,7 @@
       ],
       "readiness": {
         "_comment": "SSOT for the AI transformation readiness radar. One axis per discovery domain, in the same order as domains above, so the chart is a map of the engagement rather than a slice of it. TWO VANTAGES per axis, not two indicators: \"stated\" is the respondent's read of what the organisation claims, \"lived\" is what they have witnessed from their own seat. They are NOT expected to agree — the divergence is the reading, and because both come from the same person on the same scale, wording severity and scale-use habits cancel between them. ⛔ DO NOT AVERAGE A PAIR: the mean of an espoused claim and a witnessed one describes neither, which is the fault the axis mean was reshaped to avoid. Keys are construct + vantage, never positional — a positional key meant three different things in one day during the September reshapes and had already been sent to the server in enquiry payloads. Deliberately NO stages and NO thresholds. See docs/READINESS_INSTRUMENT.md.",
-        "intro": "Sixteen questions, about four minutes. There is no score and no stage — you get the shape across the eight areas we look at, and the one we would start with.",
+        "intro": "Sixteen questions, about four minutes. There is no score and no stage — you get two readings of each of the eight areas we look at, what this organisation claims and what you have seen, and the widest distance between them.",
         "dimensions": [
           {
             "key": "company_goals",

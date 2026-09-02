@@ -11,7 +11,7 @@
  */
 
 const assert = require('assert');
-const { radar_geometry, ring_radii } = require('../scripts/radar.js');
+const { radar_geometry, ring_radii, create_radar } = require('../scripts/radar.js');
 
 const dimensions = [
   { key: 'wellbeing', label: 'Wellbeing' },
@@ -139,6 +139,132 @@ check('works for axis counts other than six', () => {
     assert.strictEqual(g.axes.length, n);
     assert.strictEqual(g.polygon.split(' ').length, n);
   }
+});
+
+
+/* ------------------------------------------------------------------ *
+ * The two-vantage render path.
+ *
+ * radar_geometry is pure and was already covered. create_radar and render_radar
+ * were NOT — they touch the DOM, so nothing exercised them, and they are what
+ * actually draws the chart. A minimal stub is cheaper than leaving the drawing
+ * code as the only untested part of the pipeline.
+ *
+ * ⚠️ radar.js is SHARED with the Agile scorecard, which supplies no series. The
+ * single-shape path is asserted here too, so making the readiness chart work
+ * cannot quietly change the other practice's.
+ * ------------------------------------------------------------------ */
+
+function stub_dom() {
+  const make = (name) => ({
+    name, attrs: {}, children: [], textContent: '',
+    setAttribute(k, v) { this.attrs[k] = String(v); },
+    appendChild(c) { this.children.push(c); return c; },
+    removeChild(c) { this.children = this.children.filter((x) => x !== c); },
+    get firstChild() { return this.children[0] || null; },
+    classList: { toggle() {} },
+  });
+  global.document = { createElementNS: (ns, name) => make(name) };
+  return make('figure');
+}
+
+function walk(node, out = []) {
+  out.push(node);
+  node.children.forEach((c) => walk(c, out));
+  return out;
+}
+
+const paired_dims = [
+  { key: 'morale', label: 'Morale' },
+  { key: 'roles', label: 'Roles' },
+  { key: 'load', label: 'Load' },
+];
+
+check('two vantages draw two shapes, stated behind lived', () => {
+  const container = stub_dom();
+  const radar = create_radar({
+    container,
+    form: null,
+    dimensions: paired_dims,
+    max: 5,
+    values_source: () => ({
+      series: {
+        stated: { values: { morale: 5, roles: 4, load: 4 }, provisional: {} },
+        lived: { values: { morale: 1, roles: 3, load: 2 }, provisional: {} },
+      },
+      answered: 6, questions: 6,
+    }),
+  });
+  const nodes = walk(radar.svg);
+  const polys = nodes.filter((n) => n.name === 'polygon');
+  assert.strictEqual(polys.length, 2, 'one polygon per vantage');
+  assert.ok(/is-stated/.test(polys[0].attrs.class), 'stated is drawn FIRST, so lived sits over it');
+  assert.ok(/is-lived/.test(polys[1].attrs.class));
+  assert.ok(nodes.some((n) => n.name === 'pattern'), 'the hatch pattern must be defined');
+});
+
+check('the single-shape path is unchanged for the agile scorecard', () => {
+  const container = stub_dom();
+  const radar = create_radar({
+    container,
+    form: null,
+    dimensions: paired_dims,
+    max: 5,
+    values_source: () => ({
+      values: { morale: 3, roles: 3, load: 3 }, provisional: {}, answered: 3, questions: 3,
+    }),
+  });
+  const nodes = walk(radar.svg);
+  const polys = nodes.filter((n) => n.name === 'polygon');
+  assert.strictEqual(polys.length, 1, 'no series means one shape, as before');
+  assert.strictEqual(polys[0].attrs.class, 'radar-shape', 'no vantage class on the shared path');
+  assert.ok(!nodes.some((n) => n.name === 'pattern'), 'no hatch where there is no band');
+});
+
+check('an axis is only dimmed when NEITHER vantage has a reading', () => {
+  const container = stub_dom();
+  const radar = create_radar({
+    container,
+    form: null,
+    dimensions: paired_dims,
+    max: 5,
+    values_source: () => ({
+      series: {
+        // load: the lived item was declined, the stated one answered.
+        stated: { values: { morale: 5, roles: 4, load: 4 }, provisional: {} },
+        lived: { values: { morale: 1, roles: 3 }, provisional: {} },
+      },
+      answered: 5, questions: 6,
+    }),
+  });
+  const spokes = walk(radar.svg).filter((n) => n.name === 'line' && /radar-spoke/.test(n.attrs.class || ''));
+  assert.strictEqual(spokes.length, 3);
+  assert.ok(
+    !spokes.some((sp) => /is-incomplete/.test(sp.attrs.class)),
+    'an axis answered from one vantage is not a dead axis',
+  );
+});
+
+check('an axis with nothing said about it IS dimmed', () => {
+  const container = stub_dom();
+  const radar = create_radar({
+    container,
+    form: null,
+    dimensions: paired_dims,
+    max: 5,
+    values_source: () => ({
+      series: {
+        stated: { values: { morale: 5, roles: 4 }, provisional: {} },
+        lived: { values: { morale: 1, roles: 3 }, provisional: {} },
+      },
+      answered: 4, questions: 6,
+    }),
+  });
+  const spokes = walk(radar.svg).filter((n) => n.name === 'line' && /radar-spoke/.test(n.attrs.class || ''));
+  assert.ok(
+    spokes.some((sp) => /is-incomplete/.test(sp.attrs.class)),
+    'load has no reading from either vantage and must read as incomplete',
+  );
 });
 
 console.log('\n' + passed + ' geometry checks passed');
