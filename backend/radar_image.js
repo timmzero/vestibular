@@ -7,7 +7,7 @@
  * geometry with no paint, so a client-side capture would have to walk the
  * clone inlining computed styles, rasterise through a canvas, and post ~30KB
  * of base64 through a request body whose limit is 100KB by default. Drawing
- * from the six numbers instead removes all of that.
+ * from the numbers instead removes all of that.
  *
  * ⭐ THE GEOMETRY IS IMPORTED, NOT REIMPLEMENTED. scripts/radar.js separates
  * its maths from the DOM precisely so it can run without a browser — that is
