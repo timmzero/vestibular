@@ -15,6 +15,41 @@
   'use strict';
 
   /**
+   * What one question's input holds. THE ONLY PLACE THAT DECIDES WHAT COUNTS AS
+   * AN ANSWER — the live chart and the submitted reading differ in strictness
+   * (see axis_progress) but must never differ in this rule, or a value plotted
+   * on the chart could fail validation on submit, or worse, the reverse.
+   *
+   * Three outcomes, not two:
+   *
+   *   answered  a valid 1..max
+   *   absent    the respondent ticked the escape: the event this item asks
+   *             about never happened, so there is NO READING to give
+   *   missing   nothing usable yet
+   *
+   * ⛔ ABSENT IS NOT A LOW SCORE AND NOT A HIGH ONE. Never having disagreed
+   * with someone senior is not evidence of safety; never having been near your
+   * limit says nothing about whether the organisation responds when you are.
+   * Both would be a value the person did not give, which is the same fault the
+   * radar's absent-not-centre rule already refuses.
+   */
+  function read_question(form, key, limit) {
+    if (!form) return { state: 'missing' };
+
+    const escape_el = form.elements[key + '_absent'];
+    if (escape_el && escape_el.checked) return { state: 'absent' };
+
+    const el = form.elements[key];
+    const raw = el ? el.value : undefined;
+    const v = Number(raw);
+    if (raw === undefined || raw === null || raw === '' ||
+        !Number.isFinite(v) || v < 1 || v > limit) {
+      return { state: 'missing' };
+    }
+    return { state: 'answered', value: v };
+  }
+
+  /**
    * Banding is by RANGE, not exact match. `value === 3` worked while every
    * answer was an integer, but an axis averaged over two questions produces
    * 3.5, which matched neither branch and fell through to 'Needs work' — a
@@ -61,7 +96,11 @@
       if (values[key] === undefined) {
         return {
           ok: false,
-          message: 'Please answer every question with a number from 1 to ' + limit + '.',
+          // Accurate about the escape: some items can be answered by saying the
+          // thing never happened, and a message demanding a number for every
+          // question would send a respondent looking for one they cannot give.
+          message: 'Please answer every question with a number from 1 to ' + limit +
+            ', or tick the option where the question does not apply to you.',
         };
       }
       answers[key] = values[key];
@@ -107,20 +146,22 @@
       questions += keys.length;
       let sum = 0;
       let count = 0;
+      let absent = 0;
       for (let i = 0; i < keys.length; i++) {
-        const el = form ? form.elements[keys[i]] : null;
-        const raw = el ? el.value : undefined;
-        const v = Number(raw);
-        if (raw === undefined || raw === null || raw === '' ||
-            !Number.isFinite(v) || v < 1 || v > limit) {
-          continue;
-        }
-        sum += v;
+        const read = read_question(form, keys[i], limit);
+        // ⛔ A DECLARED-ABSENT ITEM LEAVES THE DENOMINATOR, it does not score
+        // zero and it does not hold the axis provisional forever. Counting it
+        // in `answered` is deliberate: the person HAS responded, so the
+        // progress caption reaches its total and the reading can settle. An
+        // axis whose every item is absent stays undefined and plots ABSENT.
+        if (read.state === 'absent') { absent += 1; continue; }
+        if (read.state !== 'answered') continue;
+        sum += read.value;
         count += 1;
       }
-      answered += count;
+      answered += count + absent;
       values[d.key] = count ? sum / count : undefined;
-      provisional[d.key] = count > 0 && count < keys.length;
+      provisional[d.key] = count > 0 && count < (keys.length - absent);
     });
 
     return {
@@ -161,6 +202,7 @@
 
   const api = {
     band_for: band_for,
+    read_question: read_question,
     question_keys: question_keys,
     axis_values: axis_values,
     axis_progress: axis_progress,

@@ -523,6 +523,31 @@ body { overflow-x: clip; }
 }
 .vantage-heading:first-child { margin-top: 0; }
 
+/* The escape row for a lived item whose event may never have happened. The form
+   is a two-column grid and `label` is `display: contents`, so this override has
+   to re-establish a box and claim the label column explicitly — otherwise the
+   checkbox lands in the 80px input column beside the number it replaces. */
+.dimension-form label.escape {
+  display: flex;
+  grid-column: 2;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: -0.4rem;
+  font-weight: 400;
+}
+.dimension-form label.escape input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+}
+.dimension-form .escape-text {
+  font-size: 0.85rem;
+  opacity: 0.75;
+  line-height: 1.3;
+}
+.dimension-form input[type="number"]:disabled {
+  opacity: 0.4;
+}
+
 .dimension-form button.btn {
   grid-column: 2;          /* place under label column */
   justify-self: center;    /* centre horizontally */

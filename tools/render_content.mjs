@@ -665,13 +665,39 @@ const VANTAGE_BLOCKS = [
   },
 ];
 
+/**
+ * One question row.
+ *
+ * ⛔ AN ITEM CARRYING AN ESCAPE MUST NOT BE `required`. Three lived items
+ * presuppose an event that may never have occurred — a priority collision, a
+ * disagreement with someone senior, being near your limit. Requiring a 1–5 on
+ * those forces a person to state a value for something that never happened,
+ * which is fabrication, and the browser would block submission for exactly the
+ * respondents whose absence is itself informative.
+ *
+ * ⛔ AND THE ESCAPE PLOTS ABSENT, NOT HIGH. Never having disagreed with someone
+ * senior is not evidence of psychological safety; it is as likely to be
+ * evidence against it. The same holds for load: that item measures whether
+ * saying so CHANGED anything, so a person never near their limit has not
+ * tested it and has no reading to give. Scoring an escape at the top would
+ * import one construct's information into another's item.
+ */
 function renderScorecardLabel(q) {
-  return [
+  const required = q.escape ? '' : ' required';
+  const row = [
     '  <label>',
-    `    <input type="number" name="${escapeHtml(q.key)}" min="1" max="5" required>`,
+    `    <input type="number" name="${escapeHtml(q.key)}" min="1" max="5"${required}>`,
     `    <span class="label-text">${escapeHtml(q.text)} (1&ndash;5)</span>`,
     '  </label>',
-  ].join('\n');
+  ];
+  if (!q.escape) return row.join('\n');
+
+  return row.concat([
+    '  <label class="escape">',
+    `    <input type="checkbox" name="${escapeHtml(q.key)}_absent">`,
+    `    <span class="escape-text">${escapeHtml(q.escape)}</span>`,
+    '  </label>',
+  ]).join('\n');
 }
 
 function renderScorecardFields(diag) {

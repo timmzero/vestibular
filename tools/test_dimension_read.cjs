@@ -13,6 +13,7 @@
 const assert = require('assert');
 const {
   band_for, weakest_dimension, render_dimension_list, question_keys, axis_values, axis_progress, read_answers,
+  read_question,
 } = require('../scripts/dimension_read.js');
 
 const dimensions = [
@@ -95,7 +96,12 @@ check('an averaged 3.5 bands as Developing, not Needs work', () => {
 /** Minimal stand-in for a form: elements[name].value, as the DOM exposes it. */
 function fake_form(values) {
   const elements = {};
-  Object.keys(values).forEach((k) => { elements[k] = { value: String(values[k]) }; });
+  Object.keys(values).forEach((k) => {
+    // A ticked escape is modelled the way the DOM presents it: a checkbox named
+    // `<key>_absent`. Passing `true` for a key ticks its escape.
+    if (values[k] === true) elements[k] = { checked: true, type: 'checkbox' };
+    else elements[k] = { value: String(values[k]) };
+  });
   return { elements };
 }
 
@@ -205,6 +211,81 @@ check('axis_values stays strict where axis_progress is permissive', () => {
   assert.strictEqual(axis_values(form, multi, 5).systems, undefined,
     'the submitted reading must not average half an axis');
   assert.strictEqual(read_answers(form, multi, 5).ok, false);
+});
+
+
+/* ------------------------------------------------------------------ *
+ * The ABSENT escape.
+ *
+ * Three lived items on the readiness instrument presuppose an event that may
+ * never have occurred. The escape lets a respondent say so instead of stating a
+ * value for something that never happened. Every assertion below was driven
+ * over a mutation of read_question before being trusted — scoring an escape at
+ * 0, at max, or ignoring it entirely all render happily and lie.
+ * ------------------------------------------------------------------ */
+
+check('read_question reports three states, not two', () => {
+  assert.strictEqual(read_question(fake_form({ a: 3 }), 'a', 5).state, 'answered');
+  assert.strictEqual(read_question(fake_form({ a: '' }), 'a', 5).state, 'missing');
+  assert.strictEqual(read_question(fake_form({ a_absent: true }), 'a', 5).state, 'absent');
+  assert.strictEqual(read_question(null, 'a', 5).state, 'missing');
+});
+
+check('an out-of-range answer is missing, not clamped', () => {
+  assert.strictEqual(read_question(fake_form({ a: 9 }), 'a', 5).state, 'missing');
+  assert.strictEqual(read_question(fake_form({ a: 0 }), 'a', 5).state, 'missing');
+});
+
+check('a ticked escape beats a stale number left in the input', () => {
+  const r = read_question(fake_form({ a: 4, a_absent: true }), 'a', 5);
+  assert.strictEqual(r.state, 'absent', 'the escape is the answer, not the leftover 4');
+  assert.strictEqual(r.value, undefined);
+});
+
+check('an absent item leaves the denominator rather than scoring', () => {
+  const p = axis_progress(fake_form({ systems_1: 4, systems_2_absent: true }), multi, 5);
+  assert.strictEqual(p.values.systems, 4, 'the mean is over the item that HAS a reading');
+  assert.strictEqual(p.provisional.systems, false, 'nothing further is coming for this axis');
+});
+
+check('an absent item is not scored at zero and not at max', () => {
+  const p = axis_progress(fake_form({ systems_1: 2, systems_2_absent: true }), multi, 5);
+  assert.strictEqual(p.values.systems, 2);
+  assert.notStrictEqual(p.values.systems, 1, 'absent must not drag the axis down');
+  assert.notStrictEqual(p.values.systems, 3.5, 'absent must not be averaged as max');
+});
+
+check('an axis with every item absent is ABSENT, not centred', () => {
+  const p = axis_progress(fake_form({ systems_1_absent: true, systems_2_absent: true }), multi, 5);
+  assert.strictEqual(p.values.systems, undefined, 'no reading was given, so none is plotted');
+  assert.strictEqual(p.provisional.systems, false);
+});
+
+check('an absent item counts as answered for progress', () => {
+  const p = axis_progress(fake_form({ systems_1: 4, systems_2_absent: true }), multi, 5);
+  assert.strictEqual(p.answered, 2, 'the person responded to both, one by declining');
+  assert.strictEqual(p.questions, 4, 'the total is unchanged by an escape');
+});
+
+check('an escaped axis still settles for submission', () => {
+  const form = fake_form({ systems_1: 4, systems_2_absent: true, morale_1: 3, morale_2: 3 });
+  assert.strictEqual(axis_values(form, multi, 5).systems, 4,
+    'a settled axis must not be withheld because one item was declined');
+  assert.strictEqual(read_answers(form, multi, 5).ok, true);
+});
+
+check('the escape does not rescue a half-answered axis', () => {
+  const form = fake_form({ systems_1: 4, morale_1: 3, morale_2: 3 });
+  assert.strictEqual(axis_values(form, multi, 5).systems, undefined,
+    'unanswered is still unanswered — an escape must be TICKED, not merely available');
+  assert.strictEqual(read_answers(form, multi, 5).ok, false);
+});
+
+check('the validation message mentions the escape', () => {
+  const read = read_answers(fake_form({ systems_1: 4 }), multi, 5);
+  assert.strictEqual(read.ok, false);
+  assert.ok(/does not apply/.test(read.message),
+    'a message demanding a number for every item sends people looking for one they cannot give');
 });
 
 console.log('\n' + passed + ' dimension_read checks passed');

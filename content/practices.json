@@ -286,7 +286,8 @@
               {
                 "key": "company_goals_lived",
                 "text": "The last time I had to choose between two things this organisation wanted, I knew which one it actually wanted.",
-                "vantage": "lived"
+                "vantage": "lived",
+                "escape": "Two priorities of mine have not collided"
               }
             ]
           },
@@ -334,7 +335,8 @@
               {
                 "key": "morale_lived",
                 "text": "The last time I disagreed with someone senior about how work should be done, it cost me nothing.",
-                "vantage": "lived"
+                "vantage": "lived",
+                "escape": "I have not disagreed with someone senior"
               }
             ]
           },
@@ -398,7 +400,8 @@
               {
                 "key": "load_lived",
                 "text": "The last time I was near my limit, saying so changed something.",
-                "vantage": "lived"
+                "vantage": "lived",
+                "escape": "I have not been near my limit"
               }
             ]
           }

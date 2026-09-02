@@ -78,6 +78,20 @@ if (formEl) {
     }
   }
 
+  // An escape and a number are mutually exclusive. read_question already gives
+  // the escape precedence, so the READING is unambiguous either way — this is
+  // about the screen not showing a person a 4 they can no longer be scored on.
+  // A checkbox fires 'input', which is the event the radar already listens to,
+  // so the chart follows without radar.js knowing escapes exist.
+  formEl.addEventListener('change', function (e) {
+    const box = e.target;
+    if (!box || box.type !== 'checkbox' || !/_absent$/.test(box.name || '')) return;
+    const numeric = formEl.elements[box.name.replace(/_absent$/, '')];
+    if (!numeric) return;
+    if (box.checked) numeric.value = '';
+    numeric.disabled = box.checked;
+  });
+
   formEl.addEventListener('submit', function (e) {
     e.preventDefault();
     if (!cfg || !shared) {
