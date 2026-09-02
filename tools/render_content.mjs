@@ -624,11 +624,25 @@ function renderBaReadinessData(readiness) {
   // names the client reads and averages. Emitting key+label only left the
   // client looking for an input named after the axis, which does not exist
   // once an axis is asked as two questions.
+  //
+  // ⛔ AND SO MUST `vantage` AND `text`. Emitting keys alone shipped a page
+  // where vantage_progress found no vantages, returned an EMPTY series, and
+  // the whole instrument read as unanswered while the form still accepted a
+  // submission. Every gate was green: the tests drove hand-written fixtures
+  // that carried vantages, so nothing compared what the CLIENT actually
+  // receives against what it needs. `text` is here because the result quotes
+  // the two sentences back, and a quote with no source renders as empty
+  // quotation marks.
   const payload = {
     dimensions: readiness.dimensions.map((d) => ({
       key: d.key,
       label: d.label,
-      questions: (d.questions || [{ key: d.key }]).map((q) => ({ key: q.key })),
+      questions: (d.questions || [{ key: d.key }]).map((q) => {
+        const out = { key: q.key };
+        if (q.vantage) out.vantage = q.vantage;
+        if (q.text) out.text = q.text;
+        return out;
+      }),
     })),
   };
   return [
