@@ -80,7 +80,7 @@ function describe_widest(dimensions, ranked) {
 
   const top = ranked[0];
   if (top.gap === 0) {
-    return '<p class="result-widest">On every area, what you understand this organisation to ' +
+    return '<p class="result-widest">On every area, what you understand the organisation to ' +
       'claim and what you have seen line up. That is worth saying — and it is also the point ' +
       'at which the levels themselves become the conversation rather than the distance ' +
       'between them.</p>';
@@ -101,7 +101,7 @@ function describe_widest(dimensions, ranked) {
     ? `The widest distance is <strong>${top.label}</strong> — what you understand this ` +
       'organisation to claim is not what you have seen.'
     : `The widest distance is <strong>${top.label}</strong> — something is working better than ` +
-      'this organisation appears to claim.';
+      'the organisation appears to claim.';
 
   return `
     <p class="result-widest">${lead}${alsoText}</p>
@@ -110,6 +110,49 @@ function describe_widest(dimensions, ranked) {
       <p><span class="quote-vantage">In practice</span> &ldquo;${question_text(dimension, 'lived')}&rdquo; &mdash; you said ${top.lived}/5.</p>
     </blockquote>
     <p class="result-widest-note">That distance is the conversation we would start with.</p>`;
+}
+
+/**
+ * The second reading: the lowest thing the respondent reports having SEEN.
+ *
+ * ⭐ THE GAP CANNOT SEE BOTH-LOW. Two polygons touching deep in the middle
+ * produce no band and no widest distance, while being the most alarming answer
+ * on the page. So level is named alongside divergence rather than instead of
+ * it — they are different questions and neither subsumes the other.
+ *
+ * ⚠️ Still not a ranking claim. It names what was answered and quotes it back,
+ * because the axes are not equated and the lowest reading may be the item
+ * phrased most severely rather than the worst thing about the organisation.
+ */
+function describe_lowest(ranked_low, widest_key) {
+  if (!ranked_low.length) return '';
+
+  const low = ranked_low[0];
+  const tied = ranked_low.filter(function (r) { return r.lived === low.lived; });
+  const alsoText = tied.length > 1
+    ? ` <span class="result-tied">${tied.slice(1).map(function (r) { return r.label; }).join(' and ')} ` +
+      `${tied.length > 2 ? 'sit' : 'sits'} equally low.</span>`
+    : '';
+
+  // Both readings low is the case with no band at all, so it is worth saying
+  // out loud rather than leaving the reader to notice an absence.
+  const bothLow = low.stated !== undefined && low.stated <= 2 && low.lived <= 2;
+
+  if (low.key === widest_key) {
+    return `<p class="result-lowest">It is also the lowest thing you reported seeing.${alsoText}</p>`;
+  }
+
+  const bothLine = bothLow
+    ? ' You did not understand the organisation to claim otherwise, so there is no gap here to point at — ' +
+      'the level itself is the finding.'
+    : '';
+
+  return `
+    <p class="result-lowest">The lowest thing you reported seeing is <strong>${low.label}</strong>.${alsoText}</p>
+    <blockquote class="result-quote">
+      <p><span class="quote-vantage">In practice</span> &ldquo;${low.text}&rdquo; &mdash; you said ${low.lived}/5.</p>
+    </blockquote>
+    <p class="result-lowest-note">That is the other place we would start.${bothLine}</p>`;
 }
 
 if (formEl) {
@@ -211,12 +254,14 @@ if (formEl) {
     }
 
     const ranked = shared.gap_ranking(cfg.dimensions, state.series);
+    const ranked_low = shared.lowest_lived(cfg.dimensions, state.series);
 
     resultEl.classList.remove('error');
     resultEl.removeAttribute('role');
     resultEl.innerHTML = `
       ${shared.render_vantage_list(cfg.dimensions, state.series, 5)}
       ${describe_widest(cfg.dimensions, ranked)}
+      ${describe_lowest(ranked_low, ranked.length ? ranked[0].key : null)}
       <p class="result-caveat">This is a self-assessment from one point of view. It is a prompt for a conversation, not a measurement of your team.</p>`;
 
     if (ctaEl) ctaEl.style.display = 'block';
@@ -232,8 +277,10 @@ if (formEl) {
     // status line both label this value themselves, so carrying the label in
     // the value renders it twice. scorecard.js is the pattern: its summary is
     // bare and the email supplies "Scorecard:".
+    const lowest = ranked_low[0];
     const resultText = `${detail} (on paper/in practice). ` +
-      (widest ? `Widest gap: ${widest.label} ${widest.stated} vs ${widest.lived}.` : 'No gap could be read.');
+      (widest ? `Widest gap: ${widest.label} ${widest.stated} vs ${widest.lived}. ` : 'No gap could be read. ') +
+      (lowest ? `Lowest seen: ${lowest.label} ${lowest.lived}/5.` : '');
 
     const hiddenField = document.getElementById('ba-readiness-hidden');
     if (hiddenField) hiddenField.value = resultText;

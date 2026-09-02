@@ -641,6 +641,10 @@ function renderBaReadinessData(readiness) {
         const out = { key: q.key };
         if (q.vantage) out.vantage = q.vantage;
         if (q.text) out.text = q.text;
+        // The client excludes an opportunity-keyed item from the lowest-seen
+        // reading. Without this the flag exists in the SSOT and never reaches
+        // the code that consults it — the same silent shape as the vantages.
+        if (q.polarity) out.polarity = q.polarity;
         return out;
       }),
     })),
@@ -671,7 +675,7 @@ function renderBaReadinessData(readiness) {
 const VANTAGE_BLOCKS = [
   {
     vantage: 'stated',
-    heading: 'What you understand this organisation to claim about itself',
+    heading: 'What you understand the organisation to claim about itself',
   },
   {
     vantage: 'lived',

@@ -130,6 +130,50 @@
   }
 
   /**
+   * Axes ranked by the LOWEST LIVED reading — what the respondent reports
+   * having actually seen, lowest first.
+   *
+   * ⭐ THIS EXISTS BECAUSE THE GAP CANNOT SEE BOTH-LOW. A respondent who
+   * believes the organisation claims little AND has seen little draws two
+   * polygons touching deep in the middle: no band, no widest distance, and the
+   * most alarming answer available goes unnamed. Level and divergence are
+   * different questions.
+   *
+   * ⛔ LIVED ONLY — NOT THE TOTAL, AND NOT THE MEAN. Summing the two vantages
+   * is twice their mean, so ranking by total is ranking by the blend this
+   * instrument was reshaped to remove: stated 1 / lived 5 totals the same as
+   * 3 / 3, and those are opposite situations. The lived column is one vantage,
+   * unblended, and it is the one the respondent witnessed rather than inferred.
+   *
+   * ⚠️ An item flagged `polarity: 'opportunity'` is EXCLUDED. `ai_fit_lived`
+   * asks whether the week is repetitive: a low reading means varied work, which
+   * is healthy and simply offers AI less to take. Every other lived item's low
+   * pole is a problem. Naming that one as a place to start would be exactly
+   * backwards, and the flag lives in the SSOT so the next item to invert is
+   * declared rather than discovered.
+   */
+  function lowest_lived(dimensions, series) {
+    const lived = (series.lived && series.lived.values) || {};
+    return dimensions
+      .filter(function (d) {
+        if (lived[d.key] === undefined) return false;
+        const item = (d.questions || []).find(function (q) { return q.vantage === 'lived'; });
+        return !(item && item.polarity === 'opportunity');
+      })
+      .map(function (d) {
+        const item = (d.questions || []).find(function (q) { return q.vantage === 'lived'; });
+        return {
+          key: d.key,
+          label: d.label,
+          lived: lived[d.key],
+          stated: (series.stated && series.stated.values[d.key]),
+          text: item ? item.text : '',
+        };
+      })
+      .sort(function (a, b) { return a.lived - b.lived; });
+  }
+
+  /**
    * Banding is by RANGE, not exact match. `value === 3` worked while every
    * answer was an integer, but an axis averaged over two questions produces
    * 3.5, which matched neither branch and fell through to 'Needs work' — a
@@ -320,6 +364,7 @@
     read_question: read_question,
     vantage_progress: vantage_progress,
     gap_ranking: gap_ranking,
+    lowest_lived: lowest_lived,
     render_vantage_list: render_vantage_list,
     question_keys: question_keys,
     axis_values: axis_values,

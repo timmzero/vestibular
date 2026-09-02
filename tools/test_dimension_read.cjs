@@ -13,7 +13,7 @@
 const assert = require('assert');
 const {
   band_for, weakest_dimension, render_dimension_list, question_keys, axis_values, axis_progress, read_answers,
-  read_question, vantage_progress, gap_ranking, render_vantage_list,
+  read_question, vantage_progress, gap_ranking, render_vantage_list, lowest_lived,
 } = require('../scripts/dimension_read.js');
 
 const dimensions = [
@@ -470,6 +470,93 @@ check('an escaped input is not also marked required', () => {
     assert.ok(row, `${key} has an escape but no number input`);
     assert.ok(!/required/.test(row[0]), `${key} is escapable but still required`);
   });
+});
+
+
+/* ------------------------------------------------------------------ *
+ * The lowest LIVED reading — level, where gap_ranking reads divergence.
+ * ------------------------------------------------------------------ */
+
+const polar = [
+  { key: 'morale', label: 'Morale', questions: [
+    { key: 'morale_stated', text: 'People can challenge an idea.', vantage: 'stated' },
+    { key: 'morale_lived', text: 'It cost me nothing.', vantage: 'lived' },
+  ] },
+  { key: 'ai_fit', label: 'AI fit', questions: [
+    { key: 'ai_fit_stated', text: 'We can name where AI helps.', vantage: 'stated' },
+    { key: 'ai_fit_lived', text: 'The same thing over and over.', vantage: 'lived', polarity: 'opportunity' },
+  ] },
+  { key: 'roles', label: 'Roles', questions: [
+    { key: 'roles_stated', text: 'Clear who decides.', vantage: 'stated' },
+    { key: 'roles_lived', text: 'My week matches my job description.', vantage: 'lived' },
+  ] },
+];
+
+check('lowest_lived ranks by what was SEEN, ascending', () => {
+  const v = vantage_progress(fake_form({
+    morale_stated: 5, morale_lived: 2, ai_fit_stated: 3, ai_fit_lived: 4,
+    roles_stated: 3, roles_lived: 4,
+  }), polar, 5);
+  const low = lowest_lived(polar, v.series);
+  assert.strictEqual(low[0].key, 'morale');
+  assert.strictEqual(low[0].lived, 2);
+  assert.strictEqual(low[0].stated, 5, 'the partner reading travels with it');
+});
+
+check('⛔ it is not the total, and not the mean', () => {
+  // stated 1 / lived 5 and stated 3 / lived 3 have the SAME total. If the
+  // ranking is by total they are interchangeable; by lived they are opposite.
+  const v = vantage_progress(fake_form({
+    morale_stated: 1, morale_lived: 5, roles_stated: 3, roles_lived: 3,
+    ai_fit_stated: 3, ai_fit_lived: 3,
+  }), polar, 5);
+  const low = lowest_lived(polar, v.series);
+  assert.strictEqual(low[0].key, 'roles', 'lived 3 is lower than lived 5, whatever the totals say');
+});
+
+check('⚠️ an opportunity-keyed item is excluded, not ranked lowest', () => {
+  // ai_fit_lived at 1 means varied work — healthy, and offering AI less to
+  // take. Naming it as a place to start would be exactly backwards.
+  const v = vantage_progress(fake_form({
+    morale_stated: 4, morale_lived: 3, ai_fit_stated: 3, ai_fit_lived: 1,
+    roles_stated: 3, roles_lived: 4,
+  }), polar, 5);
+  const low = lowest_lived(polar, v.series);
+  assert.ok(!low.some((r) => r.key === 'ai_fit'), 'ai_fit must not appear at all');
+  assert.strictEqual(low[0].key, 'morale', 'the lowest genuine weakness is named instead');
+});
+
+check('an absent lived reading is not ranked as low', () => {
+  const v = vantage_progress(fake_form({
+    morale_stated: 4, morale_lived_absent: true, ai_fit_stated: 3, ai_fit_lived: 3,
+    roles_stated: 3, roles_lived: 4,
+  }), polar, 5);
+  const low = lowest_lived(polar, v.series);
+  assert.ok(!low.some((r) => r.key === 'morale'), 'a declined item is not a low score');
+});
+
+check('lowest_lived catches the both-low case the gap cannot', () => {
+  // Two polygons touching deep in the middle: every gap is zero, so
+  // gap_ranking has nothing to point at.
+  const answers = {
+    morale_stated: 1, morale_lived: 1, ai_fit_stated: 2, ai_fit_lived: 2,
+    roles_stated: 2, roles_lived: 2,
+  };
+  const v = vantage_progress(fake_form(answers), polar, 5);
+  assert.ok(gap_ranking(polar, v.series).every((r) => r.gap === 0), 'no divergence to report');
+  const low = lowest_lived(polar, v.series);
+  assert.strictEqual(low[0].key, 'morale', 'the level is still nameable');
+  assert.strictEqual(low[0].lived, 1);
+});
+
+check('the emitted config carries the polarity flag to the client', () => {
+  const cfg = emitted_config();
+  const flagged = cfg.dimensions
+    .flatMap((d) => d.questions)
+    .filter((q) => q.polarity === 'opportunity')
+    .map((q) => q.key);
+  assert.deepStrictEqual(flagged, ['ai_fit_lived'],
+    'the flag exists in the SSOT but must also REACH the code that consults it');
 });
 
 console.log('\n' + passed + ' dimension_read checks passed');
