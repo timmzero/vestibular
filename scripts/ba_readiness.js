@@ -104,7 +104,11 @@ if (formEl) {
 
     // Plain-text summary for the contact form handoff. No total, by design.
     const detail = cfg.dimensions.map((d) => `${d.label} ${answers[d.key]}/5`).join(', ');
-    const resultText = `AI readiness: ${detail}. Weakest: ${weakest.label}.`;
+    // No "AI readiness:" prefix here — the contact email and the on-page
+    // status line both label this value themselves, so carrying the label in
+    // the value renders it twice. scorecard.js is the pattern: its summary is
+    // bare and the email supplies "Scorecard:".
+    const resultText = `${detail}. Weakest: ${weakest.label}.`;
 
     const hiddenField = document.getElementById('ba-readiness-hidden');
     if (hiddenField) hiddenField.value = resultText;
