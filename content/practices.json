@@ -240,20 +240,29 @@
           ]
         },
         {
-          "name": "AI Enablement",
+          "name": "AI Fit",
           "pillar": "acceleration",
-          "purpose": "Decide where AI genuinely earns its place, and prepare the ground for it.",
+          "purpose": "Decide where AI genuinely earns its place, rather than where it is fashionable.",
           "points": [
             "Identify where AI meets a real need: automation, prediction, decision support, workflow augmentation",
             "Prioritise opportunities by value, feasibility, and risk",
-            "Define AI-ready requirements: data, model behaviour, integration points",
             "Build AI literacy across teams so adoption is not left to chance"
+          ]
+        },
+        {
+          "name": "Data Readiness",
+          "pillar": "acceleration",
+          "purpose": "Prepare the ground, so a system can rely on what you already hold.",
+          "points": [
+            "Define AI-ready requirements: data, model behaviour, integration points",
+            "Resolve identity: one identifier per customer, job or product across systems",
+            "Establish what history exists, how clean it is, and what it can support"
           ]
         }
       ],
       "readiness": {
         "_comment": "SSOT for the AI transformation readiness radar. One axis per discovery domain, in the same order as domains above, so the chart is a map of the engagement rather than a slice of it. Two questions per axis: a single item carries whatever idiosyncratic reading one person has of one sentence. Deliberately NO stages and NO thresholds — the Agile practice owns the maturity shape, and collapsing six axes to one number would both discard the reading and make the two practices look alike.",
-        "intro": "Thirteen questions, about three minutes. There is no score and no stage — you get the shape across the six areas we look at, and the one we would start with.",
+        "intro": "Fourteen questions, about three minutes. There is no score and no stage — you get the shape across the seven areas we look at, and the one we would start with.",
         "dimensions": [
           {
             "key": "company_goals",
@@ -261,11 +270,11 @@
             "questions": [
               {
                 "key": "company_goals_1",
-                "text": "Our goals are clear and agreed across leadership and the people doing the work."
+                "text": "Our goals are measurable and sequenced, not merely stated."
               },
               {
                 "key": "company_goals_2",
-                "text": "Our goals are measurable and sequenced, not merely stated."
+                "text": "When two priorities conflict, it is clear which one wins."
               }
             ]
           },
@@ -275,14 +284,10 @@
             "questions": [
               {
                 "key": "systems_1",
-                "text": "We could list the systems people actually use day to day, without having to go and find out."
-              },
-              {
-                "key": "systems_2",
                 "text": "The systems we already own are used to their potential."
               },
               {
-                "key": "systems_3",
+                "key": "systems_2",
                 "text": "Where teams do the same job, they use the same systems."
               }
             ]
@@ -297,7 +302,7 @@
               },
               {
                 "key": "pain_points_2",
-                "text": "We know who and what is exposed when it goes wrong — roles, customers, revenue, safety."
+                "text": "Our sense of where the problems are comes from data, not from whoever complains loudest."
               }
             ]
           },
@@ -311,7 +316,7 @@
               },
               {
                 "key": "morale_2",
-                "text": "Someone can say \"this will not work\" to the person sponsoring it, without it costing them."
+                "text": "We could take on a new programme of work without something else quietly being dropped."
               }
             ]
           },
@@ -325,21 +330,35 @@
               },
               {
                 "key": "roles_2",
-                "text": "Capability and workload are matched to role — the right people are in the right places."
+                "text": "Decisions are made at the level where the work happens, rather than escalated by default."
               }
             ]
           },
           {
-            "key": "ai_enablement",
-            "label": "AI enablement",
+            "key": "ai_fit",
+            "label": "AI fit",
             "questions": [
               {
-                "key": "ai_enablement_1",
+                "key": "ai_fit_1",
                 "text": "We can name specific places AI would meet a real need, not just where it is fashionable."
               },
               {
-                "key": "ai_enablement_2",
+                "key": "ai_fit_2",
+                "text": "We could say which job we would give AI first, and why that one."
+              }
+            ]
+          },
+          {
+            "key": "data_readiness",
+            "label": "Data readiness",
+            "questions": [
+              {
+                "key": "data_readiness_1",
                 "text": "Our data is accessible, and good enough for a system to rely on."
+              },
+              {
+                "key": "data_readiness_2",
+                "text": "The same customer, job or product has one identifier everywhere it appears."
               }
             ]
           }
