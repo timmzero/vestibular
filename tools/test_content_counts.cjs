@@ -68,18 +68,25 @@ function word_for(n) {
 }
 
 /**
- * Read the one capture group out of a file, and FAIL if the pattern matched
- * nothing.
+ * Read the one capture group out of a body of text, and FAIL if the pattern
+ * matched nothing.
  *
  * ⛔ A claim that has been reworded away must go red, not quietly green. A
  * passing check on an empty result is not a pass — a drift comparison on this
  * repo once reported "0 drifted" because its parser had matched nothing.
+ *
+ * ⚠️ `text` is the STRING TO SEARCH, and for anything living in a JSON source
+ * it must be the parsed VALUE, not the raw file. Both practices keep an
+ * `intro` and both begin with a number word, so a pattern loosened by one word
+ * silently began matching the Agile diagnostic's "Six questions" while
+ * reporting on the readiness instrument's sixteen. It read exactly like real
+ * drift. Regex the file only for prose that has no path to read it by.
  */
-function read_claim(file, pattern) {
-  const m = read(file).match(pattern);
+function read_claim(where, text, pattern) {
+  const m = text.match(pattern);
   assert.ok(
     m,
-    `${file}: no text matched ${pattern}. The claim was reworded or removed — ` +
+    `${where}: no text matched ${pattern}. The claim was reworded or removed — ` +
       'update this table rather than deleting the check.',
   );
   return m[1];
@@ -147,24 +154,32 @@ const CLAIMS = [
   },
   {
     file: 'content/practices.json',
+    text: () => ai.readiness.intro,
     where: 'SSOT — readiness.intro, question count',
-    pattern: /"intro": "([A-Za-z]+) questions, about three minutes/,
+    // Deliberately not anchored on the duration that follows. The duration is
+    // a separate claim and is not derivable from the SSOT, so binding the two
+    // makes an honest edit to one look like drift in the other — which it did,
+    // the first time the intro was reworded after this check was written.
+    pattern: /^([A-Za-z]+) questions, about/,
     expected: () => question_count,
   },
   {
     file: 'content/practices.json',
+    text: () => ai.readiness.intro,
     where: 'SSOT — readiness.intro, area count',
     pattern: /the shape across the ([a-z]+) areas we look at/,
     expected: () => axis_count,
   },
   {
     file: 'content/pages.json',
+    text: () => pages.pages['ai-readiness.html'].description,
     where: 'SSOT — ai-readiness meta description, question count',
     pattern: /A ([a-z]+)-question readiness check/,
     expected: () => question_count,
   },
   {
     file: 'content/pages.json',
+    text: () => pages.pages['ai-readiness.html'].description,
     where: 'SSOT — ai-readiness meta description, area count',
     pattern: /readiness check across ([a-z]+) areas/,
     expected: () => axis_count,
@@ -173,7 +188,8 @@ const CLAIMS = [
 
 CLAIMS.forEach((claim) => {
   check(`${claim.file} — ${claim.where}`, () => {
-    const found = read_claim(claim.file, claim.pattern);
+    const body = claim.text ? claim.text() : read(claim.file);
+    const found = read_claim(claim.file, body, claim.pattern);
     const want = word_for(claim.expected());
     assert.strictEqual(
       found.toLowerCase(),
@@ -190,7 +206,11 @@ CLAIMS.forEach((claim) => {
  * corrected, which reads as a typo rather than as drift.
  */
 check('the meta description names as many areas as there are axes', () => {
-  const listed = read_claim('content/pages.json', /readiness check across [a-z]+ areas: ([^."]+)\./);
+  const listed = read_claim(
+    'content/pages.json',
+    pages.pages['ai-readiness.html'].description,
+    /readiness check across [a-z]+ areas: ([^."]+)\./,
+  );
   const names = listed.split(/,| and /).map((s) => s.trim()).filter(Boolean);
   assert.strictEqual(
     names.length,
@@ -223,7 +243,7 @@ check('readiness axes and discovery domains stay parallel', () => {
  */
 check('the axis count fits the server-side radar cap', () => {
   const src = read('backend/radar_image.js');
-  const cap = Number(read_claim('backend/radar_image.js', /const MAX_AXES = (\d+);/));
+  const cap = Number(read_claim('backend/radar_image.js', src, /const MAX_AXES = (\d+);/));
   assert.ok(Number.isFinite(cap), 'MAX_AXES is not a number');
   assert.ok(
     axis_count <= cap,
@@ -233,6 +253,62 @@ check('the axis count fits the server-side radar cap', () => {
   assert.ok(
     /if \(data\.axes\.length < 3 \|\| data\.axes\.length > MAX_AXES\) return null;/.test(src),
     'the cap is no longer applied the way this check assumes — re-read parseShape',
+  );
+});
+
+/**
+ * ⛔ KEYS ARE CONSTRUCT + VANTAGE, NEVER POSITIONAL. `morale_2` named
+ * psychological safety in one shape and a workload item in the next, and
+ * `systems_1` meant three different things inside one day. Keys are sent to the
+ * server in the enquiry payload, so a key that changes meaning silently makes
+ * two responses incomparable — which is fatal to the multi-respondent and norms
+ * routes that are the whole reason for ever retaining a response.
+ */
+check('every question key is its axis key plus its vantage', () => {
+  dimensions.forEach((d) => {
+    d.questions.forEach((q) => {
+      assert.strictEqual(
+        q.key,
+        `${d.key}_${q.vantage}`,
+        `${q.key} does not name its construct and vantage`,
+      );
+    });
+  });
+  const keys = dimensions.flatMap((d) => d.questions.map((q) => q.key));
+  assert.strictEqual(new Set(keys).size, keys.length, 'a question key is reused');
+});
+
+/**
+ * Each axis is one construct seen twice, not two indicators averaged. An axis
+ * missing a vantage would make the form renderer throw rather than emit a
+ * half-grouped block — which would put a pair back beside each other, where
+ * consistency bias closes the very gap the instrument exists to measure.
+ */
+check('every axis carries exactly one stated and one lived item', () => {
+  dimensions.forEach((d) => {
+    const vantages = d.questions.map((q) => q.vantage);
+    assert.deepStrictEqual(
+      vantages, ['stated', 'lived'],
+      `${d.key} carries [${vantages}]`,
+    );
+  });
+});
+
+/**
+ * ⚠️ renderScorecardFields is SHARED with the Agile scorecard on
+ * diagnostic.html. Vantage grouping is additive and defaults absent, so the
+ * Agile path must stay ungrouped and its rendered fields byte-identical. Pinned
+ * as a property rather than trusted to a one-off diff, because the next person
+ * to touch that renderer will not think to run one.
+ */
+check('the agile diagnostic carries no vantage, so it takes the ungrouped path', () => {
+  const agile = practices.practices.agile.diagnostic.dimensions;
+  const tagged = agile
+    .flatMap((d) => (Array.isArray(d.questions) ? d.questions : []))
+    .filter((q) => q.vantage);
+  assert.strictEqual(
+    tagged.length, 0,
+    'the agile scorecard now carries vantages — its rendered fields will regroup',
   );
 });
 
@@ -252,7 +328,7 @@ check('the comparator rejects a wrong word, and a missing claim', () => {
     'the control must pass',
   );
   assert.throws(
-    () => read_claim('ai-readiness.html', /this sentence is not in the file/),
+    () => read_claim('ai-readiness.html', read('ai-readiness.html'), /this sentence is not in the file/),
     /no text matched/,
     'a claim that was reworded away must fail loudly, not pass on an empty match',
   );

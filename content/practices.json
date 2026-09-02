@@ -258,23 +258,35 @@
             "Resolve identity: one identifier per customer, job or product across systems",
             "Establish what history exists, how clean it is, and what it can support"
           ]
+        },
+        {
+          "name": "Load & Capacity",
+          "pillar": "balance",
+          "purpose": "Read how much strain the work is carrying, because that is where AI has the most to hand back.",
+          "points": [
+            "Measure sustained load against real capacity, team by team",
+            "Establish what actually happens when someone says they are at their limit",
+            "Target the heaviest and most repetitive load first — the largest recoverable hours"
+          ]
         }
       ],
       "readiness": {
-        "_comment": "SSOT for the AI transformation readiness radar. One axis per discovery domain, in the same order as domains above, so the chart is a map of the engagement rather than a slice of it. Two questions per axis: a single item carries whatever idiosyncratic reading one person has of one sentence. Deliberately NO stages and NO thresholds — the Agile practice owns the maturity shape, and collapsing the axes to one number would both discard the reading and make the two practices look alike.",
-        "intro": "Fourteen questions, about three minutes. There is no score and no stage — you get the shape across the seven areas we look at, and the one we would start with.",
+        "_comment": "SSOT for the AI transformation readiness radar. One axis per discovery domain, in the same order as domains above, so the chart is a map of the engagement rather than a slice of it. TWO VANTAGES per axis, not two indicators: \"stated\" is the respondent's read of what the organisation claims, \"lived\" is what they have witnessed from their own seat. They are NOT expected to agree — the divergence is the reading, and because both come from the same person on the same scale, wording severity and scale-use habits cancel between them. ⛔ DO NOT AVERAGE A PAIR: the mean of an espoused claim and a witnessed one describes neither, which is the fault the axis mean was reshaped to avoid. Keys are construct + vantage, never positional — a positional key meant three different things in one day during the September reshapes and had already been sent to the server in enquiry payloads. Deliberately NO stages and NO thresholds. See docs/READINESS_INSTRUMENT.md.",
+        "intro": "Sixteen questions, about four minutes. There is no score and no stage — you get the shape across the eight areas we look at, and the one we would start with.",
         "dimensions": [
           {
             "key": "company_goals",
             "label": "Company goals",
             "questions": [
               {
-                "key": "company_goals_1",
-                "text": "Our goals are measurable and sequenced, not merely stated."
+                "key": "company_goals_stated",
+                "text": "As far as I can tell, the goals here are measurable and sequenced, not merely stated.",
+                "vantage": "stated"
               },
               {
-                "key": "company_goals_2",
-                "text": "When two priorities conflict, it is clear which one wins."
+                "key": "company_goals_lived",
+                "text": "The last time I had to choose between two things this organisation wanted, I knew which one it actually wanted.",
+                "vantage": "lived"
               }
             ]
           },
@@ -283,12 +295,14 @@
             "label": "Systems",
             "questions": [
               {
-                "key": "systems_1",
-                "text": "The systems we already own are used to their potential."
+                "key": "systems_stated",
+                "text": "The systems we own would do what we need, if we used them properly.",
+                "vantage": "stated"
               },
               {
-                "key": "systems_2",
-                "text": "Where teams do the same job, they use the same systems."
+                "key": "systems_lived",
+                "text": "The last thing I needed to get done, I did in our systems rather than falling back to a spreadsheet.",
+                "vantage": "lived"
               }
             ]
           },
@@ -297,12 +311,14 @@
             "label": "Pain points",
             "questions": [
               {
-                "key": "pain_points_1",
-                "text": "We know where the pressure is greatest, and can put numbers on it."
+                "key": "pain_points_stated",
+                "text": "We can put numbers on where the pressure is greatest.",
+                "vantage": "stated"
               },
               {
-                "key": "pain_points_2",
-                "text": "Our sense of where the problems are comes from data, not from whoever complains loudest."
+                "key": "pain_points_lived",
+                "text": "The thing that wastes most of my week is something this organisation knows about.",
+                "vantage": "lived"
               }
             ]
           },
@@ -311,12 +327,14 @@
             "label": "Morale",
             "questions": [
               {
-                "key": "morale_1",
-                "text": "The workload is sustainable, and people are not running on reserves."
+                "key": "morale_stated",
+                "text": "People here can challenge an idea, even one from the person sponsoring it, without negative consequence.",
+                "vantage": "stated"
               },
               {
-                "key": "morale_2",
-                "text": "We could take on a new programme of work without something else quietly being dropped."
+                "key": "morale_lived",
+                "text": "The last time I disagreed with someone senior about how work should be done, it cost me nothing.",
+                "vantage": "lived"
               }
             ]
           },
@@ -325,12 +343,14 @@
             "label": "Roles",
             "questions": [
               {
-                "key": "roles_1",
-                "text": "Responsibility matches job description, and it is clear who decides what."
+                "key": "roles_stated",
+                "text": "It is clear who decides what.",
+                "vantage": "stated"
               },
               {
-                "key": "roles_2",
-                "text": "Decisions are made at the level where the work happens, rather than escalated by default."
+                "key": "roles_lived",
+                "text": "What I actually spend my week doing is what my job description says I do.",
+                "vantage": "lived"
               }
             ]
           },
@@ -339,12 +359,14 @@
             "label": "AI fit",
             "questions": [
               {
-                "key": "ai_fit_1",
-                "text": "We can name specific places AI would meet a real need, not just where it is fashionable."
+                "key": "ai_fit_stated",
+                "text": "We can name specific places AI would meet a real need, not just where it is fashionable.",
+                "vantage": "stated"
               },
               {
-                "key": "ai_fit_2",
-                "text": "We could say which job we would give AI first, and why that one."
+                "key": "ai_fit_lived",
+                "text": "The work that takes most of my week is the same thing over and over.",
+                "vantage": "lived"
               }
             ]
           },
@@ -353,12 +375,30 @@
             "label": "Data readiness",
             "questions": [
               {
-                "key": "data_readiness_1",
-                "text": "Our data is accessible, and good enough for a system to rely on."
+                "key": "data_readiness_stated",
+                "text": "The data here is trusted enough to run on.",
+                "vantage": "stated"
               },
               {
-                "key": "data_readiness_2",
-                "text": "The same customer, job or product has one identifier everywhere it appears."
+                "key": "data_readiness_lived",
+                "text": "The last time I needed a number, I got it from a system rather than by asking a person.",
+                "vantage": "lived"
+              }
+            ]
+          },
+          {
+            "key": "load",
+            "label": "Load",
+            "questions": [
+              {
+                "key": "load_stated",
+                "text": "The workload here is sustainable.",
+                "vantage": "stated"
+              },
+              {
+                "key": "load_lived",
+                "text": "The last time I was near my limit, saying so changed something.",
+                "vantage": "lived"
               }
             ]
           }

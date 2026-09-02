@@ -644,22 +644,66 @@ function renderBaReadinessData(readiness) {
  * Agile diagnostic and the AI readiness radar share one field renderer rather
  * than a second copy that can drift.
  */
+/**
+ * Headings for the two vantages, and the reason the fields are grouped by them
+ * rather than by axis.
+ *
+ * ⛔ THE STATED AND LIVED ITEMS OF ONE AXIS MUST NOT SIT ADJACENT. The whole
+ * reading is the divergence between them, and people do not like visibly
+ * contradicting themselves two lines apart. Grouped by axis, this instrument
+ * would measure how consistent respondents like to appear. Separated, each
+ * block is answered in its own frame.
+ */
+const VANTAGE_BLOCKS = [
+  {
+    vantage: 'stated',
+    heading: 'What you understand this organisation to claim about itself',
+  },
+  {
+    vantage: 'lived',
+    heading: 'What you have seen from where you sit',
+  },
+];
+
+function renderScorecardLabel(q) {
+  return [
+    '  <label>',
+    `    <input type="number" name="${escapeHtml(q.key)}" min="1" max="5" required>`,
+    `    <span class="label-text">${escapeHtml(q.text)} (1&ndash;5)</span>`,
+    '  </label>',
+  ].join('\n');
+}
+
 function renderScorecardFields(diag) {
-  return diag.dimensions
-    .flatMap((d) =>
-      (Array.isArray(d.questions) && d.questions.length
-        ? d.questions
-        : [{ key: d.key, text: d.question }]
-      ).map((q) =>
-        [
-          '  <label>',
-          `    <input type="number" name="${escapeHtml(q.key)}" min="1" max="5" required>`,
-          `    <span class="label-text">${escapeHtml(q.text)} (1&ndash;5)</span>`,
-          '  </label>',
-        ].join('\n')
-      )
-    )
-    .join('\n');
+  const questions = diag.dimensions.flatMap((d) =>
+    Array.isArray(d.questions) && d.questions.length
+      ? d.questions
+      : [{ key: d.key, text: d.question }]
+  );
+
+  // Additive by design: `vantage` defaults absent, so the Agile scorecard —
+  // which shares this renderer — takes the ungrouped path and its output stays
+  // byte-identical. A check pins that.
+  if (!questions.some((q) => q.vantage)) {
+    return questions.map(renderScorecardLabel).join('\n');
+  }
+
+  const missing = questions.filter((q) => !q.vantage);
+  if (missing.length) {
+    throw new Error(
+      `some questions carry a vantage and some do not (${missing.map((q) => q.key).join(', ')}) — ` +
+        'a half-grouped form would put an axis\'s two vantages back beside each other'
+    );
+  }
+
+  return VANTAGE_BLOCKS.map((block) => {
+    const inBlock = questions.filter((q) => q.vantage === block.vantage);
+    if (!inBlock.length) throw new Error(`no questions carry vantage '${block.vantage}'`);
+    return [
+      `  <p class="vantage-heading">${escapeHtml(block.heading)}</p>`,
+      ...inBlock.map(renderScorecardLabel),
+    ].join('\n');
+  }).join('\n');
 }
 
 /** Scoring data for scripts/scorecard.js. Emitted rather than duplicated in the

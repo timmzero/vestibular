@@ -43,7 +43,7 @@
     },
     "ai-readiness.html": {
       "title": "Vestibular AI Transformation – Readiness",
-      "description": "A fourteen-question readiness check across seven areas: goals, systems, pain points, morale, roles, AI fit and data readiness."
+      "description": "A sixteen-question readiness check across eight areas: goals, systems, pain points, morale, roles, AI fit, data readiness and load."
     }
   },
   "_nav_comment": "SSOT for the top-level nav. Every page in CHROME_PAGES must be reachable from here or the generator fails: 'add it to nav.html' was a manual checklist step, and ai-proof and ai-readiness had already been added to the site without ever appearing in the nav.",

@@ -508,6 +508,21 @@ body { overflow-x: clip; }
   grid-column: 2;                    /* right column (takes remaining space) */
   line-height: 1.4;
 }
+/* The two vantage blocks. `.dimension-form label` is `display: contents`, so the
+   form's two columns are populated directly by inputs and label text — a heading
+   therefore has to claim the full row explicitly or it lands in the 80px input
+   column. Nothing else about the form changes: the Agile scorecard emits no
+   vantage headings and is unaffected. */
+.vantage-heading {
+  grid-column: 1 / -1;
+  margin: 1.5rem 0 0.25rem;
+  font-weight: 600;
+  color: var(--hero-text-color);
+  border-bottom: 1px solid var(--primary-color);
+  padding-bottom: 0.4rem;
+}
+.vantage-heading:first-child { margin-top: 0; }
+
 .dimension-form button.btn {
   grid-column: 2;          /* place under label column */
   justify-self: center;    /* centre horizontally */
