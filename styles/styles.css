@@ -650,6 +650,26 @@ body { overflow-x: clip; }
   margin: 0;
 }
 
+/* The two domains each pillar owns. Rendered from domain.pillar in
+   practices.json, never written by hand — see renderPillars(). */
+.pillar-areas {
+  margin: 0.9rem 0 0;
+  padding-top: 0.8rem;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: rgba(224,224,224,0.6);
+}
+.pillar-areas span {
+  display: block;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent-color);
+  opacity: 0.8;
+  margin-bottom: 0.25rem;
+}
+
 /* Trust chips */
 .trust-chips {
   display: flex;
@@ -915,6 +935,61 @@ article.stage ul li strong { color: rgba(152,203,43,0.8); }
   font-weight: 700;
   font-size: 0.88rem;
   margin: 0;
+}
+
+/* ── Readiness — the six areas, named and grouped by pillar ──────────────── */
+.ba-area-map {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.9rem;
+}
+.ba-area-map li {
+  padding: 0.7rem 0.9rem;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 6px;
+}
+.ba-area-pillar {
+  display: block;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent-color);
+  opacity: 0.85;
+  margin-bottom: 0.3rem;
+}
+.ba-area-names {
+  display: block;
+  font-size: 0.84rem;
+  line-height: 1.5;
+  color: rgba(224,224,224,0.72);
+}
+@media (max-width: 700px) {
+  .ba-area-map { grid-template-columns: 1fr; }
+}
+
+/* ── AI Transformation — domains grouped under the pillar that owns them ─── */
+.domain-group { margin: 0 0 2.5rem; }
+.domain-group:last-child { margin-bottom: 0; }
+.domain-group-pillar {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+.domain-group-tagline {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent-color);
+  opacity: 0.85;
+  margin: 0.15rem 0 1.1rem;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
 /* ── AI Transformation — domain purpose line ─────────────────────────────── */

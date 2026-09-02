@@ -1,5 +1,28 @@
 {
   "_comment": "SINGLE SOURCE OF TRUTH for practice content. HTML regions marked GENERATED are produced from this file by scripts/build/render_content.mjs. Never hand-edit a GENERATED region — run the generator instead. CI verifies the committed HTML matches this file.",
+  "brand": {
+    "_comment": "The three senses of the vestibular system, and the brand's organising frame. Each pillar owns exactly two of ai_transformation.domains via the domain's `pillar` key — that mapping is the SSOT for the grouping rendered on index.html, ai-transformation.html and ai-readiness.html.",
+    "pillars": [
+      {
+        "key": "balance",
+        "word": "Balance",
+        "tagline": "How we face the chaos",
+        "body": "We design systems that reduce cognitive load, restore clarity, and stabilise the work environment so teams can think, breathe, and deliver."
+      },
+      {
+        "key": "acceleration",
+        "word": "Acceleration",
+        "tagline": "How we feel our way forward",
+        "body": "We don't celebrate busyness — we measure momentum. When your tools, rituals, and systems align, velocity becomes natural instead of forced."
+      },
+      {
+        "key": "gravity",
+        "word": "Gravity",
+        "tagline": "How we remain grounded",
+        "body": "We treat every challenge with weight and intention. No theatrics, no fluff — just grounded, evidence‑based design that pulls teams toward better outcomes."
+      }
+    ]
+  },
   "practices": {
     "agile": {
       "label": "Agile Transformation",
@@ -167,6 +190,7 @@
       "domains": [
         {
           "name": "Company Goals",
+          "pillar": "gravity",
           "purpose": "Understand what the organisation is actually trying to achieve — and whether its parts agree.",
           "points": [
             "Gather and validate goals across execs, ops, product, and field teams",
@@ -176,6 +200,7 @@
         },
         {
           "name": "Systems",
+          "pillar": "acceleration",
           "purpose": "Establish what you run, how well you run it, and what it is capable of.",
           "points": [
             "Inventory every system in use — core, satellite, and shadow IT",
@@ -186,6 +211,7 @@
         },
         {
           "name": "Pain Points",
+          "pillar": "gravity",
           "purpose": "Find where the pressure is greatest and put a number on it.",
           "points": [
             "Locate bottlenecks, delays, rework, and compliance exposure",
@@ -195,6 +221,7 @@
         },
         {
           "name": "Morale & Team Health",
+          "pillar": "balance",
           "purpose": "Treat team health as a measurable input to the redesign, not a soft afterthought.",
           "points": [
             "Team Health Reports measuring wellbeing, clarity, alignment, and psychological safety",
@@ -204,6 +231,7 @@
         },
         {
           "name": "Roles & Alignment",
+          "pillar": "balance",
           "purpose": "Put the right people in the right place for the operating model you are building toward.",
           "points": [
             "Match capability, temperament, and workload to role",
@@ -213,6 +241,7 @@
         },
         {
           "name": "AI Enablement",
+          "pillar": "acceleration",
           "purpose": "Decide where AI genuinely earns its place, and prepare the ground for it.",
           "points": [
             "Identify where AI meets a real need: automation, prediction, decision support, workflow augmentation",
