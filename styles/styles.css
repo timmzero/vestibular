@@ -940,7 +940,11 @@ article.stage ul li strong { color: rgba(152,203,43,0.8); }
 /* ── Readiness — the six areas, named and grouped by pillar ──────────────── */
 .ba-area-map {
   list-style: none;
-  margin: 1rem 0 0;
+  /* 2.5rem below, not an arbitrary gap: it matches .readiness-layout's own
+     column gap, so the break between the intro and the questionnaire uses a
+     spacing step the section already establishes. Was 0 — the cells butted
+     straight into the scale legend. */
+  margin: 1rem 0 2.5rem;
   padding: 0;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
