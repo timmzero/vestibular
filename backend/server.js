@@ -66,7 +66,7 @@ app.get('/api/health', (req, res) => res.status(200).json({ ok: true }));
 
 // POST /api/contact — matches your front-end fetch('/api/contact')
 app.post('/api/contact', async (req, res) => {
-  const { name, email, message, website, scorecard_result } = req.body || {};
+  const { name, email, message, website, scorecard_result, ba_readiness_result } = req.body || {};
   // Submissions from a branch preview are tests, not leads. Tag them so a
   // trial run never lands in the inbox looking like a real enquiry.
   const isPreview = PREVIEW_ORIGIN.test(req.get('origin') || '');
@@ -97,6 +97,12 @@ app.post('/api/contact', async (req, res) => {
   const safeScorecard = scorecard_result
     ? String(scorecard_result).replace(/</g, '&lt;')
     : '';
+  // Likewise from the AI readiness check. Separate field, not folded into
+  // scorecard_result: they come from different instruments with different
+  // dimensions, and a visitor can send both in one enquiry.
+  const safeReadiness = ba_readiness_result
+    ? String(ba_readiness_result).replace(/</g, '&lt;')
+    : '';
 
   const POSTMARK_TOKEN = process.env.POSTMARK_TOKEN;
   console.log('Postmark token loaded:', !!POSTMARK_TOKEN);
@@ -117,10 +123,12 @@ app.post('/api/contact', async (req, res) => {
           HtmlBody: `<p><strong>Name:</strong> ${safeName}</p>
                      <p><strong>Email:</strong> ${safeEmail}</p>
                      ${safeScorecard ? `<p><strong>Scorecard:</strong> ${safeScorecard}</p>` : ''}
+                     ${safeReadiness ? `<p><strong>AI readiness:</strong> ${safeReadiness}</p>` : ''}
                      <p><strong>Message:</strong></p>
                      <p>${safeMessage}</p>`,
           TextBody: `Name: ${safeName}\nEmail: ${safeEmail}\n`
                   + (safeScorecard ? `Scorecard: ${String(scorecard_result)}\n` : '')
+                  + (safeReadiness ? `AI readiness: ${String(ba_readiness_result)}\n` : '')
                   + `\n${String(message)}`,
           ReplyTo: safeEmail,
           MessageStream: 'outbound'
@@ -144,6 +152,7 @@ app.post('/api/contact', async (req, res) => {
         name: safeName,
         email: safeEmail,
         scorecard: safeScorecard || '(none)',
+        readiness: safeReadiness || '(none)',
         message: safeMessage,
       });
       return res.status(200).json({ success: true, note: 'logged to server console (no provider configured)' });
