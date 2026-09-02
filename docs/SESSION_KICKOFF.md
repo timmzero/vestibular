@@ -48,6 +48,26 @@ allocate one, and do not touch the VTM counter from this work.
 - **A PAT cannot read GitHub App installations or change repo settings.** Both
   return "Resource not accessible by personal access token".
 
+## Open threads as of 2 Sep, end of session
+
+- **The readiness instrument has an unresolved design decision.** See
+  `docs/READINESS_INSTRUMENT.md` — it went through three shapes in one session
+  and the last change traded grain for measurement validity. Read that before
+  touching `readiness.dimensions`.
+- **⛔ Static assets are cached for 4 hours with no version in the URL.**
+  `styles.css` and `scripts/*.js` ship `max-age=14400`; HTML ships
+  `max-age=0`. So a returning visitor gets NEW markup against OLD CSS/JS.
+  This bit three times in one session: twice the layout looked broken, and
+  once it silently disabled a feature (the readiness quiz did not write its
+  shape payload, so enquiry emails arrived without the radar). Every time it
+  looked like a code bug and was not. **Fix is a content hash in the URL** —
+  `renderHead()` already writes every `<link>` and `<script>` tag, so the hash
+  can be emitted there and the drift check would cover it.
+- **VTRAFFIC:** `fix/og-card-copy-matches-site` is unmerged, and
+  `images/og-card.png` is stale on production — it is generated from a capture
+  that changed, and its baked-in subtitle still carries NSW-only wording.
+  Regenerate on Godzilla with the brand fonts after merging.
+
 ## The generator contract
 
 `content/practices.json` and `content/pages.json` are the source of truth;
