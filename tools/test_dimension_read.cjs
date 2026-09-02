@@ -391,4 +391,85 @@ check('vantage_progress ignores questions with no vantage', () => {
   assert.strictEqual(v.questions, 0);
 });
 
+
+/* ------------------------------------------------------------------ *
+ * ⛔ THE CONTRACT TEST. What the CLIENT actually receives, driven through the
+ * reader the client actually uses.
+ *
+ * Every check above this point drives HAND-WRITTEN fixtures. Those fixtures
+ * carried `vantage` because I wrote them that way — while the generator emitted
+ * key-only questions to the page. All five gates were green over a build where
+ * the instrument read as entirely unanswered and the chart drew nothing.
+ *
+ * A fixture proves the module works on the shape you imagined. Only the emitted
+ * artefact proves it works on the shape you ship.
+ * ------------------------------------------------------------------ */
+
+const fs = require('fs');
+const path = require('path');
+
+function emitted_config() {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'ai-readiness.html'), 'utf8');
+  const m = html.match(/<script id="ba-readiness-data" type="application\/json">\n([\s\S]*?)\n<\/script>/);
+  assert.ok(m, 'the readiness config block is not in the page at all');
+  return JSON.parse(m[1]);
+}
+
+check('the emitted config is READABLE by vantage_progress', () => {
+  const cfg = emitted_config();
+  const answers = {};
+  cfg.dimensions.forEach((d) => d.questions.forEach((q) => { answers[q.key] = 3; }));
+
+  const v = vantage_progress(fake_form(answers), cfg.dimensions, 5);
+  assert.ok(v.series.stated, 'no stated series — the page would read as unanswered');
+  assert.ok(v.series.lived, 'no lived series — the chart would draw one polygon or none');
+  assert.strictEqual(
+    Object.keys(v.series.stated.values).length, cfg.dimensions.length,
+    'every axis must produce a stated reading from the emitted keys',
+  );
+  assert.strictEqual(Object.keys(v.series.lived.values).length, cfg.dimensions.length);
+  assert.strictEqual(v.answered, v.questions, 'a fully answered form must read as fully answered');
+});
+
+check('the emitted config carries the text the result quotes back', () => {
+  const cfg = emitted_config();
+  cfg.dimensions.forEach((d) => {
+    d.questions.forEach((q) => {
+      assert.ok(q.vantage, `${q.key} reaches the client with no vantage`);
+      assert.ok(q.text && q.text.length > 10,
+        `${q.key} reaches the client with no text — the result would quote empty quotation marks`);
+    });
+  });
+});
+
+check('the emitted keys match the form inputs on the same page', () => {
+  // Two generated regions, one source. If they ever disagree, the client reads
+  // inputs that do not exist and every axis silently reads as absent.
+  const html = fs.readFileSync(path.join(__dirname, '..', 'ai-readiness.html'), 'utf8');
+  const inputs = [...html.matchAll(/<input type="number" name="([a-z0-9_]+)"/g)].map((m) => m[1]);
+  const configured = emitted_config().dimensions.flatMap((d) => d.questions.map((q) => q.key));
+  assert.deepStrictEqual(inputs.slice().sort(), configured.slice().sort(),
+    'the form fields and the config block name different questions');
+});
+
+check('every escape checkbox belongs to a question the config knows', () => {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'ai-readiness.html'), 'utf8');
+  const escapes = [...html.matchAll(/<input type="checkbox" name="([a-z0-9_]+)_absent"/g)].map((m) => m[1]);
+  const configured = emitted_config().dimensions.flatMap((d) => d.questions.map((q) => q.key));
+  assert.ok(escapes.length, 'no escape rendered — three lived items need one');
+  escapes.forEach((k) => assert.ok(configured.includes(k), `${k}_absent has no question`));
+});
+
+check('an escaped input is not also marked required', () => {
+  // The browser would block submission for exactly the people the escape exists
+  // to serve, and the form would look broken rather than strict.
+  const html = fs.readFileSync(path.join(__dirname, '..', 'ai-readiness.html'), 'utf8');
+  const escaped = [...html.matchAll(/<input type="checkbox" name="([a-z0-9_]+)_absent"/g)].map((m) => m[1]);
+  escaped.forEach((key) => {
+    const row = html.match(new RegExp(`<input type="number" name="${key}"[^>]*>`));
+    assert.ok(row, `${key} has an escape but no number input`);
+    assert.ok(!/required/.test(row[0]), `${key} is escapable but still required`);
+  });
+});
+
 console.log('\n' + passed + ' dimension_read checks passed');

@@ -32,6 +32,17 @@ function load_config() {
       console.error('ba_readiness: config is missing dimensions');
       return null;
     }
+    // Fail at LOAD, where it is diagnosable, rather than at submit. A config
+    // whose questions carry no vantage renders a chart that silently draws
+    // nothing and a result that silently reads as unanswered.
+    const vantages = cfg.dimensions
+      .flatMap(function (d) { return d.questions || []; })
+      .filter(function (q) { return q.vantage; });
+    if (!vantages.length) {
+      console.error('ba_readiness: no question carries a vantage — the page needs regenerating ' +
+        '(node tools/render_content.mjs)');
+      return null;
+    }
     return cfg;
   } catch (err) {
     console.error('ba_readiness: could not parse config', err);
@@ -168,8 +179,27 @@ if (formEl) {
     }
 
     const state = shared.vantage_progress(e.target, cfg.dimensions, 5);
+
+    // ⛔ AN EMPTY READ IS NOT A COMPLETE ONE. This check previously read
+    //   state.series.stated && state.series.stated.values[d.key] === undefined
+    // which short-circuits to FALSY when the whole series is missing — so a
+    // config carrying no vantages produced zero "unanswered" axes, passed
+    // validation, and rendered a result of dashes over answers the person had
+    // actually given. Establish that the series EXIST before asking what is in
+    // them.
+    const missing_series = ['stated', 'lived'].filter(function (v) { return !state.series[v]; });
+    if (missing_series.length) {
+      console.error('ba_readiness: config carries no ' + missing_series.join('/') +
+        ' questions — has the page been regenerated since the vantages were added?');
+      resultEl.textContent =
+        'Sorry — this could not load. Please email consult@vestibular.nexus and we will run it with you.';
+      resultEl.classList.add('error');
+      resultEl.setAttribute('role', 'alert');
+      return;
+    }
+
     const unanswered = cfg.dimensions.filter(function (d) {
-      return state.series.stated && state.series.stated.values[d.key] === undefined;
+      return state.series.stated.values[d.key] === undefined;
     });
     if (unanswered.length) {
       resultEl.textContent =
