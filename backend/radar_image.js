@@ -34,6 +34,11 @@ const INK = {
   spoke: 'rgba(255,255,255,0.14)',
   shape: '#a3e635',
   shapeFill: 'rgba(163,230,53,0.22)',
+  // The stated shape is an outline over a hatch, so the band between the two
+  // reads as the SPACE between readings rather than as a third value. Same
+  // draw order as the on-page chart: stated first, lived over it.
+  stated: 'rgba(163,230,53,0.55)',
+  hatch: 'rgba(163,230,53,0.30)',
   label: '#8899bb',
 };
 
@@ -79,31 +84,74 @@ function parseShape(raw) {
   if (data.axes.length < 3 || data.axes.length > MAX_AXES) return null;
 
   const dimensions = [];
-  const values = {};
+  const stated = {};
+  const lived = {};
+  let readings = 0;
+
   for (const axis of data.axes) {
     if (!axis || typeof axis.key !== 'string' || typeof axis.label !== 'string') return null;
     if (!/^[a-z0-9_]{1,40}$/i.test(axis.key)) return null;
-    const v = Number(axis.value);
-    if (!Number.isFinite(v) || v < 1 || v > SCALE_MAX) return null;
     dimensions.push({ key: axis.key, label: axis.label.slice(0, MAX_LABEL) });
-    values[axis.key] = v;
+
+    // ⛔ A VANTAGE MAY BE LEGITIMATELY ABSENT and that is not a malformed
+    // payload. Three lived items ask about an event that may never have
+    // happened, and the respondent can say so. Absent is left OUT of the
+    // values object, which radar_geometry already plots as a gap in the shape
+    // rather than at the centre. Rejecting the payload for it would silently
+    // strip the chart from the email of exactly the people who answered most
+    // carefully.
+    for (const [vantage, into] of [['stated', stated], ['lived', lived]]) {
+      const raw = axis[vantage];
+      if (raw === undefined || raw === null) continue;
+      const v = Number(raw);
+      if (!Number.isFinite(v) || v < 1 || v > SCALE_MAX) return null;
+      into[axis.key] = v;
+      readings += 1;
+    }
   }
-  return { dimensions, values };
+
+  // Nothing to draw is not a chart, it is an empty frame. The caller degrades
+  // to the text summary, which carries every value anyway.
+  if (!readings) return null;
+
+  return { dimensions, stated, lived };
 }
 
-function buildSvg(geo, dimensions, radius, cx, cy, size, ringRadii, labelGap, fontSize) {
+function buildSvg(geos, dimensions, radius, cx, cy, size, ringRadii, labelGap, fontSize) {
+  // geos is ordered back to front: stated, then lived over it. The first is
+  // used for the grid and labels only because every geometry shares one set of
+  // axes — the angles come from `dimensions`, which is the same list for both.
+  const geo = geos[0];
+
   const rings = ringRadii
     .map((r) => `<circle cx="${cx}" cy="${cy}" r="${r.toFixed(2)}" fill="none" stroke="${INK.ring}" stroke-width="1"/>`)
     .join('');
   const spokes = geo.axes
     .map((a) => `<line x1="${cx}" y1="${cy}" x2="${a.x.toFixed(2)}" y2="${a.y.toFixed(2)}" stroke="${INK.spoke}" stroke-width="1"/>`)
     .join('');
-  const shape = geo.polygon
-    ? `<polygon points="${geo.polygon}" fill="${INK.shapeFill}" stroke="${INK.shape}" stroke-width="2" stroke-linejoin="round"/>`
-    : '';
-  const dots = geo.points
-    .filter(Boolean)
-    .map((p) => `<circle cx="${p.x.toFixed(2)}" cy="${p.y.toFixed(2)}" r="3" fill="${INK.shape}"/>`)
+
+  const defs = '<defs>'
+    + '<pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">'
+    + `<line x1="0" y1="0" x2="0" y2="6" stroke="${INK.hatch}" stroke-width="1.5"/>`
+    + '</pattern></defs>';
+
+  const shape = geos
+    .map((g, i) => {
+      if (!g.polygon) return '';
+      const isLived = i === geos.length - 1;
+      return isLived
+        ? `<polygon points="${g.polygon}" fill="${INK.shapeFill}" stroke="${INK.shape}" stroke-width="2" stroke-linejoin="round"/>`
+        : `<polygon points="${g.polygon}" fill="url(#hatch)" stroke="${INK.stated}" stroke-width="1.5" `
+          + 'stroke-dasharray="4 3" stroke-linejoin="round"/>';
+    })
+    .join('');
+
+  const dots = geos
+    .map((g, i) => g.points
+      .filter(Boolean)
+      .map((p) => `<circle cx="${p.x.toFixed(2)}" cy="${p.y.toFixed(2)}" r="3" `
+        + `fill="${i === geos.length - 1 ? INK.shape : INK.stated}"/>`)
+      .join(''))
     .join('');
   // Labels use a generic family: a rasteriser has no access to the site's
   // webfont, and naming one it cannot resolve just yields a silent fallback.
@@ -121,7 +169,7 @@ function buildSvg(geo, dimensions, radius, cx, cy, size, ringRadii, labelGap, fo
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">`
     + `<rect width="${size}" height="${size}" fill="${INK.bg}"/>`
-    + rings + spokes + shape + dots + labels
+    + defs + rings + spokes + shape + dots + labels
     + '</svg>';
 }
 
@@ -151,18 +199,21 @@ export async function renderReadinessRadar(rawShape) {
     const cx = size / 2;
     const cy = size / 2;
 
-    const geo = radar.radar_geometry({
+    // Back to front: stated, then lived. Same order as the on-page chart, and
+    // the same reason — a dent in the LIVED shape must carry the visual weight
+    // whether or not it diverges from the claim.
+    const geos = [parsed.stated, parsed.lived].map((values) => radar.radar_geometry({
       dimensions: parsed.dimensions,
-      values: parsed.values,
+      values,
       max: SCALE_MAX,
       radius,
       cx,
       cy,
-    });
+    }));
     // ring_radii(max, radius) — argument order matters and is easy to invert.
     const ringRadii = radar.ring_radii(SCALE_MAX, radius);
 
-    const svg = buildSvg(geo, parsed.dimensions, radius, cx, cy, size, ringRadii, LABEL_GAP, FONT_SIZE);
+    const svg = buildSvg(geos, parsed.dimensions, radius, cx, cy, size, ringRadii, LABEL_GAP, FONT_SIZE);
 
     const { Resvg } = await import('@resvg/resvg-js');
     const png = new Resvg(svg, { fitTo: { mode: 'width', value: 420 } }).render().asPng();

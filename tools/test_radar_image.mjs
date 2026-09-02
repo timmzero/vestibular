@@ -21,12 +21,12 @@ import { renderReadinessRadar } from '../backend/radar_image.js';
 
 const axes = (over = {}) => {
   const base = [
-    { key: 'company_goals', label: 'Company goals', value: 3 },
-    { key: 'systems', label: 'Systems', value: 2 },
-    { key: 'pain_points', label: 'Pain points', value: 4 },
-    { key: 'morale', label: 'Morale', value: 1 },
-    { key: 'roles', label: 'Roles', value: 2 },
-    { key: 'ai_enablement', label: 'AI enablement', value: 3 },
+    { key: 'company_goals', label: 'Company goals', stated: 4, lived: 2 },
+    { key: 'systems', label: 'Systems', stated: 3, lived: 3 },
+    { key: 'pain_points', label: 'Pain points', stated: 4, lived: 4 },
+    { key: 'morale', label: 'Morale', stated: 5, lived: 1 },
+    { key: 'roles', label: 'Roles', stated: 2, lived: 3 },
+    { key: 'ai_fit', label: 'AI fit', stated: 3, lived: 5 },
   ];
   return JSON.stringify({ axes: base.map((a, i) => ({ ...a, ...(over[i] || {}) })) });
 };
@@ -53,26 +53,85 @@ check('the prose summary is not mistaken for the shape', async () => {
   // These travel together in the same request; parsing one as the other would
   // be a silent wrong-field bug.
   assert.strictEqual(
-    await renderReadinessRadar('AI readiness: Morale 1/5. Weakest: Morale.'),
+    await renderReadinessRadar('Morale 5/1 (on paper/in practice). Widest gap: Morale 5 vs 1.'),
     null,
   );
 });
 
 check('a value outside the 1-5 scale is rejected, not clamped', async () => {
-  assert.strictEqual(await renderReadinessRadar(axes({ 0: { value: 9 } })), null);
-  assert.strictEqual(await renderReadinessRadar(axes({ 0: { value: 0 } })), null);
-  assert.strictEqual(await renderReadinessRadar(axes({ 0: { value: 'x' } })), null);
+  assert.strictEqual(await renderReadinessRadar(axes({ 0: { stated: 9 } })), null);
+  assert.strictEqual(await renderReadinessRadar(axes({ 0: { stated: 0 } })), null);
+  assert.strictEqual(await renderReadinessRadar(axes({ 0: { stated: 'x' } })), null);
+  assert.strictEqual(await renderReadinessRadar(axes({ 0: { lived: 9 } })), null,
+    'the lived vantage is validated too, not only the first one read');
+});
+
+/* ------------------------------------------------------------------ *
+ * Two vantages. An axis carries a stated reading and a lived one, and the
+ * distance between them is the whole point of the chart.
+ * ------------------------------------------------------------------ */
+
+check('an ABSENT vantage is tolerated, not treated as malformed', async () => {
+  // Three lived items ask about an event that may never have happened, and the
+  // respondent can say so. Rejecting the payload for it would strip the chart
+  // from the email of exactly the people who answered most carefully.
+  const r = await renderReadinessRadar(axes({ 3: { lived: undefined } }));
+  assert.ok(r, 'a declined lived item must still render the rest of the shape');
+});
+
+check('a null vantage is tolerated the same way undefined is', async () => {
+  assert.ok(await renderReadinessRadar(axes({ 3: { lived: null } })));
+});
+
+check('a payload with no readings at all is null, not an empty frame', async () => {
+  const empty = Array.from({ length: 6 }, (_, i) => ({ key: `k${i}`, label: `L${i}` }));
+  assert.strictEqual(await renderReadinessRadar(JSON.stringify({ axes: empty })), null);
+});
+
+check('the two vantages are drawn as two shapes, not merged', async () => {
+  // Same axes, same labels, differing only in how far the readings diverge. A
+  // renderer that averaged or dropped one would produce identical bytes.
+  const wide = await renderReadinessRadar(JSON.stringify({ axes: [
+    { key: 'a', label: 'A', stated: 5, lived: 1 },
+    { key: 'b', label: 'B', stated: 5, lived: 1 },
+    { key: 'c', label: 'C', stated: 5, lived: 1 },
+  ] }));
+  const narrow = await renderReadinessRadar(JSON.stringify({ axes: [
+    { key: 'a', label: 'A', stated: 3, lived: 3 },
+    { key: 'b', label: 'B', stated: 3, lived: 3 },
+    { key: 'c', label: 'C', stated: 3, lived: 3 },
+  ] }));
+  assert.ok(wide && narrow, 'both should render');
+  assert.notStrictEqual(wide.base64, narrow.base64,
+    'a divergent reading and an aligned one must not produce the same image');
+});
+
+check('the same mean from different vantages is a different image', async () => {
+  // ⛔ THE FAULT THIS WHOLE CHANGE EXISTS TO REMOVE. stated 5 / lived 1 and
+  // stated 3 / lived 3 have the same mean. If these render alike, the pair is
+  // being averaged somewhere.
+  const diverged = await renderReadinessRadar(JSON.stringify({ axes: [
+    { key: 'a', label: 'A', stated: 5, lived: 1 },
+    { key: 'b', label: 'B', stated: 4, lived: 2 },
+    { key: 'c', label: 'C', stated: 5, lived: 1 },
+  ] }));
+  const aligned = await renderReadinessRadar(JSON.stringify({ axes: [
+    { key: 'a', label: 'A', stated: 3, lived: 3 },
+    { key: 'b', label: 'B', stated: 3, lived: 3 },
+    { key: 'c', label: 'C', stated: 3, lived: 3 },
+  ] }));
+  assert.notStrictEqual(diverged.base64, aligned.base64, 'the pair is being averaged');
 });
 
 check('too few axes is rejected', async () => {
   assert.strictEqual(
-    await renderReadinessRadar(JSON.stringify({ axes: [{ key: 'a', label: 'A', value: 1 }] })),
+    await renderReadinessRadar(JSON.stringify({ axes: [{ key: 'a', label: 'A', stated: 1, lived: 1 }] })),
     null,
   );
 });
 
 check('too many axes is rejected', async () => {
-  const many = Array.from({ length: 13 }, (_, i) => ({ key: `k${i}`, label: `L${i}`, value: 3 }));
+  const many = Array.from({ length: 13 }, (_, i) => ({ key: `k${i}`, label: `L${i}`, stated: 3, lived: 3 }));
   assert.strictEqual(await renderReadinessRadar(JSON.stringify({ axes: many })), null);
 });
 

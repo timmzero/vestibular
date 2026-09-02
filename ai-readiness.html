@@ -4,7 +4,7 @@
 <!-- GENERATED:page_head START · source content/practices.json · regen: node tools/render_content.mjs · DO NOT EDIT BELOW -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="A fourteen-question readiness check across seven areas: goals, systems, pain points, morale, roles, AI fit and data readiness." />
+  <meta name="description" content="A sixteen-question readiness check across eight areas: goals, systems, pain points, morale, roles, AI fit, data readiness and load." />
   <meta name="theme-color" content="#000000" />
 
   <!-- Favicons -->
@@ -23,14 +23,14 @@
   <meta property="og:site_name" content="Vestibular" />
   <meta property="og:url" content="https://vestibular.nexus/ai-readiness" />
   <meta property="og:title" content="Vestibular AI Transformation – Readiness" />
-  <meta property="og:description" content="A fourteen-question readiness check across seven areas: goals, systems, pain points, morale, roles, AI fit and data readiness." />
+  <meta property="og:description" content="A sixteen-question readiness check across eight areas: goals, systems, pain points, morale, roles, AI fit, data readiness and load." />
   <meta property="og:image" content="https://vestibular.nexus/assets/og/ai-readiness.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="Vestibular AI Transformation – Readiness" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Vestibular AI Transformation – Readiness" />
-  <meta name="twitter:description" content="A fourteen-question readiness check across seven areas: goals, systems, pain points, morale, roles, AI fit and data readiness." />
+  <meta name="twitter:description" content="A sixteen-question readiness check across eight areas: goals, systems, pain points, morale, roles, AI fit, data readiness and load." />
   <meta name="twitter:image" content="https://vestibular.nexus/assets/og/ai-readiness.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -86,12 +86,12 @@
 
     <div class="hero-content">
       <h1>
-        <span>Seven areas.</span><br />
+        <span>Eight areas.</span><br />
         <span>One starting point.</span>
       </h1>
 
       <p class="highlighted-intro">
-        Before we redesign how anyone works, we look at seven areas.<br />
+        Before we redesign how anyone works, we look at eight areas.<br />
         This is the shape we are reading, and you can read it yourself.
       </p>
 
@@ -107,11 +107,11 @@
       <h2>Where is your organisation, right now?</h2>
 
 <!-- GENERATED:ba_readiness_intro START · source content/practices.json · regen: node tools/render_content.mjs · DO NOT EDIT BELOW -->
-  <p class="ba-readiness-intro">Fourteen questions, about three minutes. There is no score and no stage — you get the shape across the seven areas we look at, and the one we would start with.</p>
+  <p class="ba-readiness-intro">Sixteen questions, about four minutes. There is no score and no stage — you get two readings of each of the eight areas we look at, what this organisation claims and what you have seen, and the widest distance between them.</p>
   <ul class="ba-area-map">
       <li>
         <span class="ba-area-pillar">Balance</span>
-        <span class="ba-area-names">Morale &amp; Team Health &middot; Roles &amp; Alignment</span>
+        <span class="ba-area-names">Morale &amp; Team Health &middot; Roles &amp; Alignment &middot; Load &amp; Capacity</span>
       </li>
       <li>
         <span class="ba-area-pillar">Acceleration</span>
@@ -142,61 +142,83 @@
 
         <form id="ba-readiness-form" class="dimension-form">
   <!-- GENERATED:ba_readiness_fields START · source content/practices.json · regen: node tools/render_content.mjs · DO NOT EDIT BELOW -->
+  <p class="vantage-heading">What you understand this organisation to claim about itself</p>
   <label>
-    <input type="number" name="company_goals_1" min="1" max="5" required>
-    <span class="label-text">Our goals are measurable and sequenced, not merely stated. (1&ndash;5)</span>
+    <input type="number" name="company_goals_stated" min="1" max="5" required>
+    <span class="label-text">As far as I can tell, the goals here are measurable and sequenced, not merely stated. (1&ndash;5)</span>
   </label>
   <label>
-    <input type="number" name="company_goals_2" min="1" max="5" required>
-    <span class="label-text">When two priorities conflict, it is clear which one wins. (1&ndash;5)</span>
+    <input type="number" name="systems_stated" min="1" max="5" required>
+    <span class="label-text">The systems we own would do what we need, if we used them properly. (1&ndash;5)</span>
   </label>
   <label>
-    <input type="number" name="systems_1" min="1" max="5" required>
-    <span class="label-text">The systems we already own are used to their potential. (1&ndash;5)</span>
+    <input type="number" name="pain_points_stated" min="1" max="5" required>
+    <span class="label-text">We can put numbers on where the pressure is greatest. (1&ndash;5)</span>
   </label>
   <label>
-    <input type="number" name="systems_2" min="1" max="5" required>
-    <span class="label-text">Where teams do the same job, they use the same systems. (1&ndash;5)</span>
+    <input type="number" name="morale_stated" min="1" max="5" required>
+    <span class="label-text">People here can challenge an idea, even one from the person sponsoring it, without negative consequence. (1&ndash;5)</span>
   </label>
   <label>
-    <input type="number" name="pain_points_1" min="1" max="5" required>
-    <span class="label-text">We know where the pressure is greatest, and can put numbers on it. (1&ndash;5)</span>
+    <input type="number" name="roles_stated" min="1" max="5" required>
+    <span class="label-text">It is clear who decides what. (1&ndash;5)</span>
   </label>
   <label>
-    <input type="number" name="pain_points_2" min="1" max="5" required>
-    <span class="label-text">Our sense of where the problems are comes from data, not from whoever complains loudest. (1&ndash;5)</span>
-  </label>
-  <label>
-    <input type="number" name="morale_1" min="1" max="5" required>
-    <span class="label-text">The workload is sustainable, and people are not running on reserves. (1&ndash;5)</span>
-  </label>
-  <label>
-    <input type="number" name="morale_2" min="1" max="5" required>
-    <span class="label-text">We could take on a new programme of work without something else quietly being dropped. (1&ndash;5)</span>
-  </label>
-  <label>
-    <input type="number" name="roles_1" min="1" max="5" required>
-    <span class="label-text">Responsibility matches job description, and it is clear who decides what. (1&ndash;5)</span>
-  </label>
-  <label>
-    <input type="number" name="roles_2" min="1" max="5" required>
-    <span class="label-text">Decisions are made at the level where the work happens, rather than escalated by default. (1&ndash;5)</span>
-  </label>
-  <label>
-    <input type="number" name="ai_fit_1" min="1" max="5" required>
+    <input type="number" name="ai_fit_stated" min="1" max="5" required>
     <span class="label-text">We can name specific places AI would meet a real need, not just where it is fashionable. (1&ndash;5)</span>
   </label>
   <label>
-    <input type="number" name="ai_fit_2" min="1" max="5" required>
-    <span class="label-text">We could say which job we would give AI first, and why that one. (1&ndash;5)</span>
+    <input type="number" name="data_readiness_stated" min="1" max="5" required>
+    <span class="label-text">The data here is trusted enough to run on. (1&ndash;5)</span>
   </label>
   <label>
-    <input type="number" name="data_readiness_1" min="1" max="5" required>
-    <span class="label-text">Our data is accessible, and good enough for a system to rely on. (1&ndash;5)</span>
+    <input type="number" name="load_stated" min="1" max="5" required>
+    <span class="label-text">The workload here is sustainable. (1&ndash;5)</span>
+  </label>
+  <p class="vantage-heading">What you have seen from where you sit</p>
+  <label>
+    <input type="number" name="company_goals_lived" min="1" max="5">
+    <span class="label-text">The last time I had to choose between two things this organisation wanted, I knew which one it actually wanted. (1&ndash;5)</span>
+  </label>
+  <label class="escape">
+    <input type="checkbox" name="company_goals_lived_absent">
+    <span class="escape-text">Two priorities of mine have not collided</span>
   </label>
   <label>
-    <input type="number" name="data_readiness_2" min="1" max="5" required>
-    <span class="label-text">The same customer, job or product has one identifier everywhere it appears. (1&ndash;5)</span>
+    <input type="number" name="systems_lived" min="1" max="5" required>
+    <span class="label-text">The last thing I needed to get done, I did in our systems rather than falling back to a spreadsheet. (1&ndash;5)</span>
+  </label>
+  <label>
+    <input type="number" name="pain_points_lived" min="1" max="5" required>
+    <span class="label-text">The thing that wastes most of my week is something this organisation knows about. (1&ndash;5)</span>
+  </label>
+  <label>
+    <input type="number" name="morale_lived" min="1" max="5">
+    <span class="label-text">The last time I disagreed with someone senior about how work should be done, it cost me nothing. (1&ndash;5)</span>
+  </label>
+  <label class="escape">
+    <input type="checkbox" name="morale_lived_absent">
+    <span class="escape-text">I have not disagreed with someone senior</span>
+  </label>
+  <label>
+    <input type="number" name="roles_lived" min="1" max="5" required>
+    <span class="label-text">What I actually spend my week doing is what my job description says I do. (1&ndash;5)</span>
+  </label>
+  <label>
+    <input type="number" name="ai_fit_lived" min="1" max="5" required>
+    <span class="label-text">The work that takes most of my week is the same thing over and over. (1&ndash;5)</span>
+  </label>
+  <label>
+    <input type="number" name="data_readiness_lived" min="1" max="5" required>
+    <span class="label-text">The last time I needed a number, I got it from a system rather than by asking a person. (1&ndash;5)</span>
+  </label>
+  <label>
+    <input type="number" name="load_lived" min="1" max="5">
+    <span class="label-text">The last time I was near my limit, saying so changed something. (1&ndash;5)</span>
+  </label>
+  <label class="escape">
+    <input type="checkbox" name="load_lived_absent">
+    <span class="escape-text">I have not been near my limit</span>
   </label>
 <!-- GENERATED:ba_readiness_fields END -->
           <button type="submit" class="btn">See our shape</button>
@@ -216,10 +238,10 @@
       "label": "Company goals",
       "questions": [
         {
-          "key": "company_goals_1"
+          "key": "company_goals_stated"
         },
         {
-          "key": "company_goals_2"
+          "key": "company_goals_lived"
         }
       ]
     },
@@ -228,10 +250,10 @@
       "label": "Systems",
       "questions": [
         {
-          "key": "systems_1"
+          "key": "systems_stated"
         },
         {
-          "key": "systems_2"
+          "key": "systems_lived"
         }
       ]
     },
@@ -240,10 +262,10 @@
       "label": "Pain points",
       "questions": [
         {
-          "key": "pain_points_1"
+          "key": "pain_points_stated"
         },
         {
-          "key": "pain_points_2"
+          "key": "pain_points_lived"
         }
       ]
     },
@@ -252,10 +274,10 @@
       "label": "Morale",
       "questions": [
         {
-          "key": "morale_1"
+          "key": "morale_stated"
         },
         {
-          "key": "morale_2"
+          "key": "morale_lived"
         }
       ]
     },
@@ -264,10 +286,10 @@
       "label": "Roles",
       "questions": [
         {
-          "key": "roles_1"
+          "key": "roles_stated"
         },
         {
-          "key": "roles_2"
+          "key": "roles_lived"
         }
       ]
     },
@@ -276,10 +298,10 @@
       "label": "AI fit",
       "questions": [
         {
-          "key": "ai_fit_1"
+          "key": "ai_fit_stated"
         },
         {
-          "key": "ai_fit_2"
+          "key": "ai_fit_lived"
         }
       ]
     },
@@ -288,10 +310,22 @@
       "label": "Data readiness",
       "questions": [
         {
-          "key": "data_readiness_1"
+          "key": "data_readiness_stated"
         },
         {
-          "key": "data_readiness_2"
+          "key": "data_readiness_lived"
+        }
+      ]
+    },
+    {
+      "key": "load",
+      "label": "Load",
+      "questions": [
+        {
+          "key": "load_stated"
+        },
+        {
+          "key": "load_lived"
         }
       ]
     }
