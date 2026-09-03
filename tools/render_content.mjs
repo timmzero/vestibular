@@ -645,6 +645,9 @@ function renderBaReadinessData(readiness) {
         // reading. Without this the flag exists in the SSOT and never reaches
         // the code that consults it — the same silent shape as the vantages.
         if (q.polarity) out.polarity = q.polarity;
+        // ⛔ Without this the client scores a reverse-worded item as written and
+        // draws that axis BACKWARDS — silently, and plausibly.
+        if (q.reverse) out.reverse = true;
         return out;
       }),
     })),

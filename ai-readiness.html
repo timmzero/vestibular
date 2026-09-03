@@ -149,7 +149,7 @@
   </label>
   <label>
     <input type="number" name="systems_stated" min="1" max="5" required>
-    <span class="label-text">The systems we own would do what we need, if we used them properly. (1&ndash;5)</span>
+    <span class="label-text">The systems we own are not being used to their full potential. (1&ndash;5)</span>
   </label>
   <label>
     <input type="number" name="pain_points_stated" min="1" max="5" required>
@@ -186,7 +186,7 @@
   </label>
   <label>
     <input type="number" name="systems_lived" min="1" max="5" required>
-    <span class="label-text">The last thing I needed to get done, I did in our systems rather than falling back to a spreadsheet. (1&ndash;5)</span>
+    <span class="label-text">We are using man-hours to fill gaps our systems should be filling. (1&ndash;5)</span>
   </label>
   <label>
     <input type="number" name="pain_points_lived" min="1" max="5" required>
@@ -256,12 +256,14 @@
         {
           "key": "systems_stated",
           "vantage": "stated",
-          "text": "The systems we own would do what we need, if we used them properly."
+          "text": "The systems we own are not being used to their full potential.",
+          "reverse": true
         },
         {
           "key": "systems_lived",
           "vantage": "lived",
-          "text": "The last thing I needed to get done, I did in our systems rather than falling back to a spreadsheet."
+          "text": "We are using man-hours to fill gaps our systems should be filling.",
+          "reverse": true
         }
       ]
     },

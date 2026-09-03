@@ -297,13 +297,15 @@
             "questions": [
               {
                 "key": "systems_stated",
-                "text": "The systems we own would do what we need, if we used them properly.",
-                "vantage": "stated"
+                "text": "The systems we own are not being used to their full potential.",
+                "vantage": "stated",
+                "reverse": true
               },
               {
                 "key": "systems_lived",
-                "text": "The last thing I needed to get done, I did in our systems rather than falling back to a spreadsheet.",
-                "vantage": "lived"
+                "text": "We are using man-hours to fill gaps our systems should be filling.",
+                "vantage": "lived",
+                "reverse": true
               }
             ]
           },
