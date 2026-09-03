@@ -137,7 +137,8 @@
 
         <p class="scale-legend">
           How well does each of the following describe your team?<br />
-          <strong>1</strong> Strongly disagree &nbsp; <strong>2</strong> Somewhat disagree &nbsp; <strong>3</strong> Neutral &nbsp; <strong>4</strong> Somewhat agree &nbsp; <strong>5</strong> Strongly agree
+          <strong>1</strong> Strongly disagree &nbsp; <strong>2</strong> Somewhat disagree &nbsp; <strong>3</strong> Neutral &nbsp; <strong>4</strong> Somewhat agree &nbsp; <strong>5</strong> Strongly agree<br />
+          <span class="scale-note">Some questions ask about something that may not have happened to you. Answer <strong>3</strong> if it has not come up.</span>
         </p>
 
         <form id="ba-readiness-form" class="dimension-form">
@@ -153,7 +154,7 @@
   </label>
   <label>
     <input type="number" name="pain_points_stated" min="1" max="5" required>
-    <span class="label-text">Where the work backs up, that is where the effort goes. (1&ndash;5)</span>
+    <span class="label-text">Where the work backs up, is where the effort goes. (1&ndash;5)</span>
   </label>
   <label>
     <input type="number" name="morale_stated" min="1" max="5" required>
@@ -161,7 +162,7 @@
   </label>
   <label>
     <input type="number" name="roles_stated" min="1" max="5" required>
-    <span class="label-text">People here are not quietly doing two jobs. (1&ndash;5)</span>
+    <span class="label-text">People are not quietly doing two jobs. (1&ndash;5)</span>
   </label>
   <label>
     <input type="number" name="ai_fit_stated" min="1" max="5" required>
@@ -189,12 +190,8 @@
     <span class="label-text">The last time my work was held up by something, that thing got fixed. (1&ndash;5)</span>
   </label>
   <label>
-    <input type="number" name="morale_lived" min="1" max="5">
+    <input type="number" name="morale_lived" min="1" max="5" required>
     <span class="label-text">The last time I told someone senior something they did not want to hear, it went fine. (1&ndash;5)</span>
-  </label>
-  <label class="escape">
-    <input type="checkbox" name="morale_lived_absent">
-    <span class="escape-text">I have not had to tell someone senior something unwelcome</span>
   </label>
   <label>
     <input type="number" name="roles_lived" min="1" max="5" required>
@@ -209,12 +206,8 @@
     <span class="label-text">The last time I needed a number, I got it from a system rather than by asking a person. (1&ndash;5)</span>
   </label>
   <label>
-    <input type="number" name="load_lived" min="1" max="5">
+    <input type="number" name="load_lived" min="1" max="5" required>
     <span class="label-text">The last time I was near my limit, saying so changed something. (1&ndash;5)</span>
-  </label>
-  <label class="escape">
-    <input type="checkbox" name="load_lived_absent">
-    <span class="escape-text">I have not been near my limit</span>
   </label>
 <!-- GENERATED:ba_readiness_fields END -->
           <button type="submit" class="btn">See our shape</button>
@@ -270,7 +263,7 @@
         {
           "key": "pain_points_stated",
           "vantage": "stated",
-          "text": "Where the work backs up, that is where the effort goes."
+          "text": "Where the work backs up, is where the effort goes."
         },
         {
           "key": "pain_points_lived",
@@ -302,7 +295,7 @@
         {
           "key": "roles_stated",
           "vantage": "stated",
-          "text": "People here are not quietly doing two jobs."
+          "text": "People are not quietly doing two jobs."
         },
         {
           "key": "roles_lived",

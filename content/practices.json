@@ -314,7 +314,7 @@
             "questions": [
               {
                 "key": "pain_points_stated",
-                "text": "Where the work backs up, that is where the effort goes.",
+                "text": "Where the work backs up, is where the effort goes.",
                 "vantage": "stated"
               },
               {
@@ -336,8 +336,7 @@
               {
                 "key": "morale_lived",
                 "text": "The last time I told someone senior something they did not want to hear, it went fine.",
-                "vantage": "lived",
-                "escape": "I have not had to tell someone senior something unwelcome"
+                "vantage": "lived"
               }
             ]
           },
@@ -347,7 +346,7 @@
             "questions": [
               {
                 "key": "roles_stated",
-                "text": "People here are not quietly doing two jobs.",
+                "text": "People are not quietly doing two jobs.",
                 "vantage": "stated"
               },
               {
@@ -402,8 +401,7 @@
               {
                 "key": "load_lived",
                 "text": "The last time I was near my limit, saying so changed something.",
-                "vantage": "lived",
-                "escape": "I have not been near my limit"
+                "vantage": "lived"
               }
             ]
           }
