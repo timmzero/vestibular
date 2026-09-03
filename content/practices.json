@@ -285,9 +285,8 @@
               },
               {
                 "key": "company_goals_lived",
-                "text": "The last time I had to choose between two things the organisation wanted, I knew which one it actually wanted.",
-                "vantage": "lived",
-                "escape": "Two priorities of mine have not collided"
+                "text": "The last time my team did something well, someone outside the team noticed.",
+                "vantage": "lived"
               }
             ]
           },
