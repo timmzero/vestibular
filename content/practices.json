@@ -314,12 +314,12 @@
             "questions": [
               {
                 "key": "pain_points_stated",
-                "text": "We can put numbers on where the pressure is greatest.",
+                "text": "Where the work backs up, that is where the effort goes.",
                 "vantage": "stated"
               },
               {
                 "key": "pain_points_lived",
-                "text": "The thing that wastes most of my week is something the organisation knows about.",
+                "text": "The last time my work was held up by something, that thing got fixed.",
                 "vantage": "lived"
               }
             ]
