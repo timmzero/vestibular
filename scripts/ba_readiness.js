@@ -106,8 +106,8 @@ function describe_widest(dimensions, ranked) {
   return `
     <p class="result-widest">${lead}${alsoText}</p>
     <blockquote class="result-quote">
-      <p><span class="quote-vantage">On paper</span> &ldquo;${question_text(dimension, 'stated')}&rdquo; &mdash; you said ${top.stated}/5.</p>
-      <p><span class="quote-vantage">In practice</span> &ldquo;${question_text(dimension, 'lived')}&rdquo; &mdash; you said ${top.lived}/5.</p>
+      <p><span class="quote-vantage">On paper</span> &ldquo;${question_text(dimension, 'stated')}&rdquo; &mdash; you said ${top.stated_raw !== undefined ? top.stated_raw : top.stated}/5.</p>
+      <p><span class="quote-vantage">In practice</span> &ldquo;${question_text(dimension, 'lived')}&rdquo; &mdash; you said ${top.lived_raw !== undefined ? top.lived_raw : top.lived}/5.</p>
     </blockquote>
     <p class="result-widest-note">That distance is the conversation we would start with.</p>`;
 }
@@ -156,8 +156,8 @@ function describe_floor(dimensions, ranked_low, widest_key, max) {
     <p class="result-lowest">The lowest area overall is <strong>${low.label}</strong>, at ` +
     `${low.total} of ${max * 2}.${alsoText}</p>
     <blockquote class="result-quote">
-      <p><span class="quote-vantage">On paper</span> &ldquo;${question_text(dimension, 'stated')}&rdquo; &mdash; you said ${low.stated}/${max}.</p>
-      <p><span class="quote-vantage">In practice</span> &ldquo;${question_text(dimension, 'lived')}&rdquo; &mdash; you said ${low.lived}/${max}.</p>
+      <p><span class="quote-vantage">On paper</span> &ldquo;${question_text(dimension, 'stated')}&rdquo; &mdash; you said ${low.stated_raw !== undefined ? low.stated_raw : low.stated}/${max}.</p>
+      <p><span class="quote-vantage">In practice</span> &ldquo;${question_text(dimension, 'lived')}&rdquo; &mdash; you said ${low.lived_raw !== undefined ? low.lived_raw : low.lived}/${max}.</p>
     </blockquote>
     <p class="result-lowest-note">That is the other place we would start.${flatLine}</p>`;
 }

@@ -145,23 +145,23 @@
   <p class="vantage-heading">What you understand the organisation to claim about itself</p>
   <label>
     <input type="number" name="company_goals_stated" min="1" max="5" required>
-    <span class="label-text">As far as I can tell, the goals here are measurable and sequenced, not merely stated. (1&ndash;5)</span>
+    <span class="label-text">Recognition lands where it is earned. (1&ndash;5)</span>
   </label>
   <label>
     <input type="number" name="systems_stated" min="1" max="5" required>
-    <span class="label-text">The systems we own would do what we need, if we used them properly. (1&ndash;5)</span>
+    <span class="label-text">The systems we own are not being used to their full potential. (1&ndash;5)</span>
   </label>
   <label>
     <input type="number" name="pain_points_stated" min="1" max="5" required>
-    <span class="label-text">We can put numbers on where the pressure is greatest. (1&ndash;5)</span>
+    <span class="label-text">Where the work backs up, that is where the effort goes. (1&ndash;5)</span>
   </label>
   <label>
     <input type="number" name="morale_stated" min="1" max="5" required>
-    <span class="label-text">People here can challenge an idea, even one from the person sponsoring it, without negative consequence. (1&ndash;5)</span>
+    <span class="label-text">Nobody here has to choose between being honest and being comfortable. (1&ndash;5)</span>
   </label>
   <label>
     <input type="number" name="roles_stated" min="1" max="5" required>
-    <span class="label-text">It is clear who decides what. (1&ndash;5)</span>
+    <span class="label-text">People here are not quietly doing two jobs. (1&ndash;5)</span>
   </label>
   <label>
     <input type="number" name="ai_fit_stated" min="1" max="5" required>
@@ -177,32 +177,28 @@
   </label>
   <p class="vantage-heading">What you have seen from where you sit</p>
   <label>
-    <input type="number" name="company_goals_lived" min="1" max="5">
-    <span class="label-text">The last time I had to choose between two things the organisation wanted, I knew which one it actually wanted. (1&ndash;5)</span>
-  </label>
-  <label class="escape">
-    <input type="checkbox" name="company_goals_lived_absent">
-    <span class="escape-text">Two priorities of mine have not collided</span>
+    <input type="number" name="company_goals_lived" min="1" max="5" required>
+    <span class="label-text">The last time my team did something well, someone outside the team noticed. (1&ndash;5)</span>
   </label>
   <label>
     <input type="number" name="systems_lived" min="1" max="5" required>
-    <span class="label-text">The last thing I needed to get done, I did in our systems rather than falling back to a spreadsheet. (1&ndash;5)</span>
+    <span class="label-text">We are using man-hours to fill gaps our systems should be filling. (1&ndash;5)</span>
   </label>
   <label>
     <input type="number" name="pain_points_lived" min="1" max="5" required>
-    <span class="label-text">The thing that wastes most of my week is something the organisation knows about. (1&ndash;5)</span>
+    <span class="label-text">The last time my work was held up by something, that thing got fixed. (1&ndash;5)</span>
   </label>
   <label>
     <input type="number" name="morale_lived" min="1" max="5">
-    <span class="label-text">The last time I disagreed with someone senior about how work should be done, it cost me nothing. (1&ndash;5)</span>
+    <span class="label-text">The last time I told someone senior something they did not want to hear, it went fine. (1&ndash;5)</span>
   </label>
   <label class="escape">
     <input type="checkbox" name="morale_lived_absent">
-    <span class="escape-text">I have not disagreed with someone senior</span>
+    <span class="escape-text">I have not had to tell someone senior something unwelcome</span>
   </label>
   <label>
     <input type="number" name="roles_lived" min="1" max="5" required>
-    <span class="label-text">What I actually spend my week doing is what my job description says I do. (1&ndash;5)</span>
+    <span class="label-text">My daily activities match my job description. (1&ndash;5)</span>
   </label>
   <label>
     <input type="number" name="ai_fit_lived" min="1" max="5" required>
@@ -240,12 +236,12 @@
         {
           "key": "company_goals_stated",
           "vantage": "stated",
-          "text": "As far as I can tell, the goals here are measurable and sequenced, not merely stated."
+          "text": "Recognition lands where it is earned."
         },
         {
           "key": "company_goals_lived",
           "vantage": "lived",
-          "text": "The last time I had to choose between two things the organisation wanted, I knew which one it actually wanted."
+          "text": "The last time my team did something well, someone outside the team noticed."
         }
       ]
     },
@@ -256,12 +252,14 @@
         {
           "key": "systems_stated",
           "vantage": "stated",
-          "text": "The systems we own would do what we need, if we used them properly."
+          "text": "The systems we own are not being used to their full potential.",
+          "reverse": true
         },
         {
           "key": "systems_lived",
           "vantage": "lived",
-          "text": "The last thing I needed to get done, I did in our systems rather than falling back to a spreadsheet."
+          "text": "We are using man-hours to fill gaps our systems should be filling.",
+          "reverse": true
         }
       ]
     },
@@ -272,12 +270,12 @@
         {
           "key": "pain_points_stated",
           "vantage": "stated",
-          "text": "We can put numbers on where the pressure is greatest."
+          "text": "Where the work backs up, that is where the effort goes."
         },
         {
           "key": "pain_points_lived",
           "vantage": "lived",
-          "text": "The thing that wastes most of my week is something the organisation knows about."
+          "text": "The last time my work was held up by something, that thing got fixed."
         }
       ]
     },
@@ -288,12 +286,12 @@
         {
           "key": "morale_stated",
           "vantage": "stated",
-          "text": "People here can challenge an idea, even one from the person sponsoring it, without negative consequence."
+          "text": "Nobody here has to choose between being honest and being comfortable."
         },
         {
           "key": "morale_lived",
           "vantage": "lived",
-          "text": "The last time I disagreed with someone senior about how work should be done, it cost me nothing."
+          "text": "The last time I told someone senior something they did not want to hear, it went fine."
         }
       ]
     },
@@ -304,12 +302,12 @@
         {
           "key": "roles_stated",
           "vantage": "stated",
-          "text": "It is clear who decides what."
+          "text": "People here are not quietly doing two jobs."
         },
         {
           "key": "roles_lived",
           "vantage": "lived",
-          "text": "What I actually spend my week doing is what my job description says I do."
+          "text": "My daily activities match my job description."
         }
       ]
     },

@@ -50,10 +50,14 @@ allocate one, and do not touch the VTM counter from this work.
 
 ## Open threads as of 2 Sep, end of session
 
-- **The readiness instrument has an unresolved design decision.** See
-  `docs/READINESS_INSTRUMENT.md` — it went through three shapes in one session
-  and the last change traded grain for measurement validity. Read that before
-  touching `readiness.dimensions`.
+- **The readiness instrument was rebuilt on 3 Sep.** Eight axes, sixteen
+  questions, two VANTAGES per axis (what the organisation is understood to
+  claim, against what the respondent has seen) rather than two indicators
+  averaged. The result names a widest distance and a floor, and the
+  "weakest axis" claim is retired. See `docs/READINESS_INSTRUMENT.md` — read it
+  before touching `readiness.dimensions`, and note its open-issues list:
+  **a ticked escape currently deletes the entire lived polygon**, which is
+  deferred rather than unknown.
 - **⛔ Static assets are cached for 4 hours with no version in the URL.**
   `styles.css` and `scripts/*.js` ship `max-age=14400`; HTML ships
   `max-age=0`. So a returning visitor gets NEW markup against OLD CSS/JS.

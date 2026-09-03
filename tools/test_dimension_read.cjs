@@ -13,7 +13,7 @@
 const assert = require('assert');
 const {
   band_for, weakest_dimension, render_dimension_list, question_keys, axis_values, axis_progress, read_answers,
-  read_question, vantage_progress, gap_ranking, render_vantage_list, lowest_total,
+  read_question, vantage_progress, gap_ranking, render_vantage_list, lowest_total, response_style,
 } = require('../scripts/dimension_read.js');
 
 const dimensions = [
@@ -572,6 +572,123 @@ check('the emitted config carries the polarity flag to the client', () => {
     .map((q) => q.key);
   assert.deepStrictEqual(flagged, ['ai_fit_lived'],
     'the flag exists in the SSOT but must also REACH the code that consults it');
+});
+
+
+/* ------------------------------------------------------------------ *
+ * Reverse-worded items.
+ * ------------------------------------------------------------------ */
+
+const rev = [
+  { key: 'systems', label: 'Systems', questions: [
+    { key: 'systems_stated', text: 'Not used to their potential.', vantage: 'stated', reverse: true },
+    { key: 'systems_lived', text: 'People fill gaps the systems should.', vantage: 'lived', reverse: true },
+  ] },
+  { key: 'roles', label: 'Roles', questions: [
+    { key: 'roles_stated', text: 'Clear who decides.', vantage: 'stated' },
+    { key: 'roles_lived', text: 'My week matches my job description.', vantage: 'lived' },
+  ] },
+];
+
+check('a reverse item is inverted, and the raw answer is kept', () => {
+  const r = read_question(fake_form({ a: 5 }), { key: 'a', reverse: true }, 5);
+  assert.strictEqual(r.value, 1, 'agreement with a reverse item is the BAD direction');
+  assert.strictEqual(r.raw, 5, 'the number the person typed must survive');
+  assert.strictEqual(r.reversed, true);
+});
+
+check('inversion is symmetric across the scale', () => {
+  [[1, 5], [2, 4], [3, 3], [4, 2], [5, 1]].forEach(([raw, scored]) => {
+    assert.strictEqual(read_question(fake_form({ a: raw }), { key: 'a', reverse: true }, 5).value, scored);
+  });
+});
+
+check('a plain item and a bare key are untouched', () => {
+  assert.strictEqual(read_question(fake_form({ a: 4 }), { key: 'a' }, 5).value, 4);
+  assert.strictEqual(read_question(fake_form({ a: 4 }), 'a', 5).value, 4,
+    'the agile scorecard passes bare keys and must be unaffected');
+});
+
+check('the scored series carries inverted values, the raw series does not', () => {
+  const v = vantage_progress(fake_form({
+    systems_stated: 5, systems_lived: 5, roles_stated: 4, roles_lived: 4,
+  }), rev, 5);
+  assert.strictEqual(v.series.stated.values.systems, 1, 'scored');
+  assert.strictEqual(v.series.stated.raw.systems, 5, 'raw');
+  assert.strictEqual(v.series.stated.values.roles, 4, 'a plain item is unchanged either way');
+  assert.strictEqual(v.series.stated.raw.roles, 4);
+});
+
+check('⛔ the quote-back number must come from RAW', () => {
+  // The result prints the REVERSE-WORDED sentence beside the answer. Printing
+  // the scored value there would tell someone who marked 5 that they said 1,
+  // against a sentence they agreed with.
+  const v = vantage_progress(fake_form({
+    systems_stated: 5, systems_lived: 1, roles_stated: 4, roles_lived: 4,
+  }), rev, 5);
+  const top = gap_ranking(rev, v.series).find((r) => r.key === 'systems');
+  assert.strictEqual(top.stated, 1, 'scored, for the ranking');
+  assert.strictEqual(top.stated_raw, 5, 'raw, for the quote');
+  assert.strictEqual(top.lived_raw, 1);
+  assert.strictEqual(top.lived, 5);
+});
+
+check('the gap is computed on scored values, not raw', () => {
+  // Raw 5 and 1 would read as a gap of 4. Scored, the axis is 1 and 5 — a gap
+  // of -4, the opposite finding.
+  const v = vantage_progress(fake_form({
+    systems_stated: 5, systems_lived: 1, roles_stated: 4, roles_lived: 4,
+  }), rev, 5);
+  const systems = gap_ranking(rev, v.series).find((r) => r.key === 'systems');
+  assert.strictEqual(systems.gap, -4, 'a reverse axis must not draw backwards');
+});
+
+check('acquiescence is visible where straight-lining is not', () => {
+  // Agrees with everything, including two items whose agreement is the bad
+  // direction. Not straight-lining: the values differ.
+  const v = vantage_progress(fake_form({
+    systems_stated: 5, systems_lived: 4, roles_stated: 5, roles_lived: 4,
+  }), rev, 5);
+  const style = response_style(rev, v.series, 5);
+  assert.strictEqual(style.acquiescent, true, 'agreeing with a claim and its negation is not a position');
+  assert.strictEqual(style.straight_lined, false, 'the values are not identical, so the free check misses it');
+});
+
+check('⛔ a consistent pessimist is not acquiescence', () => {
+  // Agrees the systems are half-used, disagrees that roles are clear. That is a
+  // coherent and probably accurate position, not a yea-sayer. Checking only the
+  // reverse items would flag it.
+  const v = vantage_progress(fake_form({
+    systems_stated: 5, systems_lived: 5, roles_stated: 1, roles_lived: 2,
+  }), rev, 5);
+  assert.strictEqual(response_style(rev, v.series, 5).acquiescent, false);
+});
+
+check('a considered respondent is not flagged', () => {
+  const v = vantage_progress(fake_form({
+    systems_stated: 2, systems_lived: 1, roles_stated: 5, roles_lived: 4,
+  }), rev, 5);
+  const style = response_style(rev, v.series, 5);
+  assert.strictEqual(style.acquiescent, false);
+  assert.strictEqual(style.straight_lined, false);
+});
+
+check('straight-lining is read from RAW, not from scored values', () => {
+  // ⚠️ Scored, this respondent reads 1,1,5,5 — not uniform at all. Only the raw
+  // pattern shows the person entered the same number sixteen times.
+  const v = vantage_progress(fake_form({
+    systems_stated: 5, systems_lived: 5, roles_stated: 5, roles_lived: 5,
+  }), rev, 5);
+  assert.strictEqual(response_style(rev, v.series, 5).straight_lined, true);
+  assert.notStrictEqual(v.series.stated.values.systems, v.series.stated.values.roles,
+    'the scored values differ, which is exactly why raw must be retained');
+});
+
+check('the emitted config carries the reverse flag to the client', () => {
+  const cfg = emitted_config();
+  const flagged = cfg.dimensions.flatMap((d) => d.questions).filter((q) => q.reverse).map((q) => q.key);
+  assert.deepStrictEqual(flagged, ['systems_stated', 'systems_lived'],
+    'without this the client scores a reverse item as written and draws the axis backwards');
 });
 
 console.log('\n' + passed + ' dimension_read checks passed');

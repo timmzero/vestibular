@@ -1,10 +1,9 @@
 # The AI readiness instrument — what it measures, and what it cost
 
-Written 2 Sep 2026, at the end of a long session that changed this instrument
-three times. It exists because all of the reasoning below happened in
-conversation, and a decision that lives only in a chat log did not happen —
-the next person to touch these questions would otherwise re-derive it, badly,
-and probably arrive somewhere different.
+Rewritten 3 Sep 2026. The 2 Sep edition described seven axes of two indicators
+each, an axis mean, and a "weakest axis" claim. None of that survives. This doc
+exists for the same reason the first one did: the reasoning below happened in
+conversation, and a decision that lives only in a chat log did not happen.
 
 Read this before changing `practices.ai_transformation.readiness` in
 `content/practices.json`.
@@ -12,121 +11,214 @@ Read this before changing `practices.ai_transformation.readiness` in
 ## What the instrument is for
 
 A conversation opener that gives a visitor a structured picture of their own
-organisation in about three minutes, and gives Vestibular a qualified enquiry.
+organisation in about four minutes, and gives Vestibular a qualified enquiry.
 
 **It deliberately emits no score and no stage.** Every competitor hands back a
 maturity level, which is a sales instrument: score the prospect low, sell the
 remedy. Refusing that is the strongest thing this page does and the single
 constraint that should survive any redesign.
 
-## What state it is in as of 2 Sep
+## The shape: two vantages, not two indicators
 
-Seven axes, two items each, fourteen questions. Each axis measures one
-construct with two indicators, so the axis mean is a legitimate subscale
-average rather than two different things blended into a number that describes
-neither. `readiness.dimensions` and `domains` run parallel and **must stay
-parallel** — the pillar area-map on the readiness page renders from `domains`,
-so splitting a quiz axis without splitting its domain prints "seven areas"
-beside an eight-spoke chart.
+Eight axes, sixteen questions. Each axis is **one construct seen twice**:
 
-Pillars own areas 2/3/2 (gravity / acceleration / balance) since AI Enablement
-split. Uneven, and only in the diagram.
+| vantage | what it asks |
+|---|---|
+| `stated` | what the respondent understands the organisation to CLAIM |
+| `lived`  | what they have SEEN from their own seat |
 
-## ⚠️ The unresolved objection — read this before "improving" anything
+⭐ **THE PAIR IS NOT EXPECTED TO CORRELATE. Its divergence is the reading.**
+That dissolves the objection that sank the previous edition — homogeneous pairs
+were selecting against grain, because concrete lived items resist pairing, and
+they only had to pair at all to support an axis mean the instrument had already
+decided not to report.
 
-Making the axes homogeneous **cost the instrument its grain**, and the founder
-called it at the end of the session:
+⭐ **AND IT IS EMPIRICAL AT n=1.** Both halves come from one person, on one
+scale, about one object, in one sitting. Wording severity, scale-use habits and
+mood push both the same way and CANCEL in the difference. That is the
+within-person form of the between-person property a multi-respondent version
+would buy, available now without retention, consent or a minimum N.
 
-> "I feel like we are losing touch with some grainy gritty reality somehow."
+⛔ **DO NOT AVERAGE A PAIR.** The mean of an espoused claim and a witnessed one
+describes neither. `vantage_progress` reads the two apart; `axis_progress`
+(which means over an axis's questions) belongs to the Agile scorecard.
 
-The original items asked about lived experience — *people are not running on
-reserves*, *someone can say "this will not work" to the person sponsoring it,
-without it costing them*, *the right people are in the right places*. The
-replacements ask about organisational mechanics — *when two priorities
-conflict, it is clear which one wins*, *decisions are made at the level where
-the work happens*. Both defensible. Only one has a person in it.
+**Keys are construct + vantage, never positional.** `morale_2` named
+psychological safety in one shape and a workload item in the next; `systems_1`
+meant three different things inside one day. Keys travel to the server in the
+enquiry payload, so a key that quietly changes meaning makes two responses
+incomparable. Pinned by a check.
 
-⭐ **THE DRIFT WAS STRUCTURAL, NOT ACCIDENTAL.** Homogeneous pairs are easier
-to build from abstract items; concrete lived questions resist pairing because
-they describe specific human situations. So optimising for a defensible axis
-mean systematically selects against grain. Anyone repeating that optimisation
-will get the same drift.
+**Stated and lived items are SEPARATED on the page**, into two blocks. A pair
+must not sit adjacent: people dislike visibly contradicting themselves two
+lines apart, so grouped by axis this would measure how consistent respondents
+like to appear.
 
-⛔ **AND IT SOLVED A PROBLEM THE INSTRUMENT HAD ALREADY DECIDED NOT TO HAVE.**
-Axis homogeneity only matters if you report an axis mean. "No score, no stage"
-was the founding choice. Graph the items individually and heterogeneity stops
-being a flaw and becomes coverage.
+## What the result says
 
-## Three items were dropped from scoring and are worth restoring
+Two readings, and neither subsumes the other.
 
-They are in git history at `89e6e00:content/practices.json`.
+**The widest distance** — the largest `stated - lived`, quoted back as the two
+sentences that produced it. Signed: a positive gap is a claim not borne out, a
+negative one is something working better than the organisation appears to
+claim, which no competitor's tool ever tells anyone.
 
-| item | construct | why it matters |
+**The floor** — the lowest `stated + lived`.
+
+⭐ **TOTAL AND GAP TOGETHER LOSE NOTHING.** With T = stated + lived and
+G = stated - lived, the originals are recoverable: stated = (T+G)/2,
+lived = (T-G)/2. It is the same pair in rotated coordinates. A total INSTEAD of
+the gap would be the blend this design removes; alongside it, nothing is lost.
+
+⭐ **AND THE FLOOR POINTS WHERE THE GAP CANNOT.** An axis at 5/1 beside one at
+2/2: the widest gap names the first, and so would the lowest LIVED reading,
+since 1 < 2 — so the second reading would merely repeat the first and the
+uniformly low area would never be named. By total, 2/2 is 4 against 6.
+
+⛔ **"Weakest right now: X. That is where we would start." IS GONE.** It was
+the only claim on the page going beyond describing the answers back, and the
+axes are not equated, so it may have been naming the axis phrased most
+severely. Two axes made it worse still: a dent on Load or AI fit is
+OPPORTUNITY, not weakness.
+
+## Flags, and what each is for
+
+| flag | on | meaning |
 |---|---|---|
-| `morale_2` | psychological safety | Best-evidenced single question in the set. Whether someone can tell a sponsor "this will not work" without it costing them predicts whether an implementation survives contact with the organisation better than almost anything else answerable in one sentence. **The loss most worth reversing.** |
-| `company_goals_1` | goal alignment leadership↔floor | Distinct from goal quality; a goal can be well-specified and unshared. |
-| `roles_2` | person-role fit | Distinct from decision rights. |
+| `escape` | `morale_lived`, `load_lived` | the event may never have happened |
+| `reverse` | both `systems` items | agreement is the BAD direction |
+| `polarity: opportunity` | `ai_fit_lived` | a LOW reading is benign |
 
-## Known weaknesses, in the order they undermine the page
+⛔ **AN ESCAPE PLOTS ABSENT. NOT HIGH, NOT LOW.** Never having told someone
+senior something unwelcome is not evidence of safety — it is as likely to be
+evidence against it. `load_lived` measures whether saying so CHANGED anything,
+so someone never near their limit has not tested it. Scoring an escape at the
+top would import one construct's information into another's item.
 
-1. **⛔ Cross-axis comparison is unsupported, and the page makes a claim on
-   it.** The axes are not equated. Some items set a far higher bar than others,
-   so an axis can sit low because of how it was worded rather than anything
-   about the respondent. "That is where we would start" may therefore be
-   naming *the axis phrased most severely*. This is the only claim on the page
-   that goes beyond describing the answers back, and it is the least
-   defensible thing on it. Either stop making it, or build norms — the contact
-   pipeline now carries structured results, so a distribution could eventually
-   make "weakest" mean *low relative to everyone else*, which would be real.
-2. **The weakest axis can flip on one click.** Two items per axis gives a
-   resolution of 0.5, and the two lowest axes are routinely within that. A
-   measured run had 1.0 against 1.5. If the claim stays, name both when they
-   are within one increment.
-3. **Single informant on organisational facts.** One person answers "we"
-   questions about a whole company. No item-tuning fixes this; only changing
-   who answers does.
-4. **All items positively keyed.** No reverse-scored item, so straight-lining
-   is undetectable. If reverse items are ever added, the inversion must happen
-   in `read_answers` (`scripts/dimension_read.js`) **before** banding, the
-   radar and the weakest calculation — and raw answers must be retained
-   separately, because straight-line detection needs the raw pattern, not the
-   scored one. That module is shared with the agile scorecard on
-   `diagnostic.html`, so a `reverse` flag must default absent and leave the
-   agile path byte-identical, with a `test_dimension_read.cjs` case pinning it.
-5. **Two anchors are still double-barrelled.** `pain_points_1` joins knowing-
-   where with putting-numbers-on-it; `data_readiness_1` joins accessible with
-   good-enough.
+⛔ **A REVERSE ITEM IS INVERTED ONCE, IN `read_question`, AND RAW IS KEPT.**
+Two consumers need the number the person typed: the QUOTE-BACK, which prints
+the reverse-worded sentence beside the answer (printing the scored value there
+tells someone who marked 5 that they said 1), and STRAIGHT-LINE DETECTION,
+because scored, a respondent who typed 5 sixteen times reads as varied.
 
-## The open design decision
+⭐ **REVERSE ITEMS ARE FOR ACQUIESCENCE, NOT STRAIGHT-LINING.** Straight-lining
+was always free to detect — identical raw values is a one-line check. With every
+item positively worded a yea-sayer renders as a healthy organisation, which is
+the failure mode that most convincingly fakes a good result on a page whose
+whole output is shape. ⛔ Acquiescence requires BOTH directions high: checking
+only the reverse items flags a consistent pessimist, who holds a coherent and
+probably accurate view.
 
-Three routes, not yet chosen:
+⚠️ `polarity: opportunity` excludes an axis from the FLOOR. `ai_fit_lived` asks
+whether the week is repetitive: a low reading means varied work, which is
+healthy and simply offers AI less to take. Every other lived item's low pole is
+a problem.
 
-- **Restore the dropped items and stop reporting an axis mean.** Graph items
-  individually, grouped by area for legibility rather than for scoring. The
-  "weakest" becomes a question — *"nobody can tell the sponsor this will not
-  work"* — which is more actionable than *"Morale"*. Cost: 14+ spokes needs
-  short labels that do not exist, so the radar likely becomes a grouped bar
-  chart. This is the cheapest route and it dissolves problems 1, 2 and much of
-  the grain loss at once.
-- **Reframe to first person.** *I feel stressed. I am not sure my duties match
-  my job description. I do not trust leadership.* Fixes problem 3 outright —
-  the respondent stops claiming to describe the company and describes their
-  seat in it. Restores grain by construction. Matches the practice's own ethos
-  ("the people doing the work hold the truth").
-- **Multi-respondent.** Send it to several people in one organisation; **the
-  spread between their answers is the finding.** One person reporting a
-  mismatch is noise; a leadership team at 5 and the floor at 2 on the same
-  item is a diagnosis. This is the version that would satisfy a research
-  psychologist, and it is a product change rather than a copy change.
+## What makes a good item here
+
+The standard the 3 Sep pairs were written to, learned by writing six pairs and
+discarding about thirty items.
+
+1. **THE LOW ANSWER MUST BLAME THE ORGANISATION, NOT THE RESPONDENT.** Every
+   early draft of the goals item asked someone to confess ignorance — "I knew
+   which one it wanted", "I could tell", "I could explain". That is a
+   social-desirability trap: the honest answer costs the respondent something,
+   so the item inflates and the axis reads high for people who are quite lost.
+2. **AN OUTCOME, NOT A COGNITION.** Self-assessed understanding is among the
+   least reliable things you can ask for; "I could explain it" is precisely the
+   belief that survives until tested. Worse are items asking what OTHER people
+   know, or whether someone else's decision was correct.
+3. **AN INCIDENT, NOT A STATE.** A remembered event has a verifiable outcome; a
+   state has only an impression.
+4. **ABSTRACT CLAIM, CONCRETE OCCASION.** The stated half may be gnomic —
+   negating a maxim is a stronger act than negating a description, so the low
+   answer reads as dissent. That only works if its partner has a date and an
+   outcome. Two abstractions produce a gap measuring self-consistency.
+5. **NO ABSOLUTE QUANTIFIERS.** "Every system in use" was unanswerable in the
+   direction that mattered. ⚠️ Reversing an absolute MIRRORS it rather than
+   removing it — see open issue 2.
+6. **AN UNAMBIGUOUS GOOD POLE.** "Do all departments use the same systems"
+   failed because specialisation is correct, not fragmentation.
+7. **GRIEVANCE IS SIGNAL, NOT CONTAMINATION.** Perceived procedural fairness
+   predicts whether people accept decisions they disagree with, which IS the
+   AI-uptake question. It was argued against here on taxonomy grounds and the
+   founder was right to override that. ⚠️ But keep it DOMAIN-SCOPED: fairness in
+   how goals are measured is a goals fact; fairness in the abstract is a second
+   copy of the Morale axis, and eight of those would break single-construct
+   axes all over again.
+8. **DON'T NAME AN IDENTIFIABLE PERSON.** "My manager is fair" inhibits exactly
+   the respondents whose answer matters most, on a form they know is emailed to
+   a consultancy.
+9. **AI FRAMING BELONGS IN THE READING, NOT THE ITEM.** An item mentioning AI
+   collects the respondent's opinion of AI, which is a prepared position rather
+   than an incident. Load is the model: the axis is AI-motivated, the items are
+   plain questions about strain, and the copy does the interpretive work.
+
+## Open issues, in the order they will bite
+
+1. **⛔ AN ESCAPE DELETES THE ENTIRE LIVED POLYGON.** `radar_geometry` emits a
+   polygon only when EVERY axis has a point — right while absence meant "not
+   answered yet", wrong now that absence is a legitimate final state. One
+   declined item and the lived shape cannot be drawn, so the escape punishes
+   the most careful respondents. The caption also reads "16 of 16 answered —
+   the shape firms up as you go", because `settled` depends on the same flag.
+   ⛔ **NOT a property of which questions carry an escape.** Any escape does it,
+   so changing the escaped items hides it rather than fixing it. The fix is a
+   decision: a broken polyline skipping the absent axis (honest, looks
+   unfinished) or a closed shape with a chord across the gap (looks clean,
+   draws an edge nobody gave).
+2. **⚠️ `systems_stated` still contains an absolute.** "Not being used to their
+   full potential" — nothing is ever at full potential, so nearly everyone can
+   honestly agree. Reversing mirrored the `systems_1` fault rather than
+   removing it. PREDICTION: after inversion Systems sits near the floor for
+   most respondents and drags the floor reading. One-word fix available:
+   "sitting half-used".
+3. **⚠️ Both reverse items sit on ONE axis.** Reverse items measurably increase
+   confusion; a respondent who trips loses that axis entirely, both vantages
+   and the gap. Spreading them across two axes costs nothing.
+4. **Two axis labels have been outgrown.** "Company goals" measures
+   recognition; "Roles" measures role fidelity, not decision rights. Renaming
+   is not a shape change — the count holds, the parallel invariant holds — but
+   each axis's DOMAIN moves with it, including its purpose text.
+5. **Cross-axis comparison is still unsupported.** The axes are not equated.
+   Both result lines describe and quote rather than rank, which is what keeps
+   this defensible. Do not reintroduce a ranking claim.
+6. **Single informant.** One person answers "we" questions about a whole
+   company. No item-tuning fixes this; only changing who answers does.
+7. **`roles` pairs two assessments rather than a claim and an incident**, so
+   its gap reads less cleanly than pairs 1, 3 and 4. Accepted knowingly.
+8. **Static assets are cached four hours with no version in the URL**, so a JS
+   fix reaches returning visitors late. Not this instrument's bug, but it is
+   why every defect here is expensive.
+
+## Constructs that had to be dropped
+
+Recorded so they are not rediscovered as omissions.
+
+| construct | why it went |
+|---|---|
+| **Decision rights** — "It is clear who decides what" | Displaced when Roles became role fidelity. The cleanest sentence in the set, and who may decide what a system does is a question every implementation hits. The sharpest loss. |
+| **Change survival** — "The last significant change to how I work is still how I work" | Strong item, needs its own axis. Displaced by Load on a better argument: change history says whether things stick, Load says where the cost is concentrated. |
+| **Quantification** — "The last time I said something was broken, it was written down somewhere" | A bar so low that failing it is damning. Traded for allocation, which is what a client is buying. |
+| **Goal alignment and sequencing** | Company goals moved to recognition. Nothing now measures whether goals cascade. |
 
 ## Things that are already right — do not undo them
 
 - No score, no stage.
-- `band_for` bands by RANGE, not exact match. A comment records why: an axis
-  averaging 3.5 previously matched no branch and fell through to "Needs work",
-  telling a team above the midpoint they were the problem, on a page that
-  looked entirely plausible.
-- A missing answer plots as ABSENT, not at the centre. Plotting it at zero
-  would draw a value the person never gave.
+- `band_for` bands by RANGE, not exact match. An axis averaging 3.5 previously
+  matched no branch and fell through to "Needs work", telling a team above the
+  midpoint they were the problem, on a page that looked entirely plausible.
+- A missing answer plots as ABSENT, not at the centre.
+- `is-aligned-low` and `is-aligned-high` are different rows. They shared one
+  class, so 1/1 and 5/5 — the two most opposite readings available — rendered
+  alike.
 - The results caveat: "a prompt for a conversation, not a measurement of your
   team." That sentence is what makes the rest of this defensible.
+- ⚠️ `dimension_read.js` and `radar.js` are SHARED with the Agile scorecard.
+  Vantages, escapes, reverse flags and the two-polygon render are all additive
+  and default absent; `diagnostic.html` is byte-identical, pinned by checks.
+- ⚠️ The contract tests parse the config OUT OF THE EMITTED PAGE. Every gate
+  was once green over a build where the instrument read as entirely unanswered,
+  because the fixtures carried vantages and the generator did not. A fixture
+  proves the module works on the shape you imagined; only the artefact proves
+  it works on the shape you ship.

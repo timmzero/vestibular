@@ -33,7 +33,12 @@
    * Both would be a value the person did not give, which is the same fault the
    * radar's absent-not-centre rule already refuses.
    */
-  function read_question(form, key, limit) {
+  function read_question(form, question, limit) {
+    // Accepts a key or a question object. The Agile scorecard passes keys and
+    // carries no reverse flags, so its path is unchanged by everything below.
+    const key = typeof question === 'string' ? question : question.key;
+    const reverse = typeof question === 'object' && !!question.reverse;
+
     if (!form) return { state: 'missing' };
 
     const escape_el = form.elements[key + '_absent'];
@@ -46,7 +51,24 @@
         !Number.isFinite(v) || v < 1 || v > limit) {
       return { state: 'missing' };
     }
-    return { state: 'answered', value: v };
+
+    // ⛔ INVERT HERE AND NOWHERE ELSE. A reverse-worded item is answered on the
+    // same 1..max scale, but agreement means the BAD direction, so the scored
+    // value must be flipped before it reaches banding, the gap, the floor or
+    // either polygon. Inverting at any later point means some consumers see the
+    // raw number and some see the scored one, and the two disagree silently.
+    //
+    // ⭐ RAW IS RETAINED, NOT DISCARDED. Two things need the number the person
+    // actually typed: the quote-back, which prints the REVERSE-WORDED sentence
+    // beside the answer — showing a flipped value there would tell someone who
+    // marked 1 that they said 5 — and acquiescence detection, which needs the
+    // raw pattern rather than the scored one.
+    return {
+      state: 'answered',
+      value: reverse ? (limit + 1) - v : v,
+      raw: v,
+      reversed: reverse,
+    };
   }
 
   /**
@@ -73,10 +95,11 @@
       items.forEach(function (q) {
         const vantage = q.vantage;
         if (!vantage) return;
-        if (!series[vantage]) series[vantage] = { values: {}, provisional: {} };
+        if (!series[vantage]) series[vantage] = { values: {}, provisional: {}, raw: {} };
         questions += 1;
 
-        const read = read_question(form, q.key, limit);
+        // The QUESTION, not its key: read_question needs the reverse flag.
+        const read = read_question(form, q, limit);
         if (read.state === 'absent') {
           answered += 1;
           // Absent leaves no value. The axis is drawn with this vantage
@@ -86,6 +109,7 @@
         if (read.state !== 'answered') return;
         answered += 1;
         series[vantage].values[d.key] = read.value;
+        series[vantage].raw[d.key] = read.raw;
       });
     });
 
@@ -108,6 +132,10 @@
   function gap_ranking(dimensions, series) {
     const stated = (series.stated && series.stated.values) || {};
     const lived = (series.lived && series.lived.values) || {};
+    // ⚠️ Raw travels alongside scored, for the quote-back only. The RANKING is
+    // over scored values — a reverse item's gap is meaningless on raw numbers.
+    const stated_raw = (series.stated && series.stated.raw) || {};
+    const lived_raw = (series.lived && series.lived.raw) || {};
     return dimensions
       .filter(function (d) {
         return stated[d.key] !== undefined && lived[d.key] !== undefined;
@@ -118,6 +146,8 @@
           label: d.label,
           stated: stated[d.key],
           lived: lived[d.key],
+          stated_raw: stated_raw[d.key],
+          lived_raw: lived_raw[d.key],
           gap: stated[d.key] - lived[d.key],
         };
       })
@@ -127,6 +157,54 @@
         // weakest_dimension already follows.
         return byGap !== 0 ? byGap : 0;
       });
+  }
+
+  /**
+   * Response-style flags, read from the RAW pattern.
+   *
+   * ⭐ THIS IS WHAT THE REVERSE ITEMS ARE FOR, and it is NOT straight-lining.
+   * Straight-lining was always detectable for free — identical raw values
+   * across every item is a one-line check needing no reverse wording.
+   *
+   * ACQUIESCENCE is the bias reverse items actually catch: someone who agrees
+   * with whatever is put in front of them. With every item positively worded a
+   * yea-sayer renders as a healthy organisation, which is the failure mode that
+   * most convincingly fakes a good result on a page whose whole output is
+   * shape. A reverse item makes it visible — agreeing with both a claim and its
+   * negation is not a position.
+   */
+  function response_style(dimensions, series, max) {
+    const limit = max || 5;
+    const raw = [];
+    const reverse_raw = [];
+    const plain_raw = [];
+    dimensions.forEach(function (d) {
+      (d.questions || []).forEach(function (q) {
+        const bag = series[q.vantage];
+        const v = bag && bag.raw ? bag.raw[d.key] : undefined;
+        if (v === undefined) return;
+        raw.push(v);
+        (q.reverse ? reverse_raw : plain_raw).push(v);
+      });
+    });
+    const high = limit - 1;
+    const all_high = function (xs) {
+      return xs.length > 0 && xs.every(function (v) { return v >= high; });
+    };
+    return {
+      // Straight-lining needs no reverse item and never did: identical raw
+      // values is a one-line check. ⚠️ It must read RAW — scored, a respondent
+      // who typed 5 sixteen times reads as varied, because the reverse items
+      // were inverted.
+      straight_lined: raw.length > 1 && raw.every(function (v) { return v === raw[0]; }),
+      // ⛔ BOTH DIRECTIONS, NOT JUST THE REVERSE ONES. Checking only the reverse
+      // items flags a CONSISTENT PESSIMIST — someone who agrees the systems are
+      // half-used and disagrees that recognition is fair holds a coherent, and
+      // probably accurate, position. Acquiescence is agreeing with a claim AND
+      // its negation, so it requires both groups to sit high.
+      acquiescent: all_high(reverse_raw) && all_high(plain_raw),
+      answered: raw.length,
+    };
   }
 
   /**
@@ -163,6 +241,8 @@
   function lowest_total(dimensions, series) {
     const stated = (series.stated && series.stated.values) || {};
     const lived = (series.lived && series.lived.values) || {};
+    const stated_raw = (series.stated && series.stated.raw) || {};
+    const lived_raw = (series.lived && series.lived.raw) || {};
     return dimensions
       .filter(function (d) {
         if (stated[d.key] === undefined || lived[d.key] === undefined) return false;
@@ -176,6 +256,8 @@
           label: d.label,
           stated: stated[d.key],
           lived: lived[d.key],
+          stated_raw: stated_raw[d.key],
+          lived_raw: lived_raw[d.key],
           total: stated[d.key] + lived[d.key],
           gap: stated[d.key] - lived[d.key],
           text: item ? item.text : '',
@@ -388,6 +470,7 @@
     vantage_progress: vantage_progress,
     gap_ranking: gap_ranking,
     lowest_total: lowest_total,
+    response_style: response_style,
     render_vantage_list: render_vantage_list,
     question_keys: question_keys,
     axis_values: axis_values,
