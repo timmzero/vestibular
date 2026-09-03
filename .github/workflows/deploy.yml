@@ -43,6 +43,12 @@ jobs:
       - name: Shared dimension-read checks
         run: node tools/test_dimension_read.cjs
 
+      # An interactive element nested inside a pointer-events: none container
+      # is visible, focusable and dead to touch. The mobile menu button was
+      # exactly that on every page, in production, with every other check green.
+      - name: Hit-target checks
+        run: node tools/test_hit_targets.cjs
+
       # Counts asserted in PROSE cannot be seen by the drift check above: it
       # compares generated regions against the source, so a hand-written
       # heading sitting outside the markers, or a wrong number inside the

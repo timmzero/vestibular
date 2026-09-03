@@ -366,6 +366,17 @@ body { overflow-x: clip; }
   color: #fff;
   font-size: 1.5rem;
   cursor: pointer;
+  /* ⛔ THE BURGER LIVES INSIDE .brand, WHICH IS pointer-events: none.
+     f316ef9 made the overhanging logo transparent to clicks so it stopped
+     swallowing the page beneath, and re-enabled hit-testing on .brand-hit only.
+     The toggle is a SIBLING of that link inside the same container, so it
+     inherited the none and was dead to touch on every page at mobile widths —
+     while staying visible, focusable and keyboard-operable, which is why
+     nothing caught it. Measured live 3 Sep at 390x844: elementFromPoint at the
+     button's centre returned .hero-content, because hit-testing skips
+     pointer-events: none elements entirely, so the symptom pointed at an
+     innocent element two layers away. */
+  pointer-events: auto;
 }
 
 /* Desktop inline nav */
