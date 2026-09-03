@@ -347,12 +347,12 @@
             "questions": [
               {
                 "key": "roles_stated",
-                "text": "It is clear who decides what.",
+                "text": "People here are not quietly doing two jobs.",
                 "vantage": "stated"
               },
               {
                 "key": "roles_lived",
-                "text": "What I actually spend my week doing is what my job description says I do.",
+                "text": "My daily activities match my job description.",
                 "vantage": "lived"
               }
             ]
