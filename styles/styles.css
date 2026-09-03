@@ -1298,6 +1298,13 @@ article.stage .price { margin-top: 1rem; }
    one marked. Not styled as an error: it is a finding, not a fault. */
 .vantage-row.is-claimed-higher .vantage-lived { opacity: 1; color: var(--primary-color); }
 .vantage-row.is-lived-higher .vantage-stated { opacity: 1; color: var(--primary-color); }
+/* Agreement is only good news at the top of the scale. At the bottom it means
+   nothing is claimed and nothing is seen — the reading with no gap to point at,
+   and the one the divergence line structurally cannot surface. Marked on both
+   columns because neither one alone is the finding. */
+.vantage-row.is-aligned-low .vantage-stated,
+.vantage-row.is-aligned-low .vantage-lived { opacity: 1; }
+.vantage-row.is-aligned-low .vantage-label { text-decoration: underline; text-underline-offset: 4px; }
 
 .result-widest { margin-top: 1rem; }
 .result-tied { opacity: 0.75; }

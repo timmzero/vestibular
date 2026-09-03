@@ -130,33 +130,42 @@
   }
 
   /**
-   * Axes ranked by the LOWEST LIVED reading — what the respondent reports
-   * having actually seen, lowest first.
+   * Axes ranked by their TOTAL — stated + lived, lowest first. The floor.
    *
-   * ⭐ THIS EXISTS BECAUSE THE GAP CANNOT SEE BOTH-LOW. A respondent who
-   * believes the organisation claims little AND has seen little draws two
-   * polygons touching deep in the middle: no band, no widest distance, and the
-   * most alarming answer available goes unnamed. Level and divergence are
-   * different questions.
+   * ⭐ TOTAL AND GAP TOGETHER LOSE NOTHING. With T = stated + lived and
+   * G = stated - lived, the originals are recoverable: stated = (T+G)/2,
+   * lived = (T-G)/2. It is the same pair in rotated coordinates, not a summary
+   * of it. Reporting the total INSTEAD of the gap would be the blend this
+   * instrument was reshaped to remove; reporting it ALONGSIDE discards nothing,
+   * and the page prints enough for the reader to reconstruct both readings.
    *
-   * ⛔ LIVED ONLY — NOT THE TOTAL, AND NOT THE MEAN. Summing the two vantages
-   * is twice their mean, so ranking by total is ranking by the blend this
-   * instrument was reshaped to remove: stated 1 / lived 5 totals the same as
-   * 3 / 3, and those are opposite situations. The lived column is one vantage,
-   * unblended, and it is the one the respondent witnessed rather than inferred.
+   * ⭐ AND IT POINTS SOMEWHERE THE GAP CANNOT. An axis at 5/1 beside one at 2/2:
+   * the widest gap names the first, and so does the lowest LIVED reading, since
+   * 1 < 2 — so the second reading merely repeats the first and the uniformly low
+   * area is never mentioned. By total, 2/2 is 4 against 6, and it surfaces. A
+   * second reading that agrees with the first is not a second reading.
    *
-   * ⚠️ An item flagged `polarity: 'opportunity'` is EXCLUDED. `ai_fit_lived`
-   * asks whether the week is repetitive: a low reading means varied work, which
-   * is healthy and simply offers AI less to take. Every other lived item's low
-   * pole is a problem. Naming that one as a place to start would be exactly
-   * backwards, and the flag lives in the SSOT so the next item to invert is
-   * declared rather than discovered.
+   * ⭐ IT ALSO REMOVES A THRESHOLD. The both-low case was previously caught by
+   * `stated <= 2 && lived <= 2`, an unexamined constant that would quietly have
+   * become the scoring rule this page refuses to have. The lowest total IS the
+   * both-low axis when one exists.
+   *
+   * ⚠️ An item flagged `polarity: 'opportunity'` excludes its whole axis.
+   * `ai_fit_lived` asks whether the week is the same thing over and over: a low
+   * reading means varied work, which is healthy and simply offers AI less to
+   * take, so it can drag a total down for a benign reason. Every other lived
+   * item's low pole is a problem. The flag lives in the SSOT so the next item to
+   * invert is declared rather than discovered.
+   *
+   * An axis missing either vantage has no total, exactly as it has no gap, and
+   * drops out of both rankings rather than being ranked on half its evidence.
    */
-  function lowest_lived(dimensions, series) {
+  function lowest_total(dimensions, series) {
+    const stated = (series.stated && series.stated.values) || {};
     const lived = (series.lived && series.lived.values) || {};
     return dimensions
       .filter(function (d) {
-        if (lived[d.key] === undefined) return false;
+        if (stated[d.key] === undefined || lived[d.key] === undefined) return false;
         const item = (d.questions || []).find(function (q) { return q.vantage === 'lived'; });
         return !(item && item.polarity === 'opportunity');
       })
@@ -165,12 +174,14 @@
         return {
           key: d.key,
           label: d.label,
+          stated: stated[d.key],
           lived: lived[d.key],
-          stated: (series.stated && series.stated.values[d.key]),
+          total: stated[d.key] + lived[d.key],
+          gap: stated[d.key] - lived[d.key],
           text: item ? item.text : '',
         };
       })
-      .sort(function (a, b) { return a.lived - b.lived; });
+      .sort(function (a, b) { return a.total - b.total; });
   }
 
   /**
@@ -346,9 +357,21 @@
       const s = stated[d.key];
       const l = lived[d.key];
       const gap = (s !== undefined && l !== undefined) ? s - l : undefined;
+      // ⛔ ALIGNED-LOW AND ALIGNED-HIGH ARE NOT THE SAME ROW. This read
+      // `gap < 0 ? 'is-lived-higher' : 'is-aligned'`, so 1/1 and 5/5 — the two
+      // most opposite readings the instrument can produce — came out with one
+      // class. Agreement is only good news at the top of the scale; at the
+      // bottom it means nothing is claimed and nothing is seen, which is the
+      // reading with no gap to point at and the one most worth naming.
+      //
+      // The cut points are band_for's, reused rather than reinvented so a
+      // second set of thresholds cannot drift from the first. The class is a
+      // styling hook, not a printed band: the pair is still never labelled.
       const gapClass = gap === undefined ? 'is-absent'
         : gap > 0 ? 'is-claimed-higher'
-        : gap < 0 ? 'is-lived-higher' : 'is-aligned';
+        : gap < 0 ? 'is-lived-higher'
+        : band_for(l).className === 'band-weak' ? 'is-aligned-low'
+        : 'is-aligned-high';
       return `
         <li class="vantage-row ${gapClass}">
           <span class="vantage-label">${d.label}</span>
@@ -364,7 +387,7 @@
     read_question: read_question,
     vantage_progress: vantage_progress,
     gap_ranking: gap_ranking,
-    lowest_lived: lowest_lived,
+    lowest_total: lowest_total,
     render_vantage_list: render_vantage_list,
     question_keys: question_keys,
     axis_values: axis_values,

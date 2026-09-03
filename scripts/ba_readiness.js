@@ -113,46 +113,53 @@ function describe_widest(dimensions, ranked) {
 }
 
 /**
- * The second reading: the lowest thing the respondent reports having SEEN.
+ * The second reading: the FLOOR — the axis lowest on both vantages together.
  *
- * ⭐ THE GAP CANNOT SEE BOTH-LOW. Two polygons touching deep in the middle
- * produce no band and no widest distance, while being the most alarming answer
- * on the page. So level is named alongside divergence rather than instead of
- * it — they are different questions and neither subsumes the other.
+ * ⭐ TOTAL AND GAP ARE THE SAME PAIR IN ROTATED COORDINATES. stated = (T+G)/2,
+ * lived = (T-G)/2, so printing both discards nothing. The objection to a total
+ * applies to reporting it INSTEAD of the gap, never alongside it.
+ *
+ * ⭐ AND IT POINTS SOMEWHERE ELSE. 5/1 beside 2/2: the widest gap names the
+ * first, and so would the lowest lived reading, so the uniformly low area is
+ * never mentioned at all. By total it surfaces. A second reading that agrees
+ * with the first is not a second reading.
  *
  * ⚠️ Still not a ranking claim. It names what was answered and quotes it back,
- * because the axes are not equated and the lowest reading may be the item
- * phrased most severely rather than the worst thing about the organisation.
+ * because the axes are not equated and the lowest total may belong to the pair
+ * phrased most severely rather than to the worst thing about the organisation.
  */
-function describe_lowest(ranked_low, widest_key) {
+function describe_floor(dimensions, ranked_low, widest_key, max) {
   if (!ranked_low.length) return '';
 
   const low = ranked_low[0];
-  const tied = ranked_low.filter(function (r) { return r.lived === low.lived; });
+  const tied = ranked_low.filter(function (r) { return r.total === low.total; });
   const alsoText = tied.length > 1
     ? ` <span class="result-tied">${tied.slice(1).map(function (r) { return r.label; }).join(' and ')} ` +
       `${tied.length > 2 ? 'sit' : 'sits'} equally low.</span>`
     : '';
 
-  // Both readings low is the case with no band at all, so it is worth saying
-  // out loud rather than leaving the reader to notice an absence.
-  const bothLow = low.stated !== undefined && low.stated <= 2 && low.lived <= 2;
-
   if (low.key === widest_key) {
-    return `<p class="result-lowest">It is also the lowest thing you reported seeing.${alsoText}</p>`;
+    return `<p class="result-lowest">It is also the lowest area overall, at ` +
+      `${low.total} of ${max * 2}.${alsoText}</p>`;
   }
 
-  const bothLine = bothLow
-    ? ' You did not understand the organisation to claim otherwise, so there is no gap here to point at — ' +
+  const dimension = dimensions.find(function (d) { return d.key === low.key; });
+  // gap === 0 is the reading with nothing to point at: no distance between the
+  // claim and the experience, both simply low. Worth saying out loud rather
+  // than leaving a reader to notice an absence.
+  const flatLine = low.gap === 0
+    ? ' There is no distance here to point at — the claim and the experience agree, and ' +
       'the level itself is the finding.'
     : '';
 
   return `
-    <p class="result-lowest">The lowest thing you reported seeing is <strong>${low.label}</strong>.${alsoText}</p>
+    <p class="result-lowest">The lowest area overall is <strong>${low.label}</strong>, at ` +
+    `${low.total} of ${max * 2}.${alsoText}</p>
     <blockquote class="result-quote">
-      <p><span class="quote-vantage">In practice</span> &ldquo;${low.text}&rdquo; &mdash; you said ${low.lived}/5.</p>
+      <p><span class="quote-vantage">On paper</span> &ldquo;${question_text(dimension, 'stated')}&rdquo; &mdash; you said ${low.stated}/${max}.</p>
+      <p><span class="quote-vantage">In practice</span> &ldquo;${question_text(dimension, 'lived')}&rdquo; &mdash; you said ${low.lived}/${max}.</p>
     </blockquote>
-    <p class="result-lowest-note">That is the other place we would start.${bothLine}</p>`;
+    <p class="result-lowest-note">That is the other place we would start.${flatLine}</p>`;
 }
 
 if (formEl) {
@@ -254,14 +261,14 @@ if (formEl) {
     }
 
     const ranked = shared.gap_ranking(cfg.dimensions, state.series);
-    const ranked_low = shared.lowest_lived(cfg.dimensions, state.series);
+    const ranked_low = shared.lowest_total(cfg.dimensions, state.series);
 
     resultEl.classList.remove('error');
     resultEl.removeAttribute('role');
     resultEl.innerHTML = `
       ${shared.render_vantage_list(cfg.dimensions, state.series, 5)}
       ${describe_widest(cfg.dimensions, ranked)}
-      ${describe_lowest(ranked_low, ranked.length ? ranked[0].key : null)}
+      ${describe_floor(cfg.dimensions, ranked_low, ranked.length ? ranked[0].key : null, 5)}
       <p class="result-caveat">This is a self-assessment from one point of view. It is a prompt for a conversation, not a measurement of your team.</p>`;
 
     if (ctaEl) ctaEl.style.display = 'block';
@@ -280,7 +287,7 @@ if (formEl) {
     const lowest = ranked_low[0];
     const resultText = `${detail} (on paper/in practice). ` +
       (widest ? `Widest gap: ${widest.label} ${widest.stated} vs ${widest.lived}. ` : 'No gap could be read. ') +
-      (lowest ? `Lowest seen: ${lowest.label} ${lowest.lived}/5.` : '');
+      (lowest ? `Lowest overall: ${lowest.label} ${lowest.stated}+${lowest.lived}=${lowest.total}/10.` : '');
 
     const hiddenField = document.getElementById('ba-readiness-hidden');
     if (hiddenField) hiddenField.value = resultText;

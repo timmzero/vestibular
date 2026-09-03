@@ -13,7 +13,7 @@
 const assert = require('assert');
 const {
   band_for, weakest_dimension, render_dimension_list, question_keys, axis_values, axis_progress, read_answers,
-  read_question, vantage_progress, gap_ranking, render_vantage_list, lowest_lived,
+  read_question, vantage_progress, gap_ranking, render_vantage_list, lowest_total,
 } = require('../scripts/dimension_read.js');
 
 const dimensions = [
@@ -474,7 +474,7 @@ check('an escaped input is not also marked required', () => {
 
 
 /* ------------------------------------------------------------------ *
- * The lowest LIVED reading — level, where gap_ranking reads divergence.
+ * The FLOOR — stated + lived, lowest first.
  * ------------------------------------------------------------------ */
 
 const polar = [
@@ -492,61 +492,76 @@ const polar = [
   ] },
 ];
 
-check('lowest_lived ranks by what was SEEN, ascending', () => {
+check('⭐ the floor points where the gap cannot', () => {
+  // Morale 5/1 and Roles 2/2. The widest GAP is Morale, and so is the lowest
+  // LIVED reading, since 1 < 2 — so a second reading built on either would
+  // just repeat the first and Roles would never be named. By total: 6 vs 4.
   const v = vantage_progress(fake_form({
-    morale_stated: 5, morale_lived: 2, ai_fit_stated: 3, ai_fit_lived: 4,
-    roles_stated: 3, roles_lived: 4,
-  }), polar, 5);
-  const low = lowest_lived(polar, v.series);
-  assert.strictEqual(low[0].key, 'morale');
-  assert.strictEqual(low[0].lived, 2);
-  assert.strictEqual(low[0].stated, 5, 'the partner reading travels with it');
-});
-
-check('⛔ it is not the total, and not the mean', () => {
-  // stated 1 / lived 5 and stated 3 / lived 3 have the SAME total. If the
-  // ranking is by total they are interchangeable; by lived they are opposite.
-  const v = vantage_progress(fake_form({
-    morale_stated: 1, morale_lived: 5, roles_stated: 3, roles_lived: 3,
+    morale_stated: 5, morale_lived: 1, roles_stated: 2, roles_lived: 2,
     ai_fit_stated: 3, ai_fit_lived: 3,
   }), polar, 5);
-  const low = lowest_lived(polar, v.series);
-  assert.strictEqual(low[0].key, 'roles', 'lived 3 is lower than lived 5, whatever the totals say');
+  assert.strictEqual(gap_ranking(polar, v.series)[0].key, 'morale', 'the gap names Morale');
+  const low = lowest_total(polar, v.series);
+  assert.strictEqual(low[0].key, 'roles', 'the floor must name the uniformly low area instead');
+  assert.strictEqual(low[0].total, 4);
 });
 
-check('⚠️ an opportunity-keyed item is excluded, not ranked lowest', () => {
-  // ai_fit_lived at 1 means varied work — healthy, and offering AI less to
-  // take. Naming it as a place to start would be exactly backwards.
+check('total and gap together reconstruct both readings', () => {
+  // stated = (T+G)/2, lived = (T-G)/2. The page prints enough to recover the
+  // pair, which is why reporting a total alongside the gap discards nothing.
   const v = vantage_progress(fake_form({
-    morale_stated: 4, morale_lived: 3, ai_fit_stated: 3, ai_fit_lived: 1,
+    morale_stated: 5, morale_lived: 1, roles_stated: 2, roles_lived: 3,
+    ai_fit_stated: 3, ai_fit_lived: 3,
+  }), polar, 5);
+  lowest_total(polar, v.series).forEach((r) => {
+    assert.strictEqual((r.total + r.gap) / 2, r.stated);
+    assert.strictEqual((r.total - r.gap) / 2, r.lived);
+  });
+});
+
+check('⚠️ an opportunity-keyed axis is excluded from the floor', () => {
+  // ai_fit totals 2 here — the lowest on the page — but a low reading there
+  // means varied work, which is healthy and simply offers AI less to take.
+  const v = vantage_progress(fake_form({
+    morale_stated: 4, morale_lived: 3, ai_fit_stated: 1, ai_fit_lived: 1,
     roles_stated: 3, roles_lived: 4,
   }), polar, 5);
-  const low = lowest_lived(polar, v.series);
+  const low = lowest_total(polar, v.series);
   assert.ok(!low.some((r) => r.key === 'ai_fit'), 'ai_fit must not appear at all');
-  assert.strictEqual(low[0].key, 'morale', 'the lowest genuine weakness is named instead');
+  assert.strictEqual(low[0].key, 'morale');
 });
 
-check('an absent lived reading is not ranked as low', () => {
+check('an axis missing a vantage has no total and drops out', () => {
   const v = vantage_progress(fake_form({
     morale_stated: 4, morale_lived_absent: true, ai_fit_stated: 3, ai_fit_lived: 3,
     roles_stated: 3, roles_lived: 4,
   }), polar, 5);
-  const low = lowest_lived(polar, v.series);
-  assert.ok(!low.some((r) => r.key === 'morale'), 'a declined item is not a low score');
+  const low = lowest_total(polar, v.series);
+  assert.ok(!low.some((r) => r.key === 'morale'), 'half the evidence is not a total');
 });
 
-check('lowest_lived catches the both-low case the gap cannot', () => {
-  // Two polygons touching deep in the middle: every gap is zero, so
-  // gap_ranking has nothing to point at.
-  const answers = {
-    morale_stated: 1, morale_lived: 1, ai_fit_stated: 2, ai_fit_lived: 2,
-    roles_stated: 2, roles_lived: 2,
-  };
-  const v = vantage_progress(fake_form(answers), polar, 5);
-  assert.ok(gap_ranking(polar, v.series).every((r) => r.gap === 0), 'no divergence to report');
-  const low = lowest_lived(polar, v.series);
-  assert.strictEqual(low[0].key, 'morale', 'the level is still nameable');
-  assert.strictEqual(low[0].lived, 1);
+check('the floor catches both-low without a threshold constant', () => {
+  const v = vantage_progress(fake_form({
+    morale_stated: 1, morale_lived: 1, roles_stated: 4, roles_lived: 4,
+    ai_fit_stated: 3, ai_fit_lived: 3,
+  }), polar, 5);
+  assert.ok(gap_ranking(polar, v.series).every((r) => r.gap === 0), 'no divergence anywhere');
+  const low = lowest_total(polar, v.series);
+  assert.strictEqual(low[0].key, 'morale');
+  assert.strictEqual(low[0].gap, 0, 'nothing to point at but the level');
+});
+
+check('⛔ aligned-low and aligned-high are different rows', () => {
+  // 1/1 and 5/5 are the two most opposite readings available and shared one
+  // class until this split.
+  const v = vantage_progress(fake_form({
+    morale_stated: 1, morale_lived: 1, roles_stated: 5, roles_lived: 5,
+    ai_fit_stated: 3, ai_fit_lived: 3,
+  }), polar, 5);
+  const html = render_vantage_list(polar, v.series, 5);
+  assert.ok(/is-aligned-low/.test(html), '1/1 must not read as agreement worth having');
+  assert.ok(/is-aligned-high/.test(html));
+  assert.ok(!/is-aligned"/.test(html), 'the collapsed class must be gone');
 });
 
 check('the emitted config carries the polarity flag to the client', () => {
