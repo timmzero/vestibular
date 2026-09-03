@@ -379,12 +379,12 @@
             "questions": [
               {
                 "key": "data_readiness_stated",
-                "text": "The data here is trusted enough to run on.",
+                "text": "We would let a system act on our numbers without a human checking first.",
                 "vantage": "stated"
               },
               {
                 "key": "data_readiness_lived",
-                "text": "The last time I needed a number, I got it from a system rather than by asking a person.",
+                "text": "The last time I acted on a figure from a system, I did not verify it first.",
                 "vantage": "lived"
               }
             ]

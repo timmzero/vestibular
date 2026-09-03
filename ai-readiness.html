@@ -132,7 +132,7 @@
            to shuffle it. -->
       <div class="readiness-layout">
         <figure id="ba-readiness-radar" class="radar">
-          <figcaption class="radar-caption">Your shape so far &mdash; it fills in as you answer.</figcaption>
+          <figcaption class="radar-caption"></figcaption>
         </figure>
 
         <p class="scale-legend">
@@ -170,7 +170,7 @@
   </label>
   <label>
     <input type="number" name="data_readiness_stated" min="1" max="5" required>
-    <span class="label-text">The data here is trusted enough to run on. (1&ndash;5)</span>
+    <span class="label-text">We would let a system act on our numbers without a human checking first. (1&ndash;5)</span>
   </label>
   <label>
     <input type="number" name="load_stated" min="1" max="5" required>
@@ -203,7 +203,7 @@
   </label>
   <label>
     <input type="number" name="data_readiness_lived" min="1" max="5" required>
-    <span class="label-text">The last time I needed a number, I got it from a system rather than by asking a person. (1&ndash;5)</span>
+    <span class="label-text">The last time I acted on a figure from a system, I did not verify it first. (1&ndash;5)</span>
   </label>
   <label>
     <input type="number" name="load_lived" min="1" max="5" required>
@@ -328,12 +328,12 @@
         {
           "key": "data_readiness_stated",
           "vantage": "stated",
-          "text": "The data here is trusted enough to run on."
+          "text": "We would let a system act on our numbers without a human checking first."
         },
         {
           "key": "data_readiness_lived",
           "vantage": "lived",
-          "text": "The last time I needed a number, I got it from a system rather than by asking a person."
+          "text": "The last time I acted on a figure from a system, I did not verify it first."
         }
       ]
     },
