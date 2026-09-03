@@ -137,7 +137,8 @@
 
         <p class="scale-legend">
           How well does each of the following describe your team?<br />
-          <strong>1</strong> Strongly disagree &nbsp; <strong>2</strong> Somewhat disagree &nbsp; <strong>3</strong> Neutral &nbsp; <strong>4</strong> Somewhat agree &nbsp; <strong>5</strong> Strongly agree
+          <strong>1</strong> Strongly disagree &nbsp; <strong>2</strong> Somewhat disagree &nbsp; <strong>3</strong> Neutral &nbsp; <strong>4</strong> Somewhat agree &nbsp; <strong>5</strong> Strongly agree<br />
+          <span class="scale-note">Some questions ask about something that may not have happened to you. Answer <strong>3</strong> if it has not come up.</span>
         </p>
 
         <form id="ba-readiness-form" class="dimension-form">
@@ -205,12 +206,8 @@
     <span class="label-text">The last time I needed a number, I got it from a system rather than by asking a person. (1&ndash;5)</span>
   </label>
   <label>
-    <input type="number" name="load_lived" min="1" max="5">
+    <input type="number" name="load_lived" min="1" max="5" required>
     <span class="label-text">The last time I was near my limit, saying so changed something. (1&ndash;5)</span>
-  </label>
-  <label class="escape">
-    <input type="checkbox" name="load_lived_absent">
-    <span class="escape-text">I have not been near my limit</span>
   </label>
 <!-- GENERATED:ba_readiness_fields END -->
           <button type="submit" class="btn">See our shape</button>

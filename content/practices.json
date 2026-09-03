@@ -401,8 +401,7 @@
               {
                 "key": "load_lived",
                 "text": "The last time I was near my limit, saying so changed something.",
-                "vantage": "lived",
-                "escape": "I have not been near my limit"
+                "vantage": "lived"
               }
             ]
           }

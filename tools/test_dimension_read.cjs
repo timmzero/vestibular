@@ -452,25 +452,65 @@ check('the emitted keys match the form inputs on the same page', () => {
     'the form fields and the config block name different questions');
 });
 
-check('every escape checkbox belongs to a question the config knows', () => {
+/**
+ * ⚠️ THIS PINS THE RELATIONSHIP, NOT A COUNT. It read `assert.ok(escapes.length)`
+ * and went red the moment the founder removed the last escape deliberately —
+ * a check that cannot tell an intentional removal from an accidental one is a
+ * check that will be edited under pressure rather than believed. What matters
+ * is that the rendered checkboxes and the declared escapes agree in BOTH
+ * directions, at whatever count.
+ *
+ * There are currently NONE: neutral serves instead, which removes all exposure
+ * to the open defect where one ticked escape deletes the entire lived polygon.
+ * The machinery is retained and still exercised by the fixtures above, so this
+ * check keeps working the day an escape comes back.
+ */
+check('rendered escape checkboxes match the escapes the SSOT declares', () => {
   const html = fs.readFileSync(path.join(__dirname, '..', 'ai-readiness.html'), 'utf8');
-  const escapes = [...html.matchAll(/<input type="checkbox" name="([a-z0-9_]+)_absent"/g)].map((m) => m[1]);
+  const rendered = [...html.matchAll(/<input type="checkbox" name="([a-z0-9_]+)_absent"/g)]
+    .map((m) => m[1]).sort();
+  const practices = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'content/practices.json'), 'utf8'));
+  const declared = practices.practices.ai_transformation.readiness.dimensions
+    .flatMap((d) => d.questions).filter((q) => q.escape).map((q) => q.key).sort();
+
+  assert.deepStrictEqual(rendered, declared,
+    'the form and the SSOT disagree about which questions can be declined');
+
   const configured = emitted_config().dimensions.flatMap((d) => d.questions.map((q) => q.key));
-  assert.ok(escapes.length, 'no escape rendered — three lived items need one');
-  escapes.forEach((k) => assert.ok(configured.includes(k), `${k}_absent has no question`));
+  rendered.forEach((k) => assert.ok(configured.includes(k), `${k}_absent has no question`));
 });
 
-check('an escaped input is not also marked required', () => {
-  // The browser would block submission for exactly the people the escape exists
-  // to serve, and the form would look broken rather than strict.
+check('every question is answerable: required, or escapable', () => {
+  // ⛔ WITH NO ESCAPE, EVERY INPUT MUST BE `required` — otherwise a question can
+  // be left blank, and read_answers refuses the submission with no way for the
+  // respondent to satisfy it. The scale legend carries the instruction to use
+  // neutral where something has not come up; without that a person who has
+  // never had the experience is simply stuck.
   const html = fs.readFileSync(path.join(__dirname, '..', 'ai-readiness.html'), 'utf8');
-  const escaped = [...html.matchAll(/<input type="checkbox" name="([a-z0-9_]+)_absent"/g)].map((m) => m[1]);
-  escaped.forEach((key) => {
-    const row = html.match(new RegExp(`<input type="number" name="${key}"[^>]*>`));
-    assert.ok(row, `${key} has an escape but no number input`);
-    assert.ok(!/required/.test(row[0]), `${key} is escapable but still required`);
+  const inputs = [...html.matchAll(/<input type="number" name="([a-z0-9_]+)"([^>]*)>/g)];
+  const escapable = [...html.matchAll(/<input type="checkbox" name="([a-z0-9_]+)_absent"/g)].map((m) => m[1]);
+  inputs.forEach(([, key, attrs]) => {
+    const required = /required/.test(attrs);
+    assert.ok(required || escapable.includes(key),
+      `${key} is neither required nor escapable — it can be left blank and then rejected`);
+    assert.ok(!(required && escapable.includes(key)),
+      `${key} is escapable AND required — the browser blocks exactly the people the escape serves`);
   });
+  assert.ok(inputs.length > 0, 'no number inputs found — parser check');
 });
+
+check('the scale legend tells respondents what to do when it has not come up', () => {
+  // The instruction that replaced the escape checkboxes. If it goes, a
+  // respondent who has never had the experience picks 1, 3 or 5 by
+  // temperament, and nothing downstream can tell which they meant.
+  const html = fs.readFileSync(path.join(__dirname, '..', 'ai-readiness.html'), 'utf8');
+  const legend = html.match(/<p class="scale-legend">([\s\S]*?)<\/p>/);
+  assert.ok(legend, 'the scale legend is gone');
+  assert.ok(/has not come up/.test(legend[1]),
+    'no instruction for an item that has not happened to the respondent');
+});
+
+
 
 
 /* ------------------------------------------------------------------ *

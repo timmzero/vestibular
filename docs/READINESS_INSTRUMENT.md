@@ -85,15 +85,30 @@ OPPORTUNITY, not weakness.
 
 | flag | on | meaning |
 |---|---|---|
-| `escape` | `morale_lived`, `load_lived` | the event may never have happened |
+| `escape` | **none currently** | the event may never have happened |
 | `reverse` | both `systems` items | agreement is the BAD direction |
 | `polarity: opportunity` | `ai_fit_lived` | a LOW reading is benign |
 
-⛔ **AN ESCAPE PLOTS ABSENT. NOT HIGH, NOT LOW.** Never having told someone
-senior something unwelcome is not evidence of safety — it is as likely to be
-evidence against it. `load_lived` measures whether saying so CHANGED anything,
-so someone never near their limit has not tested it. Scoring an escape at the
-top would import one construct's information into another's item.
+⚠️ **THE ESCAPES WERE REMOVED ON 3 SEP AND THE MACHINERY WAS KEPT.** Neutral
+serves instead, and the scale legend now says so: *"Some questions ask about
+something that may not have happened to you. Answer 3 if it has not come up."*
+That removes all exposure to open issue 1 — one ticked escape deleted the
+entire lived polygon — by removing its trigger rather than fixing it.
+
+⛔ **THE COST, WHICH SHOULD BE PAID BACK WHEN THE POLYGON IS FIXED.** A 3 is a
+value the person did not give. ABSENT plotted as a gap; neutral plots at the
+midpoint, so never having tested safety now reads as middling safety. And the
+scale point carries two meanings — "neither agree nor disagree" for someone who
+had the experience, and "has not come up" for someone who did not — which
+nothing downstream can separate. The trade is defensible while the polygon
+cannot draw around an absence; it is not a permanent answer.
+
+⛔ **IF AN ESCAPE RETURNS, IT PLOTS ABSENT. NOT HIGH, NOT LOW.** Never having
+told someone senior something unwelcome is not evidence of safety — it is as
+likely to be evidence against it. `load_lived` measures whether saying so
+CHANGED anything, so someone never near their limit has not tested it. Scoring
+an escape at the top would import one construct's information into another's
+item. The read path still implements this and the fixtures still exercise it.
 
 ⛔ **A REVERSE ITEM IS INVERTED ONCE, IN `read_question`, AND RAW IS KEPT.**
 Two consumers need the number the person typed: the QUOTE-BACK, which prints
@@ -156,7 +171,10 @@ discarding about thirty items.
 
 ## Open issues, in the order they will bite
 
-1. **⛔ AN ESCAPE DELETES THE ENTIRE LIVED POLYGON.** `radar_geometry` emits a
+1. **⛔ AN ESCAPE DELETES THE ENTIRE LIVED POLYGON — LATENT, NOT GONE.** No
+   item currently carries an escape, so nothing triggers this today. The defect
+   is untouched and the first escape to return brings it back.
+   **The mechanism:** `radar_geometry` emits a
    polygon only when EVERY axis has a point — right while absence meant "not
    answered yet", wrong now that absence is a legitimate final state. One
    declined item and the lived shape cannot be drawn, so the escape punishes
