@@ -80,7 +80,7 @@ function describe_widest(dimensions, ranked) {
 
   const top = ranked[0];
   if (top.gap === 0) {
-    return '<p class="result-widest">On every area, what you understand this organisation to ' +
+    return '<p class="result-widest">On every area, what you understand the organisation to ' +
       'claim and what you have seen line up. That is worth saying — and it is also the point ' +
       'at which the levels themselves become the conversation rather than the distance ' +
       'between them.</p>';
@@ -101,7 +101,7 @@ function describe_widest(dimensions, ranked) {
     ? `The widest distance is <strong>${top.label}</strong> — what you understand this ` +
       'organisation to claim is not what you have seen.'
     : `The widest distance is <strong>${top.label}</strong> — something is working better than ` +
-      'this organisation appears to claim.';
+      'the organisation appears to claim.';
 
   return `
     <p class="result-widest">${lead}${alsoText}</p>
@@ -110,6 +110,56 @@ function describe_widest(dimensions, ranked) {
       <p><span class="quote-vantage">In practice</span> &ldquo;${question_text(dimension, 'lived')}&rdquo; &mdash; you said ${top.lived}/5.</p>
     </blockquote>
     <p class="result-widest-note">That distance is the conversation we would start with.</p>`;
+}
+
+/**
+ * The second reading: the FLOOR — the axis lowest on both vantages together.
+ *
+ * ⭐ TOTAL AND GAP ARE THE SAME PAIR IN ROTATED COORDINATES. stated = (T+G)/2,
+ * lived = (T-G)/2, so printing both discards nothing. The objection to a total
+ * applies to reporting it INSTEAD of the gap, never alongside it.
+ *
+ * ⭐ AND IT POINTS SOMEWHERE ELSE. 5/1 beside 2/2: the widest gap names the
+ * first, and so would the lowest lived reading, so the uniformly low area is
+ * never mentioned at all. By total it surfaces. A second reading that agrees
+ * with the first is not a second reading.
+ *
+ * ⚠️ Still not a ranking claim. It names what was answered and quotes it back,
+ * because the axes are not equated and the lowest total may belong to the pair
+ * phrased most severely rather than to the worst thing about the organisation.
+ */
+function describe_floor(dimensions, ranked_low, widest_key, max) {
+  if (!ranked_low.length) return '';
+
+  const low = ranked_low[0];
+  const tied = ranked_low.filter(function (r) { return r.total === low.total; });
+  const alsoText = tied.length > 1
+    ? ` <span class="result-tied">${tied.slice(1).map(function (r) { return r.label; }).join(' and ')} ` +
+      `${tied.length > 2 ? 'sit' : 'sits'} equally low.</span>`
+    : '';
+
+  if (low.key === widest_key) {
+    return `<p class="result-lowest">It is also the lowest area overall, at ` +
+      `${low.total} of ${max * 2}.${alsoText}</p>`;
+  }
+
+  const dimension = dimensions.find(function (d) { return d.key === low.key; });
+  // gap === 0 is the reading with nothing to point at: no distance between the
+  // claim and the experience, both simply low. Worth saying out loud rather
+  // than leaving a reader to notice an absence.
+  const flatLine = low.gap === 0
+    ? ' There is no distance here to point at — the claim and the experience agree, and ' +
+      'the level itself is the finding.'
+    : '';
+
+  return `
+    <p class="result-lowest">The lowest area overall is <strong>${low.label}</strong>, at ` +
+    `${low.total} of ${max * 2}.${alsoText}</p>
+    <blockquote class="result-quote">
+      <p><span class="quote-vantage">On paper</span> &ldquo;${question_text(dimension, 'stated')}&rdquo; &mdash; you said ${low.stated}/${max}.</p>
+      <p><span class="quote-vantage">In practice</span> &ldquo;${question_text(dimension, 'lived')}&rdquo; &mdash; you said ${low.lived}/${max}.</p>
+    </blockquote>
+    <p class="result-lowest-note">That is the other place we would start.${flatLine}</p>`;
 }
 
 if (formEl) {
@@ -211,12 +261,14 @@ if (formEl) {
     }
 
     const ranked = shared.gap_ranking(cfg.dimensions, state.series);
+    const ranked_low = shared.lowest_total(cfg.dimensions, state.series);
 
     resultEl.classList.remove('error');
     resultEl.removeAttribute('role');
     resultEl.innerHTML = `
       ${shared.render_vantage_list(cfg.dimensions, state.series, 5)}
       ${describe_widest(cfg.dimensions, ranked)}
+      ${describe_floor(cfg.dimensions, ranked_low, ranked.length ? ranked[0].key : null, 5)}
       <p class="result-caveat">This is a self-assessment from one point of view. It is a prompt for a conversation, not a measurement of your team.</p>`;
 
     if (ctaEl) ctaEl.style.display = 'block';
@@ -232,8 +284,10 @@ if (formEl) {
     // status line both label this value themselves, so carrying the label in
     // the value renders it twice. scorecard.js is the pattern: its summary is
     // bare and the email supplies "Scorecard:".
+    const lowest = ranked_low[0];
     const resultText = `${detail} (on paper/in practice). ` +
-      (widest ? `Widest gap: ${widest.label} ${widest.stated} vs ${widest.lived}.` : 'No gap could be read.');
+      (widest ? `Widest gap: ${widest.label} ${widest.stated} vs ${widest.lived}. ` : 'No gap could be read. ') +
+      (lowest ? `Lowest overall: ${lowest.label} ${lowest.stated}+${lowest.lived}=${lowest.total}/10.` : '');
 
     const hiddenField = document.getElementById('ba-readiness-hidden');
     if (hiddenField) hiddenField.value = resultText;
