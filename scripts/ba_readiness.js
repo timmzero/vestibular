@@ -191,7 +191,10 @@ if (formEl) {
             caption.textContent = 'All ' + geometry.questions +
               ' answered \u2014 this is your shape.';
           } else if (geometry.answered === 0) {
-            caption.textContent = 'The shape builds as you answer.';
+            // Nothing before the first answer. The empty chart already says
+            // "nothing here yet", and a sentence promising it will fill in is
+            // an instruction for a thing that needs none.
+            caption.textContent = '';
           } else {
             caption.textContent = geometry.answered + ' of ' + geometry.questions +
               ' answered \u2014 the shape firms up as you go.';
