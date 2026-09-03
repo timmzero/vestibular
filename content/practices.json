@@ -330,14 +330,14 @@
             "questions": [
               {
                 "key": "morale_stated",
-                "text": "People here can challenge an idea, even one from the person sponsoring it, without negative consequence.",
+                "text": "Nobody here has to choose between being honest and being comfortable.",
                 "vantage": "stated"
               },
               {
                 "key": "morale_lived",
-                "text": "The last time I disagreed with someone senior about how work should be done, it cost me nothing.",
+                "text": "The last time I told someone senior something they did not want to hear, it went fine.",
                 "vantage": "lived",
-                "escape": "I have not disagreed with someone senior"
+                "escape": "I have not had to tell someone senior something unwelcome"
               }
             ]
           },
