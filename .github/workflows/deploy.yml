@@ -61,3 +61,15 @@ jobs:
       # validator is an input boundary. Needs backend deps for the rasteriser.
       - name: Readiness radar image checks
         run: npm ci --prefix backend && node tools/test_radar_image.mjs
+
+      # The email breakdown reads the same payload, and its whole job is a
+      # distinction the prose summary collapses: 1/1 and 5/5 both have zero gap
+      # and are the two most opposite readings the scale can produce.
+      #
+      # This step also carries the escape/polygon coupling. radar_geometry
+      # drops the ENTIRE polygon when any axis is absent, which is correct only
+      # while no question offers a way to decline. That precondition is not
+      # visible from either file alone, so it is asserted here rather than left
+      # as a comment two modules apart.
+      - name: Readiness email checks
+        run: node tools/test_readiness_email.mjs

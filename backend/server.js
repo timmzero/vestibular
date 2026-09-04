@@ -3,6 +3,7 @@ import fetch from 'node-fetch';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import { renderReadinessRadar } from './radar_image.js';
+import { renderReadinessTable } from './readiness_table.js';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
@@ -105,9 +106,24 @@ app.post('/api/contact', async (req, res) => {
     ? String(ba_readiness_result).replace(/</g, '&lt;')
     : '';
 
-  // Chart is an enhancement: renderReadinessRadar returns null on any fault,
-  // and the enquiry goes out with its text summary regardless.
+  // Chart and breakdown are enhancements: both degrade on any fault and the
+  // enquiry goes out with its text summary regardless. Neither may ever cost
+  // an email.
+  //
+  // ⛔ BUT A DEGRADED EMAIL MUST SAY WHY IT DEGRADED. These used to return a
+  // bare null, so a text-only enquiry was the output of four distinct faults
+  // and the only trace was a console.warn in a server log. Diagnosing one
+  // meant reproducing it. The reason now travels with the result and is
+  // printed beside the summary, so the NEXT failure explains itself in the
+  // inbox where it is actually noticed.
   const radar = await renderReadinessRadar(ba_readiness_shape);
+  const table = await renderReadinessTable(ba_readiness_shape);
+
+  // Only worth a line when a readiness result arrived and its visuals did not.
+  // With no readiness result there is nothing missing to explain.
+  const visualsNote = safeReadiness && (!radar.image || !table.html)
+    ? `<p style="color:#94a3b8;font-size:12px">Radar: ${radar.reason}. Breakdown: ${table.reason}.</p>`
+    : '';
 
   const POSTMARK_TOKEN = process.env.POSTMARK_TOKEN;
   console.log('Postmark token loaded:', !!POSTMARK_TOKEN);
@@ -129,7 +145,9 @@ app.post('/api/contact', async (req, res) => {
                      <p><strong>Email:</strong> ${safeEmail}</p>
                      ${safeScorecard ? `<p><strong>Scorecard:</strong> ${safeScorecard}</p>` : ''}
                      ${safeReadiness ? `<p><strong>AI readiness:</strong> ${safeReadiness}</p>` : ''}
-                     ${radar ? `<p><img src="cid:readiness-radar" alt="Readiness radar" width="420" /></p>` : ''}
+                     ${radar.image ? `<p><img src="cid:readiness-radar" alt="Readiness radar" width="420" /></p>` : ''}
+                     ${table.html || ''}
+                     ${visualsNote}
                      <p><strong>Message:</strong></p>
                      <p>${safeMessage}</p>`,
           TextBody: `Name: ${safeName}\nEmail: ${safeEmail}\n`
@@ -140,11 +158,11 @@ app.post('/api/contact', async (req, res) => {
           MessageStream: 'outbound',
           // ContentID makes it render inline in the body rather than as a
           // download. Gmail strips inline SVG, so this is raster by necessity.
-          Attachments: radar
+          Attachments: radar.image
             ? [{
                 Name: 'readiness-radar.png',
-                Content: radar.base64,
-                ContentType: radar.contentType,
+                Content: radar.image.base64,
+                ContentType: radar.image.contentType,
                 ContentID: 'cid:readiness-radar',
               }]
             : [],
