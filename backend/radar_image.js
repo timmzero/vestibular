@@ -18,10 +18,20 @@
  * this renderer too.
  *
  * ⛔ THE CHART IS AN ENHANCEMENT AND MUST NEVER COST AN ENQUIRY. Every failure
- * path here returns null so the caller sends the email without an image. A
+ * path degrades to the text summary, which already carries every value. A
  * missing module (if the deploy root excludes ../scripts), a malformed shape
- * payload or a rasteriser fault must all degrade to the text summary, which
- * already carries every value.
+ * payload or a rasteriser fault must all send the email anyway.
+ *
+ * ⛔⛔ BUT IT MUST SAY WHY IT DEGRADED. This returned a bare `null` on all four
+ * distinct faults, so a text-only email was the output of "no shape arrived",
+ * "the payload was malformed", "the shared geometry is missing" and "the
+ * rasteriser failed" alike — and the only trace was a console.warn in a server
+ * log nobody reads. An enquiry arrived with no chart and there was no way to
+ * tell which of four causes fired without reproducing it.
+ *
+ * So the return is ALWAYS an object carrying a `reason`. Absence is STATED by
+ * the producer rather than arrived at by the caller finding null. The caller
+ * prints the reason beside the summary, and the next failure diagnoses itself.
  *
  * Colours are duplicated from styles.css by necessity — an email cannot read
  * the site's stylesheet. They are named here so the drift is visible rather
@@ -93,13 +103,30 @@ function parseShape(raw) {
     if (!/^[a-z0-9_]{1,40}$/i.test(axis.key)) return null;
     dimensions.push({ key: axis.key, label: axis.label.slice(0, MAX_LABEL) });
 
-    // ⛔ A VANTAGE MAY BE LEGITIMATELY ABSENT and that is not a malformed
-    // payload. Three lived items ask about an event that may never have
-    // happened, and the respondent can say so. Absent is left OUT of the
-    // values object, which radar_geometry already plots as a gap in the shape
-    // rather than at the centre. Rejecting the payload for it would silently
-    // strip the chart from the email of exactly the people who answered most
-    // carefully.
+    // A vantage may be absent, and that is not a malformed payload. Absent is
+    // left OUT of the values object rather than coerced to a number.
+    //
+    // ⛔⛔ THIS COMMENT USED TO SAY radar_geometry "plots as a gap in the shape
+    // rather than at the centre". IT DOES NOT, AND IT NEVER DID. radar.js:77
+    // computes `plottable = points.every(p => p !== null)` and returns
+    // `polygon: null` when ANY axis is missing — so one absent vantage drops
+    // the ENTIRE polygon and leaves floating dots. Rejecting the payload was
+    // avoided here to protect the people who answered most carefully, and the
+    // layer below stripped their shape anyway. The protection was defeated one
+    // layer down and the comment described the intent, not the behaviour.
+    //
+    // ⭐ WHY THAT IS CURRENTLY HARMLESS, AND WHY IT IS ONLY CURRENTLY:
+    // the instrument no longer offers any way to decline. Commits 0726ac8 and
+    // e38c2ba removed the last escapes and told people to answer neutral
+    // instead, and ba_readiness.js refuses to submit while any axis is
+    // unanswered. So no live payload can carry an absent vantage, and
+    // all-or-nothing is the RIGHT rule for the on-page chart, where it makes
+    // the shape form progressively as the form is filled.
+    //
+    // ⛔ It is correct by PRECONDITION, not by design. If an escape is ever
+    // reintroduced, the shape silently vanishes for exactly those respondents
+    // again. tools/test_readiness_email.mjs pins the two facts together so
+    // that cannot happen quietly.
     for (const [vantage, into] of [['stated', stated], ['lived', lived]]) {
       const raw = axis[vantage];
       if (raw === undefined || raw === null) continue;
@@ -174,15 +201,33 @@ function buildSvg(geos, dimensions, radius, cx, cy, size, ringRadii, labelGap, f
 }
 
 /**
- * @returns {Promise<{base64: string, contentType: string} | null>}
- *          null whenever anything at all goes wrong.
+ * ⭐ REASONS ARE A CLOSED SET AND EACH NAMES A DIFFERENT FIX:
+ *
+ *   ok                    — image present.
+ *   no_shape              — nothing arrived. The visitor's browser held no
+ *                           stored shape, usually a stale cached script or
+ *                           blocked storage. Front-end problem.
+ *   malformed_shape       — something arrived and failed validation. Either a
+ *                           payload shape change or a hostile submission.
+ *   geometry_unavailable  — ../scripts/radar.js could not be imported. The
+ *                           deploy root excludes it. Deployment problem.
+ *   render_failed         — the rasteriser threw. Usually @resvg/resvg-js
+ *                           missing its native binding on this host.
+ *
+ * @returns {Promise<{image: {base64: string, contentType: string} | null,
+ *                    reason: string, detail?: string}>}
+ *          ALWAYS an object. Never null — see the header.
  */
 export async function renderReadinessRadar(rawShape) {
+  const hadInput = !(rawShape === undefined || rawShape === null || rawShape === '');
   const parsed = parseShape(rawShape);
-  if (!parsed) return null;
+  // ⛔ "nothing was sent" and "something was sent and was wrong" are different
+  // failures with different fixes, and collapsing them is the defect this
+  // return type exists to remove.
+  if (!parsed) return { image: null, reason: hadInput ? 'malformed_shape' : 'no_shape' };
 
   const radar = await loadGeometry();
-  if (!radar) return null;
+  if (!radar) return { image: null, reason: 'geometry_unavailable' };
 
   try {
     const radius = 100;
@@ -217,9 +262,12 @@ export async function renderReadinessRadar(rawShape) {
 
     const { Resvg } = await import('@resvg/resvg-js');
     const png = new Resvg(svg, { fitTo: { mode: 'width', value: 420 } }).render().asPng();
-    return { base64: Buffer.from(png).toString('base64'), contentType: 'image/png' };
+    return {
+      image: { base64: Buffer.from(png).toString('base64'), contentType: 'image/png' },
+      reason: 'ok',
+    };
   } catch (err) {
     console.warn('radar_image: render failed, sending text-only —', err.message);
-    return null;
+    return { image: null, reason: 'render_failed', detail: err.message };
   }
 }

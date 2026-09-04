@@ -206,19 +206,24 @@ if (formEl) {
     }
   }
 
-  // An escape and a number are mutually exclusive. read_question already gives
-  // the escape precedence, so the READING is unambiguous either way — this is
-  // about the screen not showing a person a 4 they can no longer be scored on.
-  // A checkbox fires 'input', which is the event the radar already listens to,
-  // so the chart follows without radar.js knowing escapes exist.
-  formEl.addEventListener('change', function (e) {
-    const box = e.target;
-    if (!box || box.type !== 'checkbox' || !/_absent$/.test(box.name || '')) return;
-    const numeric = formEl.elements[box.name.replace(/_absent$/, '')];
-    if (!numeric) return;
-    if (box.checked) numeric.value = '';
-    numeric.disabled = box.checked;
-  });
+  // ⛔ THE _absent CHECKBOX HANDLER THAT LIVED HERE IS DELETED. It kept a
+  // numeric input and its escape checkbox mutually exclusive — correct while
+  // escapes existed, and dead since 0726ac8 removed morale's and e38c2ba
+  // removed the last one in favour of answering neutral. No question in
+  // content/practices.json declares an escape, and the live page renders zero
+  // `_absent` inputs, so the listener could not fire.
+  //
+  // Deleted rather than left in place because a live-looking handler for a
+  // removed feature is how backend/radar_image.js came to carry a paragraph
+  // describing absent-vantage behaviour the geometry never had.
+  //
+  // ⭐ ONLY THE UI SYNC WENT. dimension_read.js:44 still reads `key + '_absent'`
+  // and still gives an escape precedence — that reader is SHARED by both
+  // practices, is covered by 68 checks, and costs nothing standing by. What was
+  // removed is the single-practice listener that kept a checkbox and a number
+  // input mutually exclusive on screen, which had no checkbox left to listen to.
+  // Reinstate it WITH the escape if one ever returns —
+  // tools/test_readiness_email.mjs pins why that is not a free change.
 
   formEl.addEventListener('submit', function (e) {
     e.preventDefault();
