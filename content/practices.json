@@ -607,6 +607,13 @@
         "_comment": "The case-study content. No customer names, no revenue figures — per founder direction. Claims here must stay true to what the platform actually does; this page is the practice's credibility and an overstatement here costs more than it wins.",
         "headline": "We ran this playbook on ourselves.",
         "summary": "Before advising anyone on AI transformation, we built and shipped one: a production system that drafts regulatory compliance documents for Australian road worksites, in a domain where a confident wrong answer is a safety problem rather than an embarrassment.",
+        "product": {
+          "_comment": "The case study calls it \"the system\" throughout and never named it, so the page asserted shipped work while withholding the only thing that lets a reader verify it. Structured rather than inlined because renderProof escapes every string it is given — an <a> written into the prose would render as visible tag text.",
+          "before": "The system described here is",
+          "name": "VTRAFFIC",
+          "url": "https://vtraffic.nexus",
+          "after": ", and it is live. Every claim on this page can be checked against it."
+        },
         "context": [
           "Traffic Management Plans and Traffic Guidance Schemes are the documents that govern how a road worksite is signed, staged and made safe. They are prepared by qualified people, audited by road authorities, and wrong details have physical consequences.",
           "The rules are layered: a national baseline, then state and territory overlays that diverge from it. What is compliant in one jurisdiction is not automatically compliant in the next.",
