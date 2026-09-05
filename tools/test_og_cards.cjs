@@ -20,8 +20,12 @@
  * file asserts three things, and the third is what makes the first two mean
  * anything:
  *
- *   1. The manifest's strings still equal pages.json's. Change a title without
- *      re-running the generator and this goes red.
+ *   1. The values each card was rendered FROM still equal what its declared
+ *      source says. Change a title without re-running the generator and this
+ *      goes red. Each entry names its own source file and path, so the root
+ *      card — derived from practices.json's brand.hero rather than from a
+ *      <title> — is checked by the same code path as every other card, and
+ *      this file never has to reimplement that derivation.
  *   2. Every page has a card and every card has a page — a new page silently
  *      shipping without a card is the same defect one step earlier.
  *   3. Every PNG's sha256 still equals the manifest's. This is what stops the
@@ -90,21 +94,42 @@ for (const page_file of page_files) {
   const entry = manifest[page_file];
   if (!entry) continue; // already reported by the census above
 
-  // (1) the card was rendered from what the page currently says
-  check(`${page_file} — card text matches pages.json`, () => {
-    assert.strictEqual(
-      entry.title,
-      pages[page_file].title,
-      `card title is stale.\n    card:  ${entry.title}\n    page:  ${pages[page_file].title}\n` +
-        '    Run: python3 tools/build_og_images.py',
+  // (1) the card was rendered from source values that have not since moved
+  check(`${page_file} — card source is current`, () => {
+    const src = entry.source;
+    assert.ok(
+      src && src.file && src.path && src.values,
+      'manifest entry has no source record. Run: python3 tools/build_og_images.py',
     );
-    assert.strictEqual(
-      entry.description,
-      pages[page_file].description,
-      `card description is stale.\n    card:  ${entry.description}\n` +
-        `    page:  ${pages[page_file].description}\n` +
-        '    Run: python3 tools/build_og_images.py',
-    );
+
+    // Follow the declared path rather than assuming pages.json. The root card
+    // is derived from practices.json's brand.hero — see card_source() in
+    // build_og_images.py for why. Comparing the SOURCE VALUES, not the drawn
+    // output, is what lets this file stay ignorant of that transformation
+    // instead of carrying a second copy of it in another language.
+    // `path` is a list of keys, not a dotted string: page keys are filenames
+    // and contain dots, so 'pages.services.html' would split into three.
+    assert.ok(Array.isArray(src.path), 'manifest source.path must be a list of keys');
+    const where = src.path.join(' -> ');
+    const doc = JSON.parse(read(src.file));
+    const actual = src.path.reduce((node, key) => {
+      assert.ok(
+        node && Object.prototype.hasOwnProperty.call(node, key),
+        `${src.file} has no ${where} — the source moved or was renamed`,
+      );
+      return node[key];
+    }, doc);
+
+    for (const [key, recorded] of Object.entries(src.values)) {
+      assert.deepStrictEqual(
+        actual[key],
+        recorded,
+        `${src.file} ${where}.${key} has moved since the card was rendered.\n` +
+          `    card was rendered from: ${JSON.stringify(recorded)}\n` +
+          `    source now says:        ${JSON.stringify(actual[key])}\n` +
+          '    Run: python3 tools/build_og_images.py',
+      );
+    }
   });
 
   // (3) the manifest entry still describes the PNG that is actually committed

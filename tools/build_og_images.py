@@ -53,6 +53,11 @@ PAGES = ROOT / "content" / "pages.json"
 LOGO = ROOT / "assets" / "vestibular_logo.svg"
 OUT_DIR = ROOT / "assets" / "og"
 MANIFEST = OUT_DIR / "manifest.json"
+PRACTICES = ROOT / "content" / "practices.json"
+
+# Phrase separator in a card title. Spaced so it cannot match a hyphenated word
+# ("AI-Transformational" must not become two phrases).
+SEPARATOR = " - "
 FONT_DIR = Path(os.environ.get("VN_FONT_DIR", "/tmp"))
 
 W, H = 1200, 630                 # Open Graph large-card canvas
@@ -89,6 +94,24 @@ def wrap(draw: ImageDraw.ImageDraw, text: str, font, max_w: int) -> list[str]:
     return lines
 
 
+def title_lines_for(page: str, draw, font, max_w: int, cap: int) -> list[str]:
+    """A title written as separated phrases breaks at its SEPARATORS, not
+    wherever the greedy wrapper runs out of pixels.
+
+    'Fix your framework - Flex AI - Free your humans' wrapped greedily into
+    'Fix your framework - Flex' / 'AI - Free your humans', splitting a phrase
+    across the break so it read as a typo. Phrases are the unit here.
+
+    A phrase too wide for one line still falls back to greedy wrapping rather
+    than overflowing the canvas, and the cap applies to the total either way.
+    """
+    parts = [seg.strip() for seg in page.split(SEPARATOR)] if SEPARATOR in page else [page]
+    lines: list[str] = []
+    for part in parts:
+        lines.extend(wrap(draw, part, font, max_w))
+    return lines[:cap]
+
+
 def split_title(title: str) -> tuple[str, str]:
     """Titles read 'Vestibular AI Transformation - Playbook'. The part after the
     dash is the page; the part before is the brand line above it."""
@@ -114,13 +137,18 @@ def build_card(page_file: str, title: str, description: str, logo: Image.Image) 
     f_desc = load_font("IBMPlexSans-Regular.ttf", 27)
 
     brand, page = split_title(title)
-    title_lines = wrap(draw, page, f_title, max_w)[:2]
+    title_lines = title_lines_for(page, draw, f_title, max_w, cap=3)
     desc_lines = wrap(draw, description, f_desc, max_w)[:3]
 
     # Measure the block, then centre it. Cards have between one and two title
     # lines and one to three description lines, so a fixed offset leaves the
     # short ones hanging off the top of a mostly empty canvas.
-    block_h = 44 + len(title_lines) * 74 + 18 + len(desc_lines) * 40
+    # The gap under the title is 14px, tuned when a title could be at most two
+    # lines. A stacked three-line triplet crowds the description at that value.
+    # Widened ONLY for the tall case: a flat 28px would restyle all eleven cards
+    # to fix one, and the other ten were not asked to move.
+    title_gap = 28 if len(title_lines) >= 3 else 14
+    block_h = 44 + len(title_lines) * 74 + title_gap - 14 + 18 + len(desc_lines) * 40
     y = (H - block_h) // 2
 
     draw.text((x, y), brand.upper(), font=f_brand, fill=LIME)
@@ -128,7 +156,7 @@ def build_card(page_file: str, title: str, description: str, logo: Image.Image) 
     for line in title_lines:
         draw.text((x, y), line, font=f_title, fill=TEXT)
         y += 74
-    y += 14
+    y += title_gap
     for line in desc_lines:
         draw.text((x, y), line, font=f_desc, fill=MUTED)
         y += 40
@@ -140,10 +168,59 @@ def build_card(page_file: str, title: str, description: str, logo: Image.Image) 
     return card
 
 
+def card_source(page_file: str, meta: dict, hero: dict) -> tuple[str, str, dict]:
+    """Where a card's words come from, and the record of it for the manifest.
+
+    Most cards take the page's own <title> and meta description, which is what
+    keeps a card from advertising something the page does not say.
+
+    index.html is the exception, deliberately. Its <title> has to carry the
+    brand for a search result — "Vestibular Agile & AI Transformation" — while
+    the card is the one surface where the brand's own voice belongs. Those are
+    different jobs and one string cannot do both well.
+
+    ⚠️ THE EXCEPTION IS A DERIVATION, NOT A SECOND COPY. The root card's words
+    ARE the hero's words, transformed here and stored nowhere. Adding a
+    hand-written card_title field to pages.json instead would put the same
+    sentence in two files with nothing holding them together — which is exactly
+    how ai-readiness.png came to advertise an instrument that no longer existed.
+
+    Returns (title, description, source_record). The source record names the
+    file and path the values came from and carries the values verbatim, so
+    tools/test_og_cards.cjs can verify they have not moved WITHOUT having to
+    reimplement this transformation in another language.
+
+    ⚠️ `path` is a LIST of keys, never a dotted string. Page keys are filenames
+    and contain dots, so "pages.services.html" splits into three keys and
+    resolves to nothing — caught the first time this ran over real data.
+    """
+    if page_file == "index.html":
+        return (
+            SEPARATOR.join(line.rstrip(".") for line in hero["headline"]),
+            hero["lede"],
+            {
+                "file": "content/practices.json",
+                "path": ["brand", "hero"],
+                "values": {"headline": hero["headline"], "lede": hero["lede"]},
+            },
+        )
+
+    return (
+        meta["title"],
+        meta["description"],
+        {
+            "file": "content/pages.json",
+            "path": ["pages", page_file],
+            "values": {"title": meta["title"], "description": meta["description"]},
+        },
+    )
+
+
 def main() -> None:
     if not PAGES.exists():
         sys.exit(f"FAIL: {PAGES} not found")
     pages = json.loads(PAGES.read_text())["pages"]
+    hero = json.loads(PRACTICES.read_text())["brand"]["hero"]
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -159,7 +236,7 @@ def main() -> None:
     manifest_cards = {}
 
     for page_file, meta in pages.items():
-        title, desc = meta["title"], meta["description"]
+        title, desc, source = card_source(page_file, meta, hero)
         # The description is written for search results and runs long. Trim at
         # a WORD boundary, never at punctuation: these descriptions lead with a
         # label ending in a colon, so splitting on punctuation left a fragment.
@@ -169,13 +246,12 @@ def main() -> None:
         out = OUT_DIR / f"{Path(page_file).stem}.png"
         card.save(out, "PNG", optimize=True)
 
-        # Record the SOURCE strings, not the trimmed/wrapped ones. The trim is
-        # deterministic from the source, so comparing sources is sufficient —
-        # and it keeps the checker from having to reimplement the trim in
-        # another language, which would be a second copy of the rule.
+        # `title`/`description` are what was DRAWN and are informational. The
+        # check reads `source`, because that is what can go stale.
         manifest_cards[page_file] = {
             "title": title,
             "description": desc,
+            "source": source,
             "sha256": hashlib.sha256(out.read_bytes()).hexdigest(),
         }
         print(f"  {out.relative_to(ROOT)}  {out.stat().st_size:,} B")

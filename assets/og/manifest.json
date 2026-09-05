@@ -4,56 +4,181 @@
     "agile.html": {
       "title": "Vestibular Agile Transformation – Practice",
       "description": "Agile Transformation consulting: declutter Agile tooling, rebuild morale, and scale with a modular, science-backed maturity model.",
+      "source": {
+        "file": "content/pages.json",
+        "path": [
+          "pages",
+          "agile.html"
+        ],
+        "values": {
+          "title": "Vestibular Agile Transformation – Practice",
+          "description": "Agile Transformation consulting: declutter Agile tooling, rebuild morale, and scale with a modular, science-backed maturity model."
+        }
+      },
       "sha256": "bbec5bc55a4b9828412ab52302b061ff1a1aec82327d7a080458604e13707b61"
     },
     "ai-playbook.html": {
       "title": "Vestibular AI Transformation – Playbook",
       "description": "The Vestibular AI Transformation playbook: twelve steps across Listen, Design, and Land — from surfacing ground truth to measuring realised uplift.",
+      "source": {
+        "file": "content/pages.json",
+        "path": [
+          "pages",
+          "ai-playbook.html"
+        ],
+        "values": {
+          "title": "Vestibular AI Transformation – Playbook",
+          "description": "The Vestibular AI Transformation playbook: twelve steps across Listen, Design, and Land — from surfacing ground truth to measuring realised uplift."
+        }
+      },
       "sha256": "492715ed93308a8029b466739129bb462eb1fdf1cf2d182fe34ef5c9c3c1f45d"
     },
     "ai-services.html": {
       "title": "Vestibular AI Transformation – Services",
       "description": "Six AI-Transformational Business Analysis services: readiness assessment, value case, operating model redesign, requirements and governance, roadmap, and adoption.",
+      "source": {
+        "file": "content/pages.json",
+        "path": [
+          "pages",
+          "ai-services.html"
+        ],
+        "values": {
+          "title": "Vestibular AI Transformation – Services",
+          "description": "Six AI-Transformational Business Analysis services: readiness assessment, value case, operating model redesign, requirements and governance, roadmap, and adoption."
+        }
+      },
       "sha256": "66ca8a0714972f39a0a845986ce18d1f81571540e1e328bcecfcb502e7b6edbd"
     },
     "ai-transformation.html": {
       "title": "Vestibular AI Transformation – Business Analysis",
       "description": "AI-Transformational Business Analysis: operating model redesign, AI opportunity identification, and value modelling grounded in what your team already knows.",
+      "source": {
+        "file": "content/pages.json",
+        "path": [
+          "pages",
+          "ai-transformation.html"
+        ],
+        "values": {
+          "title": "Vestibular AI Transformation – Business Analysis",
+          "description": "AI-Transformational Business Analysis: operating model redesign, AI opportunity identification, and value modelling grounded in what your team already knows."
+        }
+      },
       "sha256": "93d368f351f2452311dfc20e003ecd2b79eea0fdbaf14ec8adba65bedfe6a55a"
     },
     "contact.html": {
       "title": "Contact – Vestibular",
       "description": "Contact Vestibular Agile Transformation — book a consult or ask about our Agile Sanitation playbook.",
+      "source": {
+        "file": "content/pages.json",
+        "path": [
+          "pages",
+          "contact.html"
+        ],
+        "values": {
+          "title": "Contact – Vestibular",
+          "description": "Contact Vestibular Agile Transformation — book a consult or ask about our Agile Sanitation playbook."
+        }
+      },
       "sha256": "1c7dd361ff2d8edd532f1a393aa17c7c485732b2bd39894dbf1564c9897a3ada"
     },
     "diagnostic.html": {
       "title": "Vestibular Agile Transformation – Diagnostic",
       "description": "Vestibular Agile Transformation helps tech teams rebuild morale, declutter Agile tooling, and scale with a modular, science-backed playbook.",
+      "source": {
+        "file": "content/pages.json",
+        "path": [
+          "pages",
+          "diagnostic.html"
+        ],
+        "values": {
+          "title": "Vestibular Agile Transformation – Diagnostic",
+          "description": "Vestibular Agile Transformation helps tech teams rebuild morale, declutter Agile tooling, and scale with a modular, science-backed playbook."
+        }
+      },
       "sha256": "4f3d80b296c09b486de031f8b737855cb5998a86ab70dd8d222073bc39cf6a39"
     },
     "index.html": {
-      "title": "Vestibular Agile Transformation",
-      "description": "Vestibular Agile Transformation helps tech teams declutter Agile tooling, rebuild morale, and scale with a modular, science-backed playbook.",
-      "sha256": "307f43d5b3da2ffe3219a95a647793b542eae9ff99ea2cc0372651ae78db1449"
+      "title": "Fix your framework - Flex AI - Free your humans",
+      "description": "We help teams keep pace with paradigm shifts. We build AI systems that flex in workflows. We engineer ecosystems that synergize.",
+      "source": {
+        "file": "content/practices.json",
+        "path": [
+          "brand",
+          "hero"
+        ],
+        "values": {
+          "headline": [
+            "Fix your framework.",
+            "Flex AI.",
+            "Free your humans."
+          ],
+          "lede": "We help teams keep pace with paradigm shifts. We build AI systems that flex in workflows. We engineer ecosystems that synergize."
+        }
+      },
+      "sha256": "3e9c1b32ca9ca47b4842320c858221ba56f7fd1985ca182db8c873bd93ced387"
     },
     "playbook.html": {
       "title": "Vestibular Agile Transformation – Playbook",
       "description": "Vestibular Agile Transformation helps tech teams declutter Agile tooling, rebuild morale, and scale with a modular, science-backed playbook.",
+      "source": {
+        "file": "content/pages.json",
+        "path": [
+          "pages",
+          "playbook.html"
+        ],
+        "values": {
+          "title": "Vestibular Agile Transformation – Playbook",
+          "description": "Vestibular Agile Transformation helps tech teams declutter Agile tooling, rebuild morale, and scale with a modular, science-backed playbook."
+        }
+      },
       "sha256": "6be5a5d2c02fb1eb835ed53834ffb93c3b9c6b74b1ea318b978b8985f0845dba"
     },
     "services.html": {
       "title": "Vestibular Agile Transformation – Services",
       "description": "Vestibular Agile Transformation helps tech teams declutter Agile tooling, rebuild morale, and scale with a modular, science-backed playbook.",
+      "source": {
+        "file": "content/pages.json",
+        "path": [
+          "pages",
+          "services.html"
+        ],
+        "values": {
+          "title": "Vestibular Agile Transformation – Services",
+          "description": "Vestibular Agile Transformation helps tech teams declutter Agile tooling, rebuild morale, and scale with a modular, science-backed playbook."
+        }
+      },
       "sha256": "88b87c9f68ae651956d5312ded12027b2d681d017923dc065a3712e63b0557a2"
     },
     "ai-proof.html": {
       "title": "Vestibular AI Transformation – Proof",
       "description": "We built and shipped a production AI system for regulated compliance documents. What it taught us about grounding, calibration, and where AI does not belong.",
+      "source": {
+        "file": "content/pages.json",
+        "path": [
+          "pages",
+          "ai-proof.html"
+        ],
+        "values": {
+          "title": "Vestibular AI Transformation – Proof",
+          "description": "We built and shipped a production AI system for regulated compliance documents. What it taught us about grounding, calibration, and where AI does not belong."
+        }
+      },
       "sha256": "a789faf381ffc9a67fe517587418e9aeb5a4fd2dbf72d213951c4f6923e89f71"
     },
     "ai-readiness.html": {
       "title": "Vestibular AI Transformation – Readiness",
       "description": "A sixteen-question readiness check across eight areas: goals, systems, pain points, morale, roles, AI fit, data readiness and load.",
+      "source": {
+        "file": "content/pages.json",
+        "path": [
+          "pages",
+          "ai-readiness.html"
+        ],
+        "values": {
+          "title": "Vestibular AI Transformation – Readiness",
+          "description": "A sixteen-question readiness check across eight areas: goals, systems, pain points, morale, roles, AI fit, data readiness and load."
+        }
+      },
       "sha256": "8926ab8c84083cc33ab540fdcc1dc17a6fbeeb94b168315092f51286a187b792"
     }
   }
