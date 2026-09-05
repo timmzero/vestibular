@@ -30,6 +30,16 @@ jobs:
       - name: Verify generated HTML matches content/practices.json
         run: node tools/render_content.mjs --check
 
+      # The share cards were the one artifact in this pipeline with no guard,
+      # and they drifted: ai-readiness.png advertised a twelve-question, six-area
+      # instrument for the whole life of a sixteen-question, eight-area one. A
+      # card is the one place text is pixels, so no other check could see it.
+      # This compares assets/og/manifest.json against content/pages.json rather
+      # than re-rendering — see tools/test_og_cards.cjs for why byte comparison
+      # is the wrong guard here.
+      - name: Share cards match the content SSOT
+        run: node tools/test_og_cards.cjs
+
       # The radar's maths is separated from the DOM so it can be checked with
       # no browser. Each assertion was driven over a known-bad mutation of the
       # module before being trusted — a wrong angle, or a blank answer plotted
