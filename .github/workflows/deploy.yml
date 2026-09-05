@@ -40,6 +40,14 @@ jobs:
       - name: Share cards match the content SSOT
         run: node tools/test_og_cards.cjs
 
+      # One sentence was serving four pages: index, playbook and services held
+      # byte-identical descriptions and diagnostic held the same sentence with
+      # two clauses swapped, which an exact-match census reports as unique.
+      # Three others were longer than the card can draw and shipped with an
+      # ellipsis nobody chose.
+      - name: Page metadata is distinct and fits the card
+        run: node tools/test_page_meta.cjs
+
       # The radar's maths is separated from the DOM so it can be checked with
       # no browser. Each assertion was driven over a known-bad mutation of the
       # module before being trusted — a wrong angle, or a blank answer plotted

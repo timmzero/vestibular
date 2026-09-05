@@ -109,7 +109,14 @@ def title_lines_for(page: str, draw, font, max_w: int, cap: int) -> list[str]:
     lines: list[str] = []
     for part in parts:
         lines.extend(wrap(draw, part, font, max_w))
-    return lines[:cap]
+    if len(lines) > cap:
+        sys.exit(
+            f"FAIL: title needs {len(lines)} lines, cap is {cap}.\n"
+            f"  title:   {page!r}\n"
+            f"  dropped: {lines[cap:]!r}\n"
+            f"  Shorten it, or give it fewer phrases."
+        )
+    return lines
 
 
 def split_title(title: str) -> tuple[str, str]:
@@ -138,7 +145,21 @@ def build_card(page_file: str, title: str, description: str, logo: Image.Image) 
 
     brand, page = split_title(title)
     title_lines = title_lines_for(page, draw, f_title, max_w, cap=3)
-    desc_lines = wrap(draw, description, f_desc, max_w)[:3]
+    desc_lines = wrap(draw, description, f_desc, max_w)
+
+    # ⛔ OVERFLOW IS A FAILURE, NOT A TRUNCATION. Both of these used to be
+    # sliced — wrap(...)[:2] and wrap(...)[:3] — so a description one clause too
+    # long lost its tail with no ellipsis and no warning, and the card rendered
+    # happily. The 155-character trim above does NOT cover this: it counts
+    # characters while the cap counts rendered lines, and a measured
+    # 89-character string in wide glyphs still wraps to four.
+    if len(desc_lines) > 3:
+        sys.exit(
+            f"FAIL: {page_file} description needs {len(desc_lines)} lines, cap is 3.\n"
+            f"  drawn text: {description!r}\n"
+            f"  dropped:    {desc_lines[3:]!r}\n"
+            f"  Shorten content/pages.json's description for this page."
+        )
 
     # Measure the block, then centre it. Cards have between one and two title
     # lines and one to three description lines, so a fixed offset leaves the
