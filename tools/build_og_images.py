@@ -120,10 +120,25 @@ def title_lines_for(page: str, draw, font, max_w: int, cap: int) -> list[str]:
 
 
 def split_title(title: str) -> tuple[str, str]:
-    """Titles read 'Vestibular AI Transformation - Playbook'. The part after the
-    dash is the page; the part before is the brand line above it."""
+    """Titles read 'AI Consulting Services - Vestibular'. The part BEFORE the
+    dash is the page; the part after is the brand line above it.
+
+    ⚠️ THIS ORDER WAS REVERSED, DELIBERATELY. Titles used to read
+    'Vestibular AI Transformation - Playbook' and this function took the first
+    half as the brand. That put the brand first in every <title>, where a search
+    result wants the subject first — and it was never a decision, only how the
+    titles happened to have been written.
+
+    The old order was already wrong for one page: contact.html read
+    'Contact - Vestibular', so its card rendered the eyebrow CONTACT above the
+    headline "Vestibular". The brand was the headline. Reversing fixes that page
+    and lets every title lead with what it is.
+
+    Only an EN DASH (\u2013) splits. Em dashes and hyphens are free to use inside
+    a page name, which several titles need.
+    """
     if "\u2013" in title:
-        brand, page = title.split("\u2013", 1)
+        page, brand = title.rsplit("\u2013", 1)
         return brand.strip(), page.strip()
     return "Vestibular", title.replace("Vestibular", "").strip() or title.strip()
 
