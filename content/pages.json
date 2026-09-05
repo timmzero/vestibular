@@ -2,48 +2,48 @@
   "_comment": "Per-page <head> metadata. Everything else in <head> is shared chrome rendered from tools/render_content.mjs. Adding a page means adding an entry here — the generator fails loudly on a page it has no metadata for.",
   "pages": {
     "agile.html": {
-      "title": "Vestibular Agile Transformation – Practice",
-      "description": "Agile Transformation consulting: declutter Agile tooling, rebuild morale, and scale with a modular, science-backed maturity model."
+      "title": "Agile Transformation Consulting – Vestibular",
+      "description": "Agile delivery consulting for teams whose tooling has outgrown them: fewer ceremonies, clearer sprints, and morale treated as a delivery metric."
     },
     "ai-playbook.html": {
-      "title": "Vestibular AI Transformation – Playbook",
-      "description": "The Vestibular AI Transformation playbook: twelve steps across Listen, Design, and Land — from surfacing ground truth to measuring realised uplift."
+      "title": "AI Adoption Playbook – Vestibular",
+      "description": "How an AI engagement actually runs: what we look at first, what we refuse to automate, and what you own at the end of it."
     },
     "ai-services.html": {
-      "title": "Vestibular AI Transformation – Services",
-      "description": "Six AI-Transformational Business Analysis services: readiness, value case, operating model redesign, governance, roadmap and adoption."
+      "title": "AI Consulting Services – Vestibular",
+      "description": "Six AI consulting services: readiness, value case, operating model redesign, governance, roadmap and adoption. Fixed scope, senior delivery, no handoff."
     },
     "ai-transformation.html": {
-      "title": "Vestibular AI Transformation – Business Analysis",
-      "description": "AI-Transformational Business Analysis: operating model redesign, AI opportunity identification and value modelling, grounded in what your team knows."
+      "title": "AI Transformation Consultant – Vestibular",
+      "description": "An AI transformation consultant in Terrigal NSW, serving Sydney, the Central Coast and Newcastle. Operating model redesign and AI opportunity mapping."
     },
     "contact.html": {
       "title": "Contact – Vestibular",
-      "description": "Start with a free conversation about what is slowing your team down. We will tell you where we can help, and where we cannot."
+      "description": "Talk to an AI consultant based in Terrigal on the NSW Central Coast, working across Sydney and Newcastle. Free first conversation, no obligation."
     },
     "diagnostic.html": {
-      "title": "Vestibular Agile Transformation – Diagnostic",
-      "description": "The Agile diagnostic scorecard: place your team on the maturity lens, then follow the modular progression that fits where it actually sits."
+      "title": "Agile Maturity Diagnostic – Vestibular",
+      "description": "A scorecard that places your team on the delivery maturity lens, then points at the modules that fit where it actually sits rather than a full programme."
     },
     "index.html": {
-      "title": "Vestibular Agile & AI Transformation",
-      "description": "Two consulting practices: Agile Transformation for delivery that has stalled, and AI-Transformational Business Analysis for AI that never lands."
+      "title": "AI Consulting — Sydney, Central Coast and Newcastle – Vestibular",
+      "description": "AI consulting for teams that have to deliver. We built and shipped production AI in a regulated Australian domain before advising anyone on it."
     },
     "playbook.html": {
-      "title": "Vestibular Agile Transformation – Playbook",
-      "description": "The Agile playbook: a diagnostic lens and package progression from Declutter to Optimize, with AI augmentation embedded at every stage."
+      "title": "Agile Delivery Playbook – Vestibular",
+      "description": "A diagnostic lens and a package progression from Declutter to Optimize, with AI augmentation embedded at every stage rather than bolted on at the end."
     },
     "services.html": {
-      "title": "Vestibular Agile Transformation – Services",
+      "title": "Agile Consulting Services – Vestibular",
       "description": "Six standalone Agile modules that compound: morale-first consulting, tools sanitation, sprint clarity, role design, delivery flow and coaching."
     },
     "ai-proof.html": {
-      "title": "Vestibular AI Transformation – Proof",
-      "description": "We shipped a production AI system for regulated compliance documents. What it taught us about grounding, calibration, and where AI does not belong."
+      "title": "Production AI in a Regulated Domain – Vestibular",
+      "description": "We shipped VTRAFFIC, a production AI system drafting compliance documents for Australian road worksites, before advising anyone on AI adoption."
     },
     "ai-readiness.html": {
-      "title": "Vestibular AI Transformation – Readiness",
-      "description": "A sixteen-question readiness check across eight areas: goals, systems, pain points, morale, roles, AI fit, data readiness and load."
+      "title": "AI Readiness Assessment – Vestibular",
+      "description": "A sixteen-question AI readiness assessment across eight areas: goals, systems, pain points, morale, roles, AI fit, data readiness and load."
     }
   },
   "_nav_comment": "SSOT for the top-level nav. Every page in CHROME_PAGES must be reachable from here or the generator fails: 'add it to nav.html' was a manual checklist step, and ai-proof and ai-readiness had already been added to the site without ever appearing in the nav.",

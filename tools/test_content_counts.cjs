@@ -174,14 +174,14 @@ const CLAIMS = [
     file: 'content/pages.json',
     text: () => pages.pages['ai-readiness.html'].description,
     where: 'SSOT — ai-readiness meta description, question count',
-    pattern: /A ([a-z]+)-question readiness check/,
+    pattern: /A ([a-z]+)-question AI readiness assessment/,
     expected: () => question_count,
   },
   {
     file: 'content/pages.json',
     text: () => pages.pages['ai-readiness.html'].description,
     where: 'SSOT — ai-readiness meta description, area count',
-    pattern: /readiness check across ([a-z]+) areas/,
+    pattern: /readiness assessment across ([a-z]+) areas/,
     expected: () => axis_count,
   },
 ];
@@ -209,7 +209,7 @@ check('the meta description names as many areas as there are axes', () => {
   const listed = read_claim(
     'content/pages.json',
     pages.pages['ai-readiness.html'].description,
-    /readiness check across [a-z]+ areas: ([^."]+)\./,
+    /readiness assessment across [a-z]+ areas: ([^."]+)\./,
   );
   const names = listed.split(/,| and /).map((s) => s.trim()).filter(Boolean);
   assert.strictEqual(
