@@ -546,6 +546,23 @@ function renderPhases(phases) {
  *  teaser on the hub and the full page. */
 function renderProof(proof) {
   const para = (t) => `      <p class="proof-para">${escapeHtml(t)}</p>`;
+
+  /**
+   * The one line on this page that names the product and links to it.
+   *
+   * Everything renderProof emits is escaped, so the anchor is assembled HERE
+   * from structured fields rather than written as markup inside a JSON string —
+   * an <a> in the source would be escaped and render as visible tag text.
+   */
+  const product = (pr) =>
+    [
+      '      <p class="proof-product">',
+      `        ${escapeHtml(pr.before)} `,
+      `<a href="${escapeHtml(pr.url)}">${escapeHtml(pr.name)}</a>`,
+      `${escapeHtml(pr.after)}`,
+      '      </p>',
+    ].join('');
+
   const card = (item, i) => [
     '      <article>',
     '        <div>',
@@ -559,6 +576,7 @@ function renderProof(proof) {
     '      <p class="section-label">Proof</p>',
     `      <h2 class="section-title">${escapeHtml(proof.headline)}</h2>`,
     `      <p class="section-intro">${escapeHtml(proof.summary)}</p>`,
+    product(proof.product),
     '',
     ...proof.context.map(para),
     '',

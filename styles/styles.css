@@ -1170,7 +1170,13 @@ article.stage ul li strong { color: rgba(152,203,43,0.8); }
   line-height: 1.7;
   max-width: 62ch;
 }
-.proof-bridge a { color: var(--primary-color); font-weight: 700; text-decoration: none; }
+/* One treatment for links sitting on the dark background. Was written out
+   identically for .proof-bridge and .ladder-note; the footer link made it three,
+   and an unstyled anchor here renders default UA blue on --secondary-color at
+   1.63:1 contrast, which is unreadable. Lime on that background is 7.89:1. */
+.proof-bridge a,
+.ladder-note a,
+footer a { color: var(--primary-color); font-weight: 700; text-decoration: none; }
 .proof-bridge a:hover { text-decoration: underline; }
 
 .ba-proof-teaser ul { list-style: none; padding: 0; margin: 0 0 1rem; }
@@ -1240,7 +1246,6 @@ article.stage .price { margin-top: 1rem; }
   margin: 0 0 1.5rem;
   max-width: 62ch;
 }
-.ladder-note a { color: var(--primary-color); font-weight: 700; text-decoration: none; }
 .ladder-note a:hover { text-decoration: underline; }
 .scale-legend {
   font-size: 0.85rem;
