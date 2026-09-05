@@ -2,6 +2,20 @@
   "_comment": "SINGLE SOURCE OF TRUTH for practice content. HTML regions marked GENERATED are produced from this file by scripts/build/render_content.mjs. Never hand-edit a GENERATED region — run the generator instead. CI verifies the committed HTML matches this file.",
   "brand": {
     "_comment": "The three senses of the vestibular system, and the brand's organising frame. Each pillar owns exactly two of ai_transformation.domains via the domain's `pillar` key — that mapping is the SSOT for the grouping rendered on index.html, ai-transformation.html and ai-readiness.html.",
+    "hero": {
+      "_comment": "The index hero, and the SSOT for it. These words were hand-written in index.html and existed nowhere else, so the root share card could only quote them by holding a second copy. Both the page and the card now render from here: tools/render_content.mjs writes GENERATED:hero_copy, and tools/build_og_images.py derives the root card's title and description from these same values.",
+      "headline": [
+        "Fix your framework.",
+        "Flex AI.",
+        "Free your humans."
+      ],
+      "intro": [
+        "Amplify the flow.",
+        "From friction to fluid.",
+        "Architected systems that feel alive."
+      ],
+      "lede": "We help teams keep pace with paradigm shifts. We build AI systems that flex in workflows. We engineer ecosystems that synergize."
+    },
     "pillars": [
       {
         "key": "balance",

@@ -167,6 +167,11 @@ const REGIONS = [
     render: (data) => renderEthos(data.practices.ai_transformation.ethos),
   },
   {
+    name: 'hero_copy',
+    file: 'index.html',
+    render: (data) => renderHeroCopy(data.brand.hero),
+  },
+  {
     name: 'home_pillars',
     file: 'index.html',
     render: (data) => renderPillars(data.brand.pillars, data.practices.ai_transformation.domains),
@@ -295,6 +300,42 @@ function renderHead(data, file) {
     '  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
     '  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">',
     '  <link rel="stylesheet" href="styles/styles.css" />',
+  ].join('\n');
+}
+
+/**
+ * The index hero: three stacked lines, a stacked intro, then the lede.
+ *
+ * These words used to be hand-written in index.html and appeared nowhere in
+ * content/. That was survivable while only the page said them — but the root
+ * share card speaks the same words, and a card is rendered by a different tool
+ * in a different language, so quoting them meant a second copy that nothing
+ * held together. build_og_images.py now derives the root card from these same
+ * values, which is only safe because this is the one place they live.
+ *
+ * ⚠️ The <br /> placement is load-bearing: the triplet reads as three lines,
+ * and the CSS gives no block spacing between the spans. A line rendered without
+ * its break collapses the stack into a run-on sentence.
+ */
+function renderHeroCopy(hero) {
+  const stacked = (lines) =>
+    lines.map((line) => `      <span>${escapeHtml(line)}</span>`).join('<br />\n');
+
+  if (!hero.headline.length || !hero.intro.length) {
+    throw new Error('brand.hero needs a non-empty headline and intro');
+  }
+
+  return [
+    '    <h1>',
+    stacked(hero.headline),
+    '    </h1>',
+    '',
+    '    <p class="highlighted-intro">',
+    stacked(hero.intro),
+    '    </p>',
+    '    <p>',
+    `      <span>${escapeHtml(hero.lede)}</span>`,
+    '    </p>',
   ].join('\n');
 }
 
