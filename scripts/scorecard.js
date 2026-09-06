@@ -1,15 +1,17 @@
 /**
- * Free Agile diagnostic scorecard.
+ * Free diagnostic scorecard.
  *
- * Reads its dimensions, thresholds, stage names and PRICES from the
+ * Reads its dimensions, thresholds and stage names from the
  * #scorecard-data block, which the generator emits from
  * content/practices.json. Nothing about the ladder is hardcoded here: a
- * result that recommends a package at a price the same page contradicts is
+ * result that recommends a package the same page contradicts is
  * worse than giving no recommendation at all.
  *
- * This is the bottom rung of a priced ladder, so the result has two jobs —
- * be useful on its own, and make the paid engagement the obvious next step.
- * A single total does the second job but not the first, which is why the
+ * The tiers carry NO price. A score that resolves to a dollar figure asks
+ * the reader to buy before they have read what their tier means, so the
+ * result names the tier and the focus and leaves the commercial
+ * conversation to the contact page. The result therefore has to be useful
+ * entirely on its own. A single total is not, which is why the
  * per-dimension read exists.
  */
 
@@ -55,7 +57,6 @@ function render(cfg, answers, total) {
         <p><strong>Stage ${cfg.stages.indexOf(stage) + 1} &mdash; ${stage.stage}.</strong> ${stage.focus}</p>
         <p class="result-next-pkg">
           <span class="result-pkg-name">${stage.package} package</span>
-          <span class="result-pkg-price">${stage.price}${stage.duration ? ` &middot; ${stage.duration}` : ''}</span>
         </p>
       </div>`
     : '';

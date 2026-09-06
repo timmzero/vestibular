@@ -154,7 +154,7 @@ const REGIONS = [
   {
     name: 'agile_stage_cards',
     file: 'diagnostic.html',
-    render: (data) => renderStageCards(data.practices.agile.stages, data._pricing),
+    render: (data) => renderStageCards(data.practices.agile.stages),
   },
   {
     name: 'agile_playbook_stages',
@@ -243,7 +243,7 @@ const REGIONS = [
   {
     name: 'scorecard_data',
     file: 'diagnostic.html',
-    render: (data) => renderScorecardData(data.practices.agile, data._pricing),
+    render: (data) => renderScorecardData(data.practices.agile),
   },
   {
     name: 'ba_proof_teaser',
@@ -384,7 +384,20 @@ function renderScaleLegend(scale) {
   ].join('\n');
 }
 
-function renderStageCards(stages, pricing) {
+/**
+ * The five diagnostic tiers.
+ *
+ * These carry NO price. The ladder is the diagnostic's result vocabulary —
+ * scripts/scorecard.js scores the answers, matches the total against
+ * thresholds and looks a tier up here — not a public price list. A score
+ * that resolves to a dollar figure asks the reader to buy before they have
+ * read what the tier means, so the result names the tier and the focus and
+ * lets the contact page carry the commercial conversation.
+ *
+ * renderPrice() is untouched and still used by renderServices(): the AI
+ * engagements DO publish fixed fees, and that is deliberate.
+ */
+function renderStageCards(stages) {
   return stages
     .map((s) => {
       const rows = [
@@ -404,7 +417,6 @@ function renderStageCards(stages, pricing) {
         '      <ul>',
         rows,
         '      </ul>',
-        `      ${renderPrice(s.price, pricing)}`,
         '    </article>',
       ].join('\n');
     })
@@ -861,21 +873,12 @@ function renderScorecardFields(diag) {
  *  script so the labels, thresholds, stage names AND PRICES the result quotes
  *  are the same ones rendered on the cards above it. A result that recommends a
  *  package at a price the page contradicts is worse than no recommendation. */
-function renderScorecardData(agile, pricing) {
-  const money = (n) => '$' + Math.round(n).toLocaleString('en-AU');
-  const stages = agile.stages.map((s) => {
-    const p = s.price || {};
-    const priced = p.basis && p.basis !== 'scoped' && p.ex_gst;
-    return {
-      stage: s.name,
-      package: s.package,
-      focus: s.focus,
-      price: priced
-        ? `${p.basis === 'from' ? 'From ' : ''}${money(p.ex_gst * (1 + pricing.gst_rate))}${p.basis === 'retainer' ? ' per month' : ''}`
-        : 'Scoped per engagement',
-      duration: p.duration || null,
-    };
-  });
+function renderScorecardData(agile) {
+  const stages = agile.stages.map((s) => ({
+    stage: s.name,
+    package: s.package,
+    focus: s.focus,
+  }));
 
   const payload = {
     dimensions: agile.diagnostic.dimensions.map((d) => ({ key: d.key, label: d.label })),
