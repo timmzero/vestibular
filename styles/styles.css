@@ -1264,6 +1264,14 @@ article.stage .price { margin-top: 1rem; }
 }
 .scale-legend strong { color: var(--primary-color); }
 
+/* A number and its label are one unit. Without this the line breaks at the
+   ordinary space between them and a bare "5" ends up alone at the end of a
+   line, reading as a value rather than as the start of "5 Strongly agree".
+   The `&nbsp;` separators between points are NOT what holds this together —
+   they are flanked by ordinary spaces, which are now the only break
+   opportunities in the line, and are where a break belongs. */
+.scale-legend .scale-point { white-space: nowrap; }
+
 .result-total {
   font-family: var(--font-heading);
   font-size: 1.5rem;

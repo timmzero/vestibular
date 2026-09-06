@@ -658,6 +658,17 @@
       "_services_comment": "Each service names the engagement phase it belongs to, and ai-services.html renders them under that heading. The order was already Listen -> Design -> Land; without the label it read as arbitrary next to prominent prices, because the prices do not ascend monotonically and nothing on the page said why. The generator FAILS if a service names a phase that does not exist in phases[] above, or names no phase at all."
     }
   },
+  "scale": {
+    "_comment": "The Likert legend, shared by the AI readiness instrument (ai-readiness.html) and the agile diagnostic (diagnostic.html). It was hand-written identically in both files: two copies of a five-point scale are two chances for the pages to disagree about what 3 means, and a reworded anchor would have moved in one place only. Each point renders as ONE UNBREAKABLE UNIT — see .scale-point in styles.css — because the old markup let a wrap fall between a number and its label, orphaning a bare '5' at the end of a line.",
+    "question": "How well does each of the following describe your team?",
+    "points": [
+      { "value": 1, "label": "Strongly disagree" },
+      { "value": 2, "label": "Somewhat disagree" },
+      { "value": 3, "label": "Neutral" },
+      { "value": 4, "label": "Somewhat agree" },
+      { "value": 5, "label": "Strongly agree" }
+    ]
+  },
   "_pricing": {
     "_comment": "Prices are EX-GST integers in AUD. tools/render_content.mjs derives the GST-inclusive figure and renders it as the prominent price. Change a number here and BOTH figures update; never hand-write an inclusive price.",
     "currency": "AUD",
