@@ -52,14 +52,7 @@
           "focus": "Restore clarity, reduce cognitive load, establish hygiene.",
           "outcomes": "Reduced clutter, clear workflows, initial alignment.",
           "deliverables": "Tool hygiene audit, sanitation playbook.",
-          "ai_augmentation": "Automated Jira board cleanup, duplicate detection, backlog hygiene assistant.",
-          "price": {
-            "basis": "fixed",
-            "ex_gst": 6000,
-            "duration": "1 week",
-            "effort_days": 3,
-            "proximity": "2 days on-site, remainder remote"
-          }
+          "ai_augmentation": "Automated Jira board cleanup, duplicate detection, backlog hygiene assistant."
         },
         {
           "number": 2,
@@ -69,14 +62,7 @@
           "focus": "Team health, morale, ceremony clarity.",
           "outcomes": "Improved trust, reduced burnout, meaningful rituals.",
           "deliverables": "Morale metrics dashboard, role clarifications, team health interventions.",
-          "ai_augmentation": "Retro documentation, sprint flow insights, facilitation prompts.",
-          "price": {
-            "basis": "from",
-            "ex_gst": 16000,
-            "duration": "3–4 weeks",
-            "effort_days": 8,
-            "proximity": "Weekly on-site, ceremonies facilitated in person"
-          }
+          "ai_augmentation": "Retro documentation, sprint flow insights, facilitation prompts."
         },
         {
           "number": 3,
@@ -86,14 +72,7 @@
           "focus": "Pilot modular Agile practices with one team, refine cadence, prepare for scale.",
           "outcomes": "Autonomous teams, faster iteration, clear accountability.",
           "deliverables": "Team-specific enablement plan, coaching cadence.",
-          "ai_augmentation": "Backlog prioritization rubric, automated work item creation, sprint health dashboards.",
-          "price": {
-            "basis": "from",
-            "ex_gst": 32000,
-            "duration": "6–8 weeks",
-            "effort_days": 16,
-            "proximity": "Embedded 2 days/week with one pilot team"
-          }
+          "ai_augmentation": "Backlog prioritization rubric, automated work item creation, sprint health dashboards."
         },
         {
           "number": 4,
@@ -103,12 +82,7 @@
           "focus": "Replicate modular practices across teams, align governance.",
           "outcomes": "Scalable Agile practices, consistent delivery, cross-team transparency.",
           "deliverables": "Scaled rollout plan, cross-team coaching, governance map.",
-          "ai_augmentation": "Cross-team dashboards, compliance reporting, predictive bottleneck detection.",
-          "price": {
-            "basis": "scoped",
-            "duration": "3–6 months",
-            "proximity": "Embedded cadence agreed per team"
-          }
+          "ai_augmentation": "Cross-team dashboards, compliance reporting, predictive bottleneck detection."
         },
         {
           "number": 5,
@@ -118,14 +92,7 @@
           "focus": "Strategic agility, continuous improvement, business alignment.",
           "outcomes": "Sustained momentum, strategic alignment, high morale.",
           "deliverables": "Advanced dashboards, strategic workshops, compliance frameworks.",
-          "ai_augmentation": "Predictive analytics, strategic scenario modeling, continuous improvement dashboards.",
-          "price": {
-            "basis": "retainer",
-            "ex_gst": 4000,
-            "duration": "Ongoing",
-            "proximity": "2 days/month on-site, async access between",
-            "effort_days": 2
-          }
+          "ai_augmentation": "Predictive analytics, strategic scenario modeling, continuous improvement dashboards."
         }
       ],
       "diagnostic": {
@@ -665,11 +632,26 @@
     "_comment": "The Likert legend, shared by the AI readiness instrument (ai-readiness.html) and the agile diagnostic (diagnostic.html). It was hand-written identically in both files: two copies of a five-point scale are two chances for the pages to disagree about what 3 means, and a reworded anchor would have moved in one place only. Each point renders as ONE UNBREAKABLE UNIT — see .scale-point in styles.css — because the old markup let a wrap fall between a number and its label, orphaning a bare '5' at the end of a line.",
     "question": "How well does each of the following describe your team?",
     "points": [
-      { "value": 1, "label": "Strongly disagree" },
-      { "value": 2, "label": "Somewhat disagree" },
-      { "value": 3, "label": "Neutral" },
-      { "value": 4, "label": "Somewhat agree" },
-      { "value": 5, "label": "Strongly agree" }
+      {
+        "value": 1,
+        "label": "Strongly disagree"
+      },
+      {
+        "value": 2,
+        "label": "Somewhat disagree"
+      },
+      {
+        "value": 3,
+        "label": "Neutral"
+      },
+      {
+        "value": 4,
+        "label": "Somewhat agree"
+      },
+      {
+        "value": 5,
+        "label": "Strongly agree"
+      }
     ]
   },
   "_pricing": {
