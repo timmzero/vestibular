@@ -167,6 +167,11 @@ const REGIONS = [
     render: (data) => renderEthos(data.practices.ai_transformation.ethos),
   },
   {
+    name: 'scale_legend',
+    files: ['ai-readiness.html', 'diagnostic.html'],
+    render: (data) => renderScaleLegend(data.scale),
+  },
+  {
     name: 'hero_copy',
     file: 'index.html',
     render: (data) => renderHeroCopy(data.brand.hero),
@@ -336,6 +341,39 @@ function renderHeroCopy(hero) {
     '    <p>',
     `      <span>${escapeHtml(hero.lede)}</span>`,
     '    </p>',
+  ].join('\n');
+}
+
+/**
+ * The Likert legend, shared by ai-readiness.html and diagnostic.html.
+ *
+ * Each point is wrapped in its own .scale-point span, which styles.css makes
+ * white-space: nowrap. The markup this replaced separated points with `&nbsp;`
+ * but left ordinary breakable spaces on either side of it, and an ordinary
+ * space between each number and its label — so the browser was free to break
+ * anywhere, and at some widths broke between "5" and "Strongly agree", leaving
+ * a bare numeral ending a line. The separator LOOKED like it was holding the
+ * line together and was doing nothing of the sort.
+ *
+ * The gap between points stays `&nbsp;` flanked by ordinary spaces: those
+ * spaces are now the ONLY break opportunities in the line, which is exactly
+ * where a break should land.
+ */
+function renderScaleLegend(scale) {
+  if (!Array.isArray(scale.points) || !scale.points.length) {
+    throw new Error('scale.points must be a non-empty list');
+  }
+
+  const points = scale.points
+    .map((p) =>
+      '<span class="scale-point">' +
+      `<strong>${escapeHtml(String(p.value))}</strong> ${escapeHtml(p.label)}` +
+      '</span>')
+    .join(' &nbsp; ');
+
+  return [
+    `          ${escapeHtml(scale.question)}<br />`,
+    `          ${points}`,
   ].join('\n');
 }
 
