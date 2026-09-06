@@ -3,7 +3,7 @@
   "brand": {
     "_comment": "The three senses of the vestibular system, and the brand's organising frame. Each pillar owns exactly two of ai_transformation.domains via the domain's `pillar` key — that mapping is the SSOT for the grouping rendered on index.html, ai-transformation.html and ai-readiness.html.",
     "hero": {
-      "_comment": "The index hero, and the SSOT for it. These words were hand-written in index.html and existed nowhere else, so the root share card could only quote them by holding a second copy. Both the page and the card now render from here: tools/render_content.mjs writes GENERATED:hero_copy, and tools/build_og_images.py derives the root card's title and description from these same values.",
+      "_comment": "The index hero, and the SSOT for it. These words were hand-written in index.html and existed nowhere else, so the root share card could only quote them by holding a second copy. Both the page and the card now render from here: tools/render_content.mjs writes GENERATED:hero_copy, and tools/build_og_images.py derives the root card's title and description from these same values. All three fields are LISTS OF LINES: the page renders one <br /> between entries, and the share card joins them back into a single string, because a card description has no line breaks. Split a line only where the break is wanted on the page.",
       "headline": [
         "Fix your framework.",
         "Flex AI.",
@@ -12,7 +12,10 @@
       "intro": [
         "The question isn't whether AI can do the job, it's whether you can trust the answer."
       ],
-      "lede": "Help your team keep pace with paradigm shifts. Build AI systems that flex in workflows. We engineer ecosystems that synergize."
+      "lede": [
+        "Help your team keep pace with paradigm shifts. Build AI systems that flex in workflows.",
+        "We engineer ecosystems that synergize."
+      ]
     },
     "pillars": [
       {

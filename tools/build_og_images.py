@@ -233,7 +233,11 @@ def card_source(page_file: str, meta: dict, hero: dict) -> tuple[str, str, dict]
     if page_file == "index.html":
         return (
             SEPARATOR.join(line.rstrip(".") for line in hero["headline"]),
-            hero["lede"],
+            # The page breaks the lede across lines; a card description has no
+            # line breaks, so join it back. Joining here rather than keeping a
+            # second unbroken copy in practices.json is what stops the card and
+            # the page drifting apart — the failure this whole file exists for.
+            " ".join(hero["lede"]),
             {
                 "file": "content/practices.json",
                 "path": ["brand", "hero"],
