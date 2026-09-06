@@ -15,7 +15,7 @@
           "description": "Agile delivery consulting for teams whose tooling has outgrown them: fewer ceremonies, clearer sprints, and morale treated as a delivery metric."
         }
       },
-      "sha256": "e55839da15ec0b0c5aef4fbca43c32c97242926b6575284ad5acd5be311b31bd"
+      "sha256": "88e545387dea5aa4108a960837d9cf304553fbada4a410d330c17bc9ecfbc3d1"
     },
     "ai-playbook.html": {
       "title": "AI Adoption Playbook – Vestibular",
@@ -31,7 +31,7 @@
           "description": "How an AI engagement actually runs: what we look at first, what we refuse to automate, and what you own at the end of it."
         }
       },
-      "sha256": "d1c4ec9e4e384db32d8b18eb1290f41f93f3b38d5b70278866d9e7210be80903"
+      "sha256": "02b5c69df2c62b75613c17c374075a516ade61b56cef070885c6339206b85385"
     },
     "ai-services.html": {
       "title": "AI Consulting Services – Vestibular",
@@ -47,7 +47,7 @@
           "description": "Six AI consulting services: readiness, value case, operating model redesign, governance, roadmap and adoption. Fixed scope, senior delivery, no handoff."
         }
       },
-      "sha256": "c3b8648a9b03c4469fee30504ff56ec874f1e8d9603742e72d39a8c8f2be4098"
+      "sha256": "c23be8c1fe48d48109b46d9635fe80d2a1cde47e55394d99495cc6929f37c25f"
     },
     "ai-transformation.html": {
       "title": "AI Transformation Consultant – Vestibular",
@@ -63,7 +63,7 @@
           "description": "An AI transformation consultant in Terrigal NSW, serving Sydney, the Central Coast and Newcastle. Operating model redesign and AI opportunity mapping."
         }
       },
-      "sha256": "510f207bda549793c07b19877ac37e0cafa27895c3a21a539c4e3b2d6ae373e7"
+      "sha256": "657b27a3ebd5853f248d46d4194b1cef0b9604887199464bd54cebafd1443677"
     },
     "contact.html": {
       "title": "Contact – Vestibular",
@@ -79,7 +79,7 @@
           "description": "Talk to an AI consultant based in Terrigal on the NSW Central Coast, working across Sydney and Newcastle. Free first conversation, no obligation."
         }
       },
-      "sha256": "64cc6b0fa38dec28dd509cf86af2067cb8a96899c4285c28b2dacbc30d8155fa"
+      "sha256": "0391e508916964c737c3024a1ed11d141c46a8f5a133a673e3bf23d32086f8b4"
     },
     "diagnostic.html": {
       "title": "Agile Maturity Diagnostic – Vestibular",
@@ -95,11 +95,11 @@
           "description": "A scorecard that places your team on the delivery maturity lens, then points at the modules that fit where it actually sits rather than a full programme."
         }
       },
-      "sha256": "3cb4ed82485982c0dfd813ca8f2e31dbed2a4e5c1fb0453870081a62154e07eb"
+      "sha256": "316b2f11157a8c2f279676f2baece2c107b6a260f15f529d331be9aacb81bcf0"
     },
     "index.html": {
       "title": "Fix your framework - Flex AI - Free your humans",
-      "description": "We help teams keep pace with paradigm shifts. We build AI systems that flex in workflows. We engineer ecosystems that synergize.",
+      "description": "Help your team keep pace with paradigm shifts. Build AI systems that flex in workflows. We engineer ecosystems that synergize.",
       "source": {
         "file": "content/practices.json",
         "path": [
@@ -112,10 +112,10 @@
             "Flex AI.",
             "Free your humans."
           ],
-          "lede": "We help teams keep pace with paradigm shifts. We build AI systems that flex in workflows. We engineer ecosystems that synergize."
+          "lede": "Help your team keep pace with paradigm shifts. Build AI systems that flex in workflows. We engineer ecosystems that synergize."
         }
       },
-      "sha256": "3e9c1b32ca9ca47b4842320c858221ba56f7fd1985ca182db8c873bd93ced387"
+      "sha256": "5aa825bd999d03c6246020d23263a7e14fb2622c0d4e5064bcd7ec99823f7eb5"
     },
     "playbook.html": {
       "title": "Agile Delivery Playbook – Vestibular",
@@ -131,7 +131,7 @@
           "description": "A diagnostic lens and a package progression from Declutter to Optimize, with AI augmentation embedded at every stage rather than bolted on at the end."
         }
       },
-      "sha256": "6a3386893fa99864053454732eff38f9b3a0918abfbaf67f1f77a4bd50fe27b3"
+      "sha256": "b728d913ef826fde5571b474b06bdfc7a4fafc4753efd6b4e53fa42e31aa6718"
     },
     "services.html": {
       "title": "Agile Consulting Services – Vestibular",
@@ -147,7 +147,7 @@
           "description": "Six standalone Agile modules that compound: morale-first consulting, tools sanitation, sprint clarity, role design, delivery flow and coaching."
         }
       },
-      "sha256": "d250f7906588eaf2c62a186238ba43502dc49259a5200087c95d6ea9de081d3d"
+      "sha256": "e485aed013f677ae77947f3d91644443578b423c9ff1d8f77480013adb0cb3a8"
     },
     "ai-proof.html": {
       "title": "Production AI in a Regulated Domain – Vestibular",
@@ -163,7 +163,7 @@
           "description": "We shipped VTRAFFIC, a production AI system drafting compliance documents for Australian road worksites, before advising anyone on AI adoption."
         }
       },
-      "sha256": "2e503c1ceb818468101d4bb875e8e712e025acbfcead779a75b4859f465ca12a"
+      "sha256": "2fdb5c4ee89b107e61efccada6eba1c5d0fb455b353300026f8ba5de0b74ce25"
     },
     "ai-readiness.html": {
       "title": "AI Readiness Assessment – Vestibular",
@@ -179,7 +179,7 @@
           "description": "A sixteen-question AI readiness assessment across eight areas: goals, systems, pain points, morale, roles, AI fit, data readiness and load."
         }
       },
-      "sha256": "db241e8eb1cb229d5a9d56ff06dca6f255efbdc90ac09bd72a96cd917b327f2c"
+      "sha256": "1a92dcb458217372849d7e41d9c326be36d09235596356843c68e91b5722f20a"
     }
   }
 }
