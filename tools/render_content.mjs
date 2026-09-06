@@ -309,7 +309,12 @@ function renderHead(data, file) {
 }
 
 /**
- * The index hero: three stacked lines, a stacked intro, then the lede.
+ * The index hero: a stacked headline, a stacked intro, then a stacked lede.
+ *
+ * All three are lists of lines through the same stacked() helper. The lede was
+ * a bare string until the founder wanted a break in it, and a scalar among two
+ * lists is the kind of small asymmetry that gets solved twice — once here with
+ * a <br /> in the content, once in CSS — rather than once at the source.
  *
  * These words used to be hand-written in index.html and appeared nowhere in
  * content/. That was survivable while only the page said them — but the root
@@ -326,8 +331,10 @@ function renderHeroCopy(hero) {
   const stacked = (lines) =>
     lines.map((line) => `      <span>${escapeHtml(line)}</span>`).join('<br />\n');
 
-  if (!hero.headline.length || !hero.intro.length) {
-    throw new Error('brand.hero needs a non-empty headline and intro');
+  for (const field of ['headline', 'intro', 'lede']) {
+    if (!Array.isArray(hero[field]) || !hero[field].length) {
+      throw new Error(`brand.hero.${field} must be a non-empty list of lines`);
+    }
   }
 
   return [
@@ -339,7 +346,7 @@ function renderHeroCopy(hero) {
     stacked(hero.intro),
     '    </p>',
     '    <p>',
-    `      <span>${escapeHtml(hero.lede)}</span>`,
+    stacked(hero.lede),
     '    </p>',
   ].join('\n');
 }
