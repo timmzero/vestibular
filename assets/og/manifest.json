@@ -137,8 +137,8 @@
       "sha256": "6a3386893fa99864053454732eff38f9b3a0918abfbaf67f1f77a4bd50fe27b3"
     },
     "services.html": {
-      "title": "Agile Consulting Services – Vestibular",
-      "description": "Six standalone Agile modules that compound: morale-first consulting, tools sanitation, sprint clarity, role design, delivery flow and coaching.",
+      "title": "AI Agility Services – Vestibular",
+      "description": "Six standalone modules that compound: morale-first adoption, tool sprawl, prioritisation, pilot rollout, retrospectives and cross-team governance.",
       "source": {
         "file": "content/pages.json",
         "path": [
@@ -146,11 +146,11 @@
           "services.html"
         ],
         "values": {
-          "title": "Agile Consulting Services – Vestibular",
-          "description": "Six standalone Agile modules that compound: morale-first consulting, tools sanitation, sprint clarity, role design, delivery flow and coaching."
+          "title": "AI Agility Services – Vestibular",
+          "description": "Six standalone modules that compound: morale-first adoption, tool sprawl, prioritisation, pilot rollout, retrospectives and cross-team governance."
         }
       },
-      "sha256": "d250f7906588eaf2c62a186238ba43502dc49259a5200087c95d6ea9de081d3d"
+      "sha256": "9280a2418dd17e3e116aaaceee9bfd47540145dd94b27fd9d2d6cd400c79ac62"
     },
     "ai-proof.html": {
       "title": "Production AI in a Regulated Domain – Vestibular",
