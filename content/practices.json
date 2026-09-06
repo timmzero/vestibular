@@ -1,5 +1,5 @@
 {
-  "_comment": "SINGLE SOURCE OF TRUTH for practice content. HTML regions marked GENERATED are produced from this file by scripts/build/render_content.mjs. Never hand-edit a GENERATED region — run the generator instead. CI verifies the committed HTML matches this file.",
+  "_comment": "SINGLE SOURCE OF TRUTH for practice content. HTML regions marked GENERATED are produced from this file by tools/render_content.mjs. Never hand-edit a GENERATED region — run the generator instead. CI verifies the committed HTML matches this file.",
   "brand": {
     "_comment": "The three senses of the vestibular system, and the brand's organising frame. Each pillar owns exactly two of ai_transformation.domains via the domain's `pillar` key — that mapping is the SSOT for the grouping rendered on index.html, ai-transformation.html and ai-readiness.html.",
     "hero": {
